@@ -20,7 +20,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     // Loged in user's profile
     // Route::group(['prefix' => '/profile', 'as' => 'profile.'], function () {
     //     Route::get('/', [App\Http\Controllers\ProfileController::class, 'index'])->name('index');
@@ -29,4 +29,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Dashboard
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+    Route::resources([
+        'employees' => App\Http\Controllers\EmployeeController::class
+    ]);
 });

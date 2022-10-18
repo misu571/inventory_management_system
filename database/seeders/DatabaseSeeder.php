@@ -2,12 +2,14 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
+    use WithoutModelEvents;
+    
     /**
      * Seed the application's database.
      *
@@ -24,5 +26,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('qwe123asd'),
             'remember_token' => Str::random(10),
         ]);
+
+        \App\Models\Employee::factory(16)->create();
     }
 }
