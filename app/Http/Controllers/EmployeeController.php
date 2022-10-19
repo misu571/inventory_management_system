@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreEmployeeRequest;
+use App\Http\Requests\UpdateEmployeeRequest;
 
 class EmployeeController extends Controller
 {
@@ -14,7 +16,9 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        //
+        $employees = Employee::orderByDesc('updated_at')->get();
+        
+        return view('pages.employee.index', compact('employees'));
     }
 
     /**
@@ -24,7 +28,7 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.employee.create');
     }
 
     /**
@@ -33,9 +37,11 @@ class EmployeeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreEmployeeRequest $request)
     {
-        //
+        Employee::create($request->validated());
+
+        return redirect()->route('employee.index');
     }
 
     /**
@@ -46,7 +52,7 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        //
+        return view('pages.employee.show', compact('employee'));
     }
 
     /**
@@ -67,7 +73,7 @@ class EmployeeController extends Controller
      * @param  \App\Models\Employee  $employee
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Employee $employee)
+    public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
         //
     }

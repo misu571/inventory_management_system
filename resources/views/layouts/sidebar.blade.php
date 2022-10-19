@@ -12,8 +12,13 @@
         <div class="sidebar-menu">
             <ul id="accordion-menu">
                 <li>
-                    <a href="calendar.html" class="dropdown-toggle no-arrow">
+                    <a href="{{ route('home') }}" class="dropdown-toggle no-arrow">
                         <span class="micon bi bi-house"></span><span class="mtext">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('employee.index') }}" class="dropdown-toggle no-arrow">
+                        <span class="micon bi bi-people-fill"></span><span class="mtext">Employee</span>
                     </a>
                 </li>
                 <li class="dropdown">

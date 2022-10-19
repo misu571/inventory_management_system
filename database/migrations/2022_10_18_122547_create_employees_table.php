@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('phone');
             $table->string('address');
             $table->string('experience');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->double('salary', 15, 8);
             $table->boolean('vacation');
             $table->string('city');

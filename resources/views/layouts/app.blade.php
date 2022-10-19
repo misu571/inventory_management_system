@@ -35,10 +35,10 @@
         <!-- Application body content -->
         <div class="main-container">
             <div class="my-2 mx-1">
-                <div class="mb-30" style="min-height:80vh">
+                <div class="mb-30" style="min-height:82vh">
                     @yield('content')
                 </div>
-                <div class="footer-wrap pd-20 card-box">
+                <div class="footer-wrap py-2 px-3 card-box">
                     <div class="d-flex justify-content-between">
                         <div><i class="icon-copy fa fa-copyright" aria-hidden="true"></i> {{ now()->year }} {{ config('app.company') }}</div>
                         <div>v {{ config('app.version') }}</div>
