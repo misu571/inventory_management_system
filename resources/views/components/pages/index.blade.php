@@ -13,7 +13,21 @@
     </div>
     <div class="pb-20">
         <div class="table-responsive">
-            <x-pages.elements.table>
+            <table class="table data-table stripe hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        @foreach ($listName($colunm_name) as $item)
+                            <th>{{ $item }}</th>
+                        @endforeach
+                        <th class="datatable-nosort">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ $slot }}
+                </tbody>
+            </table>
+            {{-- <x-pages.elements.table>
                 <x-slot:colunm_name>{{ 'Name, Email, Phone, Address, Experience, Salary' }}</x-slot>
                 @foreach ($employees as $employee)
                     <tr>
@@ -42,7 +56,7 @@
                         </td>
                     </tr>
                 @endforeach
-            </x-pages>
+            </x-pages> --}}
         </div>
     </div>
 </div>
