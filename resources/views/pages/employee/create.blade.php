@@ -6,11 +6,11 @@
     <x-slot:route_name>{{ route('employee.index') }}</x-slot>
     <x-slot:parent_page>Employee</x-slot>
     <x-slot:current_page>create</x-slot>
-</x-pages>
+</x-pages.elements.title>
 <div class="row">
     <div class="col-6">
         <div class="card-box p-3 mb-30">
-            <x-forms.employee action="{{ route('employee.store') }}" method="POST">
+            <x-forms.employee action="{{ route('employee.store') }}">
                 <x-slot:name_value>{{ old('name') }}</x-slot>
                 <x-slot:email_value>{{ old('email') }}</x-slot>
                 <x-slot:phone_value>{{ old('phone') }}</x-slot>
@@ -18,7 +18,7 @@
                 <x-slot:button>
                     <i class="icon-copy ion-plus-round mr-2"></i> Create New
                 </x-slot>
-            </x-forms>
+            </x-forms.employee>
         </div>
     </div>
 </div>

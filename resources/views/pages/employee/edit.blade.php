@@ -6,11 +6,11 @@
     <x-slot:route_name>{{ route('employee.index') }}</x-slot>
     <x-slot:parent_page>Employee</x-slot>
     <x-slot:current_page>edit</x-slot>
-</x-pages>
+</x-pages.elements.title>
 <div class="row">
     <div class="col-6">
         <div class="card-box p-3 mb-30">
-            <x-forms.employee action="{{ route('employee.update', ['employee' => $employee->id]) }}" method="POST">
+            <x-forms.employee action="{{ route('employee.update', ['employee' => $employee->id]) }}">
                 <x-slot:method_type>
                     @method('PATCH')
                 </x-slot>
@@ -21,7 +21,7 @@
                 <x-slot:button>
                     <i class="icon-copy ion-android-create mr-2"></i> Edit Entry
                 </x-slot>
-            </x-forms>
+            </x-forms.employee>
         </div>
     </div>
 </div>
