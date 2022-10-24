@@ -1,5 +1,5 @@
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body py-4">
                 <h3 class="card-title text-center m-0">Are you sure to delete this record?</h3>

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone');
             $table->string('address');
+            $table->string('nid');
             $table->string('experience');
             $table->string('image')->nullable();
             $table->double('salary', 15, 8);

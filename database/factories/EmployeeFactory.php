@@ -21,6 +21,7 @@ class EmployeeFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->phoneNumber(),
             'address' => fake()->address(),
+            'nid' => fake()->numberBetween(1040403600, 2147483647),
             'experience' => fake()->randomElement(['Beginner', 'Expert', 'Avarage']),
             'image' => fake()->imageUrl(100, 100),
             'salary' => fake()->numberBetween(10000, 50000),

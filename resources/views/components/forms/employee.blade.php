@@ -31,6 +31,16 @@
                 <x-slot:value>{{ $address_value }}</x-slot>
                 <x-slot:attributes>required</x-slot>
             </x-forms.type.text-input>
+            {{-- <x-forms.type.select-input>
+                <x-slot:label>Experience</x-slot>
+                <x-slot:id>experience</x-slot>
+                <x-slot:name>experience</x-slot>
+                <x-slot:attributes>required</x-slot>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+                <x-slot:value>{{ $address_value }}</x-slot>
+            </x-forms.type.select-input> --}}
             <input type="hidden" id="experience" name="experience" value="Unique">
             <input type="hidden" id="salary" name="salary" value="10101">
             <input type="hidden" id="vacation" name="vacation" value="0">

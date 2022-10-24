@@ -36,6 +36,8 @@
         <div class="main-container">
             <div class="my-2 mx-1">
                 <div class="mb-30" style="min-height:82vh">
+                    <!-- Session alert -->
+                    @include('layouts.alert')
                     @yield('content')
                 </div>
                 <div class="footer-wrap py-2 px-3 card-box">
@@ -46,9 +48,6 @@
                 </div>
             </div>
         </div>
-    
-        <!-- Session alert -->
-        @include('layouts.alert')
     @else
         <!-- Application login header -->
         @include('layouts.login_header')

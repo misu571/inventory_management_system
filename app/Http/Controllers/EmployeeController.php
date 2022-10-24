@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 
@@ -16,7 +17,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = Employee::orderByDesc('updated_at')->get();
+        $employees = DB::table('employees')->orderByDesc('updated_at')->get();
         
         return view('pages.employee.index', compact('employees'));
     }
@@ -40,8 +41,9 @@ class EmployeeController extends Controller
     public function store(StoreEmployeeRequest $request)
     {
         Employee::create($request->validated());
+        $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
 
-        return redirect()->route('employee.index');
+        return redirect()->route('employee.index')->with(compact('alert'));
     }
 
     /**
@@ -76,8 +78,9 @@ class EmployeeController extends Controller
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
         $employee->update($request->validated());
+        $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
 
-        return redirect()->route('employee.index');
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -89,7 +92,8 @@ class EmployeeController extends Controller
     public function destroy(Employee $employee)
     {
         $employee->delete();
+        $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
 
-        return redirect()->route('employee.index');
+        return back()->with(compact('alert'));
     }
 }
