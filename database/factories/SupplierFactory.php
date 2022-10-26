@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Employee>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Supplier>
  */
-class EmployeeFactory extends Factory
+class SupplierFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -22,11 +22,13 @@ class EmployeeFactory extends Factory
             'phone' => fake()->phoneNumber(),
             'city' => fake()->city(),
             'address' => fake()->address(),
-            'nid' => fake()->numberBetween(1040403600, 2147483647),
             'image' => fake()->imageUrl(100, 100),
-            'experience' => fake()->randomElement(['Beginner', 'Expert', 'Avarage']),
-            'salary' => fake()->numberBetween(10000, 50000),
-            'vacation' => fake()->boolean(),
+            'type' => fake()->randomElement(['Wholeseler', 'Distributor']),
+            'shop_name' => fake()->streetName(),
+            'account_name' => fake()->name(),
+            'account_number' => fake()->numberBetween(3040403600, 8147483647),
+            'bank_name' => 'City Bank',
+            'branch_name' => 'Gulshan',
         ];
     }
 }

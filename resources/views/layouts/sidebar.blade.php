@@ -18,7 +18,22 @@
                 </li>
                 <li>
                     <a href="{{ route('employee.index') }}" class="dropdown-toggle no-arrow">
-                        <span class="micon bi bi-people-fill"></span><span class="mtext">Employee</span>
+                        <span class="micon ion-person-stalker"></span><span class="mtext">Employee</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('customer.index') }}" class="dropdown-toggle no-arrow">
+                        <span class="micon bi bi-people-fill"></span><span class="mtext">Customer</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('supplier.index') }}" class="dropdown-toggle no-arrow">
+                        <span class="micon dw dw-user-11"></span><span class="mtext">Supplier</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('salary.index') }}" class="dropdown-toggle no-arrow">
+                        <span class="micon ti-money"></span><span class="mtext">Salary</span>
                     </a>
                 </li>
                 <li class="dropdown">

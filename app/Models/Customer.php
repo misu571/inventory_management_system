@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Employee extends Model
+class Customer extends Model
 {
     use HasFactory;
 
-    protected $table = 'employees';
+    protected $table = 'customers';
 
     protected $fillable = [
         'name',
@@ -18,8 +18,10 @@ class Employee extends Model
         'city',
         'address',
         'image',
-        'experience',
-        'salary',
-        'vacation',
+        'shop_name',
+        'account_name',
+        'account_number',
+        'bank_name',
+        'branch_name',
     ];
 }
