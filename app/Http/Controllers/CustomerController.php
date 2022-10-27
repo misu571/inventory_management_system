@@ -16,7 +16,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = DB::table('customers')->orderByDesc('updated_at')->get();
+        $customers = DB::table('customers')->orderByDesc('updated_at')->get()->toArray();
 
         return view('pages.customer.index', compact('customers'));
     }

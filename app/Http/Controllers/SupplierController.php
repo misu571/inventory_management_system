@@ -16,7 +16,7 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        $suppliers = DB::table('suppliers')->orderByDesc('updated_at')->get();
+        $suppliers = DB::table('suppliers')->orderByDesc('updated_at')->get()->toArray();
 
         return view('pages.supplier.index', compact('suppliers'));
     }

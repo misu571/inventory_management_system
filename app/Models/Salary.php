@@ -13,6 +13,7 @@ class Salary extends Model
 
     protected $fillable = [
         'employee_id',
+        'amount',
         'given_at',
         'status',
         'advance_salary',

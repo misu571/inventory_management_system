@@ -3,44 +3,10 @@
     @csrf
     <div class="row">
         <div class="col">
-            <x-forms.type.text-input>
-                <x-slot:label>Name</x-slot>
-                <x-slot:id>name</x-slot>
-                <x-slot:name>name</x-slot>
-                <x-slot:value>{{ $name_value }}</x-slot>
-                <x-slot:attributes>required</x-slot>
-            </x-forms.type.text-input>
-            <x-forms.type.email-input>
-                <x-slot:label>E-mail</x-slot>
-                <x-slot:id>email</x-slot>
-                <x-slot:name>email</x-slot>
-                <x-slot:value>{{ $email_value }}</x-slot>
-                <x-slot:attributes>required</x-slot>
-            </x-forms.type.email-input>
-            <x-forms.type.text-input>
-                <x-slot:label>Phone</x-slot>
-                <x-slot:id>phone</x-slot>
-                <x-slot:name>phone</x-slot>
-                <x-slot:value>{{ $phone_value }}</x-slot>
-                <x-slot:attributes>required</x-slot>
-            </x-forms.type.text-input>
-            <x-forms.type.text-input>
-                <x-slot:label>Address</x-slot>
-                <x-slot:id>address</x-slot>
-                <x-slot:name>address</x-slot>
-                <x-slot:value>{{ $address_value }}</x-slot>
-                <x-slot:attributes>required</x-slot>
-            </x-forms.type.text-input>
-            {{-- <x-forms.type.select-input>
-                <x-slot:label>Experience</x-slot>
-                <x-slot:id>experience</x-slot>
-                <x-slot:name>experience</x-slot>
-                <x-slot:attributes>required</x-slot>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
-                <x-slot:value>{{ $address_value }}</x-slot>
-            </x-forms.type.select-input> --}}
+            <x-forms.type.text-input type="text" id="name" label="Name" name="name" classes="" :value="$name_value" validations="required" />
+            <x-forms.type.text-input type="email" id="email" label="E-mail" name="email" classes="" :value="$email_value" validations="required" />
+            <x-forms.type.text-input type="text" id="phone" label="Phone" name="phone" classes="" :value="$phone_value" validations="required" />
+            <x-forms.type.text-input type="text" id="address" label="Address" name="address" classes="" :value="$address_value" validations="required" />
             <input type="hidden" id="experience" name="experience" value="Unique">
             <input type="hidden" id="salary" name="salary" value="10101">
             <input type="hidden" id="vacation" name="vacation" value="0">

@@ -19,7 +19,7 @@ class SalaryController extends Controller
         $salaries = DB::table('salaries')
             ->join('employees', 'salaries.employee_id', '=', 'employees.id')
             ->select('salaries.*', 'employees.name')
-            ->orderByDesc('salaries.updated_at')->get();
+            ->orderByDesc('salaries.updated_at')->get()->toArray();
 
         return view('pages.salary.index', compact('salaries'));
     }
@@ -31,7 +31,9 @@ class SalaryController extends Controller
      */
     public function create()
     {
-        //
+        $employees = DB::table('employees')->select('id', 'name')->get()->toArray();
+
+        return view('pages.salary.create', compact('employees'));
     }
 
     /**

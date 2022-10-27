@@ -38,9 +38,8 @@
 <script>
     $('#deleteModal').on('show.bs.modal', function (event) {
         let button = $(event.relatedTarget)
-        let route = button.data('route')
         let modal = $(this)
-        modal.find('form').attr('action', route)
+        modal.find('form').attr('action', button.data('route'))
     })
 </script>
 @endsection

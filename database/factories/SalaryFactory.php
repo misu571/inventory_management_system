@@ -18,6 +18,7 @@ class SalaryFactory extends Factory
     {
         return [
             'employee_id' => fake()->numberBetween(1, 16),
+            'amount' => fake()->numberBetween(10000, 40000),
             'given_at' => fake()->dateTimeBetween('-1 years'),
             'status' => fake()->boolean(),
         ];

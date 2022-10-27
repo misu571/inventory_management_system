@@ -1,10 +1,10 @@
 <?php
 
-namespace App\View\Components\Forms\Type;
+namespace App\View\Components\Forms;
 
 use Illuminate\View\Component;
 
-class EmailInput extends Component
+class Salary extends Component
 {
     /**
      * Create a new component instance.
@@ -23,6 +23,6 @@ class EmailInput extends Component
      */
     public function render()
     {
-        return view('components.forms.type.email-input');
+        return view('components.forms.salary');
     }
 }

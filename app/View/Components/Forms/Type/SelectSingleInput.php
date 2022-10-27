@@ -6,14 +6,22 @@ use Illuminate\View\Component;
 
 class SelectSingleInput extends Component
 {
+    public $id;
+    public $label;
+    public $name;
+    public $validations;
+
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($id, $label, $name, $validations)
     {
-        //
+        $this->id = $id;
+        $this->label = $label;
+        $this->name = $name;
+        $this->validations = $validations ?? null;
     }
 
     /**

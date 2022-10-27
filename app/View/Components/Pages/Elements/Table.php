@@ -29,6 +29,6 @@ class Table extends Component
 
     public function listName(string $colunmName)
     {
-        return array_map('ucfirst', array_map('strtolower', array_map('ltrim', array_map('rtrim', explode(',', $colunmName)))));
+        return array_map('ucwords', array_map('strtolower', array_map('ltrim', array_map('rtrim', explode(',', $colunmName)))));
     }
 }

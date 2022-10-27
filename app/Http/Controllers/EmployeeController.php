@@ -17,7 +17,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = DB::table('employees')->orderByDesc('updated_at')->get();
+        $employees = DB::table('employees')->orderByDesc('updated_at')->get()->toArray();
         
         return view('pages.employee.index', compact('employees'));
     }

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('salaries', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained('employees');
+            $table->integer('amount')->unsigned();
             $table->date('given_at');
             $table->boolean('status')->default(false);
             $table->integer('advance_salary')->nullable();
