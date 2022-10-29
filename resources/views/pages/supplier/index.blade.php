@@ -13,7 +13,7 @@
                 <td>{{ $supplier->phone }}</td>
                 <td>{{ $supplier->type }}</td>
                 <td>{{ $supplier->shop_name }}</td>
-                <td>
+                <td class="text-right">
                     <div class="dropdown">
                         <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"><i class="dw dw-more"></i></a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">

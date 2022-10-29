@@ -5,7 +5,7 @@
             @foreach ($listName($colunm_name) as $item)
                 <th>{{ $item }}</th>
             @endforeach
-            <th class="datatable-nosort">Action</th>
+            <th class="text-right datatable-nosort">Action</th>
         </tr>
     </thead>
     <tbody>

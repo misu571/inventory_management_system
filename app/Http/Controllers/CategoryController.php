@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
+use App\Models\Category;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\StoreEmployeeRequest;
-use App\Http\Requests\UpdateEmployeeRequest;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
 
-class EmployeeController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +16,9 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = DB::table('employees')->orderByDesc('updated_at')->get()->toArray();
-        
-        return view('pages.employee.index', compact('employees'));
+        $categories = DB::table('categories')->orderByDesc('updated_at')->get()->toArray();
+
+        return view('pages.category.index', compact('categories'));
     }
 
     /**
@@ -28,55 +28,55 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        return view('pages.employee.create');
+        return view('pages.category.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\StoreCategoryRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreEmployeeRequest $request)
+    public function store(StoreCategoryRequest $request)
     {
-        Employee::create($request->validated());
+        Category::create($request->validated());
         $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
 
-        return redirect()->route('employee.index')->with(compact('alert'));
+        return redirect()->route('category.index')->with(compact('alert'));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Employee  $employee
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function show(Employee $employee)
+    public function show(Category $category)
     {
-        return view('pages.employee.show', compact('employee'));
+        return view('pages.category.show', compact('category'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Employee  $employee
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Employee $employee)
+    public function edit(Category $category)
     {
-        return view('pages.employee.edit', compact('employee'));
+        return view('pages.category.edit', compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Employee  $employee
+     * @param  \App\Http\Requests\UpdateCategoryRequest  $request
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateEmployeeRequest $request, Employee $employee)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $employee->update($request->validated());
+        $category->update($request->validated());
         $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
 
         return back()->with(compact('alert'));
@@ -85,12 +85,12 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Employee  $employee
+     * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Employee $employee)
+    public function destroy(Category $category)
     {
-        $employee->delete();
+        $category->delete();
         $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
 
         return back()->with(compact('alert'));

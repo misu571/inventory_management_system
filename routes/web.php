@@ -35,5 +35,7 @@ Route::middleware(['auth'])->group(function () {
         'customer' => App\Http\Controllers\CustomerController::class,
         'supplier' => App\Http\Controllers\SupplierController::class,
         'salary' => App\Http\Controllers\SalaryController::class,
+        'category' => App\Http\Controllers\CategoryController::class,
+        'product' => App\Http\Controllers\ProductController::class,
     ]);
 });
