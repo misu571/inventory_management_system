@@ -6,14 +6,22 @@ use Illuminate\View\Component;
 
 class Title extends Component
 {
+    public $title;
+    public $route;
+    public $parentPage;
+    public $currentPage;
+    
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($title, $route, $parentPage, $currentPage)
     {
-        //
+        $this->title = $title;
+        $this->route = $route;
+        $this->parentPage = ucfirst($parentPage);
+        $this->currentPage = $currentPage;
     }
 
     /**

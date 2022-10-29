@@ -1,10 +1,10 @@
 <?php
 
-namespace App\View\Components\Pages\Elements;
+namespace App\View\Components\Forms;
 
 use Illuminate\View\Component;
 
-class Table extends Component
+class Product extends Component
 {
     /**
      * Create a new component instance.
@@ -23,11 +23,6 @@ class Table extends Component
      */
     public function render()
     {
-        return view('components.pages.elements.table');
-    }
-
-    public function listName(string $colunmName)
-    {
-        return array_map('ucwords', array_map('strtolower', array_map('ltrim', array_map('rtrim', explode(',', $colunmName)))));
+        return view('components.forms.product');
     }
 }

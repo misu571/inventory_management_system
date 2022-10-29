@@ -37,5 +37,6 @@ Route::middleware(['auth'])->group(function () {
         'salary' => App\Http\Controllers\SalaryController::class,
         'category' => App\Http\Controllers\CategoryController::class,
         'product' => App\Http\Controllers\ProductController::class,
+        'expense' => App\Http\Controllers\ExpenseController::class,
     ]);
 });

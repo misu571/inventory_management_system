@@ -1,12 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<x-pages.elements.title>
-    <x-slot:page_title>Form</x-slot>
-    <x-slot:route_name>{{ route('category.index') }}</x-slot>
-    <x-slot:parent_page>Category</x-slot>
-    <x-slot:current_page>create</x-slot>
-</x-pages.elements.title>
+<x-pages.elements.title title="Form" route="{{ route('category.index') }}" parentPage="category" currentPage="create" />
 <div class="row">
     <div class="col-6">
         <div class="card-box p-3 mb-30">

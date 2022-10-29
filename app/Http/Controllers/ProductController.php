@@ -32,7 +32,10 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $categories = DB::table('categories')->select('id', 'name')->get()->toArray();
+        $suppliers = DB::table('suppliers')->select('id', 'name')->get()->toArray();
+        
+        return view('pages.product.create', compact('categories', 'suppliers'));
     }
 
     /**

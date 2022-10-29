@@ -22,8 +22,8 @@ return new class extends Migration
             $table->string('location');
             $table->string('route');
             $table->string('image')->nullable();
-            $table->timestamp('purchase_at');
-            $table->timestamp('expire_at');
+            $table->date('purchase_at');
+            $table->date('expire_at');
             $table->integer('purchase_price')->unsigned();
             $table->integer('selling_price')->unsigned()->nullable();
             $table->timestamps();
