@@ -30,6 +30,7 @@ class ProductFactory extends Factory
             'purchase_price' => $price,
             'selling_price' => fake()->randomElement([null, fake()->numberBetween($price + 250, $price + 1680)]),
             'category_id' => fake()->numberBetween(1, 13),
+            'sub_category_id' => fake()->numberBetween(1, 16),
             'supplier_id' => fake()->numberBetween(1, 16),
         ];
     }

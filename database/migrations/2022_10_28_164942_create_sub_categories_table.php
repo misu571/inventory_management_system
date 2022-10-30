@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('expenses', function (Blueprint $table) {
+        Schema::create('sub_categories', function (Blueprint $table) {
             $table->id();
-            
-            $table->longText('details');
-            $table->integer('amount')->unsigned();
-            $table->date('expense_at');
+            $table->foreignId('category_id')->constrained('categories');
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('expenses');
+        Schema::dropIfExists('sub_categories');
     }
 };

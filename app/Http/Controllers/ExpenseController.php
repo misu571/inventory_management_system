@@ -16,7 +16,7 @@ class ExpenseController extends Controller
      */
     public function index()
     {
-        $expenses = DB::table('expenses')->orderByDesc('updated_at')->get()->toArray();
+        $expenses = DB::table('expenses')->orderByDesc('created_at')->get()->toArray();
 
         return view('pages.expense.index', compact('expenses'));
     }

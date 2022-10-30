@@ -32,7 +32,8 @@ class DatabaseSeeder extends Seeder
         \App\Models\Supplier::factory(16)->create();
         \App\Models\Salary::factory(16)->create();
         \App\Models\Category::factory(13)->create();
+        \App\Models\SubCategory::factory(16)->create();
         \App\Models\Product::factory(16)->create();
-        \App\Models\Expense::factory(16)->create();
+        \App\Models\Expense::factory(28)->create();
     }
 }

@@ -22,6 +22,7 @@ class Product extends Model
         'purchase_price',
         'selling_price',
         'category_id',
+        'sub_category_id',
         'supplier_id',
     ];
 }

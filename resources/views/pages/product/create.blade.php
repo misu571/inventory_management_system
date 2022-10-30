@@ -13,6 +13,7 @@
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
                 </x-slot>
+                <x-slot:subCategories></x-slot>
                 <x-slot:suppliers>
                     @foreach ($suppliers as $supplier)
                         <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
@@ -29,4 +30,21 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('deskapp_scripts')
+<script>
+    $('#category').on('change', function (event) {
+        const array = <?php echo json_encode($subCategories) ?>;
+        $('#sub_category option:not(:first)').remove()
+        array.filter(function (row) {
+            if (row['category_id'] == $('#category').val()) {
+                $('#sub_category').append($('<option>', {
+                    value: row['id'],
+                    text: row['name']
+                }))
+            }
+        })
+    })
+</script>
 @endsection

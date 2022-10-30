@@ -22,8 +22,23 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('sub-category.index') }}" class="dropdown-toggle no-arrow">
+                        <span class="micon bi bi-diagram-3"></span><span class="mtext">Sub-Category</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('product.index') }}" class="dropdown-toggle no-arrow">
                         <span class="micon fa fa-cubes"></span><span class="mtext">Product</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('expense.index') }}" class="dropdown-toggle no-arrow">
+                        <span class="micon dw dw-bar-chart-1"></span><span class="mtext">Sales Report</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('expense.index') }}" class="dropdown-toggle no-arrow">
+                        <span class="micon ion-arrow-graph-down-right"></span><span class="mtext">Expense</span>
                     </a>
                 </li>
                 <li>
@@ -43,12 +58,12 @@
                 </li>
                 <li>
                     <a href="{{ route('salary.index') }}" class="dropdown-toggle no-arrow">
-                        <span class="micon fi-dollar-bill"></span><span class="mtext">Salary</span>
+                        <span class="micon dw dw-wall-clock1"></span><span class="mtext">Attendance</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('expense.index') }}" class="dropdown-toggle no-arrow">
-                        <span class="micon bi bi-graph-down-arrow"></span><span class="mtext">Expense</span>
+                    <a href="{{ route('salary.index') }}" class="dropdown-toggle no-arrow">
+                        <span class="micon fi-dollar-bill"></span><span class="mtext">Salary</span>
                     </a>
                 </li>
             </ul>

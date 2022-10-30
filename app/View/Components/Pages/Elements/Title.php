@@ -20,8 +20,8 @@ class Title extends Component
     {
         $this->title = $title;
         $this->route = $route;
-        $this->parentPage = ucfirst($parentPage);
-        $this->currentPage = $currentPage;
+        $this->parentPage = ucfirst(rtrim(ltrim($parentPage, ' '), ' '));
+        $this->currentPage = strtolower(rtrim(ltrim($currentPage, ' '), ' '));
     }
 
     /**
