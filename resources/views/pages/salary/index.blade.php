@@ -13,8 +13,8 @@
                 <td>{{ $salary->given_at }}</td>
                 <td>{{ $salary->status }}</td>
                 <td>{{ $salary->advance_salary }}</td>
-                <td class="text-right">
-                    <x-pages.elements.action name="salary" :nameId="$salary->id" />
+                <td>
+                    <x-pages.elements.action btn="ed" name="salary" :nameId="$salary->id" />
                 </td>
             </tr>
         @endforeach

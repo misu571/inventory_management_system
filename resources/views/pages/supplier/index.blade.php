@@ -13,8 +13,8 @@
                 <td>{{ $supplier->phone }}</td>
                 <td>{{ $supplier->type }}</td>
                 <td>{{ $supplier->shop_name }}</td>
-                <td class="text-right">
-                    <x-pages.elements.action name="supplier" :nameId="$supplier->id" />
+                <td>
+                    <x-pages.elements.action btn="a" name="supplier" :nameId="$supplier->id" />
                 </td>
             </tr>
         @endforeach

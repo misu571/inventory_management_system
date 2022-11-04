@@ -14,8 +14,8 @@
                 <td>{{ $employee->address }}</td>
                 <td>{{ $employee->experience }}</td>
                 <td>{{ $employee->salary }}</td>
-                <td class="text-right">
-                    <x-pages.elements.action name="employee" :nameId="$employee->id" />
+                <td>
+                    <x-pages.elements.action btn="a" name="employee" :nameId="$employee->id" />
                 </td>
             </tr>
         @endforeach

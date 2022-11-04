@@ -10,8 +10,8 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $subCategory->category_name }}</td>
                 <td>{{ $subCategory->name }}</td>
-                <td class="text-right">
-                    <x-pages.elements.action name="sub-category" :nameId="$subCategory->id" />
+                <td>
+                    <x-pages.elements.action btn="ed" name="sub-category" :nameId="$subCategory->id" />
                 </td>
             </tr>
         @endforeach

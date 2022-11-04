@@ -9,8 +9,8 @@
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $category->name }}</td>
-                <td class="text-right">
-                    <x-pages.elements.action name="category" :nameId="$category->id" />
+                <td>
+                    <x-pages.elements.action btn="ed" name="category" :nameId="$category->id" />
                 </td>
             </tr>
         @endforeach

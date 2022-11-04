@@ -11,8 +11,8 @@
                 <td>{{ $expense->expense_at }}</td>
                 <td>{{ $expense->details }}</td>
                 <td>{{ $expense->amount }}</td>
-                <td class="text-right">
-                    <x-pages.elements.action name="expense" :nameId="$expense->id" />
+                <td>
+                    <x-pages.elements.action btn="ed" name="expense" :nameId="$expense->id" />
                 </td>
             </tr>
         @endforeach

@@ -17,8 +17,8 @@
                 <td>{{ $product->purchase_at }}</td>
                 <td>{{ $product->expire_at }}</td>
                 <td>{{ $product->selling_price }}</td>
-                <td class="text-right">
-                    <x-pages.elements.action name="product" :nameId="$product->id" />
+                <td>
+                    <x-pages.elements.action btn="a" name="product" :nameId="$product->id" />
                 </td>
             </tr>
         @endforeach

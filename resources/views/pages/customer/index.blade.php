@@ -16,8 +16,8 @@
                 <td>{{ $customer->account_number }}</td>
                 <td>{{ $customer->bank_name }}</td>
                 <td>{{ $customer->branch_name }}</td>
-                <td class="text-right">
-                    <x-pages.elements.action name="customer" :nameId="$customer->id" />
+                <td>
+                    <x-pages.elements.action btn="a" name="customer" :nameId="$customer->id" />
                 </td>
             </tr>
         @endforeach
