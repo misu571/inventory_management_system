@@ -48,7 +48,14 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        $data = [
+            'category_id' => $request->category,
+            'name' => $request->name,
+        ];
+        Product::create($data);
+        $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+
+        return redirect()->route('customer.index')->with(compact('alert'));
     }
 
     /**

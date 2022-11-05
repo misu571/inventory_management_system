@@ -13,7 +13,7 @@ class StoreSubCategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class StoreSubCategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'category' => 'required|integer|exists:categories,id',
+            'name' => 'required|string',
         ];
     }
 }

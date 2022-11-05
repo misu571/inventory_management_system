@@ -53,7 +53,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return view('pages.category.show', compact('category'));
+        //
     }
 
     /**
@@ -90,8 +90,12 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $category->delete();
-        $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
+        try {
+            $category->delete();
+            $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
+        } catch (\Exception $e) {
+            $alert = (object) ['status' => 'danger', 'message' => 'One or more record is being used with this category'];
+        }
 
         return back()->with(compact('alert'));
     }

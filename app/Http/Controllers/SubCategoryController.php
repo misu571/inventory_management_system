@@ -19,7 +19,7 @@ class SubCategoryController extends Controller
         $subCategories = DB::table('sub_categories')
             ->join('categories', 'sub_categories.category_id', '=', 'categories.id')
             ->select('sub_categories.*', 'categories.name as category_name')
-            ->orderBy('categories.name', 'asc')->get()->toArray();
+            ->orderBy('categories.name')->orderBy('sub_categories.name')->get()->toArray();
 
         return view('pages.sub_category.index', compact('subCategories'));
     }
@@ -44,7 +44,14 @@ class SubCategoryController extends Controller
      */
     public function store(StoreSubCategoryRequest $request)
     {
-        //
+        $data = [
+            'category_id' => $request->category,
+            'name' => $request->name,
+        ];
+        SubCategory::create($data);
+        $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+
+        return redirect()->route('sub-category.index')->with(compact('alert'));
     }
 
     /**
@@ -66,7 +73,9 @@ class SubCategoryController extends Controller
      */
     public function edit(SubCategory $subCategory)
     {
-        //
+        $categories = DB::table('categories')->select('id', 'name')->get()->toArray();
+        
+        return view('pages.sub_category.edit', compact('subCategory', 'categories'));
     }
 
     /**
@@ -78,7 +87,14 @@ class SubCategoryController extends Controller
      */
     public function update(UpdateSubCategoryRequest $request, SubCategory $subCategory)
     {
-        //
+        $data = [
+            'category_id' => $request->category,
+            'name' => $request->name,
+        ];
+        $subCategory->update($data);
+        $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -89,6 +105,13 @@ class SubCategoryController extends Controller
      */
     public function destroy(SubCategory $subCategory)
     {
-        //
+        try {
+            $subCategory->delete();
+            $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
+        } catch (\Exception $e) {
+            $alert = (object) ['status' => 'danger', 'message' => 'One or more record is being used with this sub-category'];
+        }
+
+        return back()->with(compact('alert'));
     }
 }

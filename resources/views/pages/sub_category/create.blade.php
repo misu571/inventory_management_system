@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-6">
         <div class="card-box p-3 mb-30">
-            <x-forms.sub-category action="{{ route('category.store') }}">
+            <x-forms.sub-category action="{{ route('sub-category.store') }}">
                 <x-slot:categories>
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>

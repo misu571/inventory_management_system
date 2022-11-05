@@ -29,22 +29,27 @@ class Action extends Component
      */
     public function render()
     {
+        return view('components.pages.elements.action');
+    }
+
+    public function buttons()
+    {
         $buttons = [];
         if (str_contains($this->btn, 'a')) {
             $buttons = [
-                '<a href="' . route($this->name.  '.show', [$this->nameId]) . '" data-color="#6c757d" style="color: rgb(108,117,125);">
+                '<a href="' . route($this->name .  '.show', [$this->nameId]) . '" data-color="#6c757d" style="color: rgb(108,117,125);">
                     <i class="icon-copy dw dw-view" data-toggle="tooltip" title="View"></i>
                 </a>',
-                '<a href="' . route($this->name.  '.edit', [$this->nameId]) . '" data-color="#265ed7" style="color: rgb(38, 94, 215);">
+                '<a href="' . route($this->name .  '.edit', [$this->nameId]) . '" data-color="#265ed7" style="color: rgb(38, 94, 215);">
                     <i class="icon-copy dw dw-edit2" data-toggle="tooltip" title="Edit"></i>
                 </a>',
-                '<a href="#deleteModal" data-toggle="modal" data-route="' . route($this->name.  '.destroy', [$this->nameId]) . '" data-color="#e95959" style="color: rgb(233, 89, 89);">
+                '<a href="#deleteModal" data-toggle="modal" data-route="' . route($this->name .  '.destroy', [$this->nameId]) . '" data-color="#e95959" style="color: rgb(233, 89, 89);">
                     <i class="icon-copy dw dw-delete-3" data-toggle="tooltip" title="Delete"></i>
                 </a>'
             ];
         } else {
             if (str_contains($this->btn, 'v')) {
-                array_push($buttons, '<a href="' . route($this->name.  '.show', [$this->nameId]) . '" data-color="#6c757d" style="color: rgb(108,117,125);">
+                array_push($buttons, '<a href="' . route($this->name .  '.show', [$this->nameId]) . '" data-color="#6c757d" style="color: rgb(108,117,125);">
                     <i class="icon-copy dw dw-view" data-toggle="tooltip" title="View"></i>
                 </a>');
             }
@@ -60,6 +65,6 @@ class Action extends Component
             }
         }
         
-        return view('components.pages.elements.action', compact('buttons'));
+        return $buttons;
     }
 }
