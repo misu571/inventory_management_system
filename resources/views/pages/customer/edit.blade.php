@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-6">
         <div class="card-box p-3 mb-30">
-            <x-forms.customer action="{{ route('customer.update', ['customer' => $customer->id]) }}">
+            <x-forms.customer action="{{ route('customer.update', [$customer->id]) }}">
                 <x-slot:method_type>
                     @method('PATCH')
                 </x-slot>

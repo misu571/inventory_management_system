@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SubCategory;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreSubCategoryRequest;
 use App\Http\Requests\UpdateSubCategoryRequest;
@@ -44,10 +45,9 @@ class SubCategoryController extends Controller
      */
     public function store(StoreSubCategoryRequest $request)
     {
-        $data = [
-            'category_id' => $request->category,
-            'name' => $request->name,
-        ];
+        $data = array_replace(Arr::except($request->validated(), ['category']), [
+            'category_id' => $request->category
+        ]);
         SubCategory::create($data);
         $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
 
@@ -87,10 +87,9 @@ class SubCategoryController extends Controller
      */
     public function update(UpdateSubCategoryRequest $request, SubCategory $subCategory)
     {
-        $data = [
-            'category_id' => $request->category,
-            'name' => $request->name,
-        ];
+        $data = array_replace(Arr::except($request->validated(), ['category']), [
+            'category_id' => $request->category
+        ]);
         $subCategory->update($data);
         $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
 

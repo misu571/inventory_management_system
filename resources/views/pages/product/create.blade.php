@@ -3,11 +3,13 @@
 @section('content')
 <x-pages.elements.title title="Form" route="{{ route('product.index') }}" parentPage="product" currentPage="create" />
 <div class="row">
-    <div class="col-8">
+    <div class="col-7">
         <div class="card-box p-3 mb-30">
             <x-forms.product action="{{ route('product.store') }}">
                 <x-slot:name_value>{{ old('name') }}</x-slot>
                 <x-slot:code_value>{{ old('code') }}</x-slot>
+                <x-slot:location_value>{{ old('location') }}</x-slot>
+                <x-slot:route_value>{{ old('route') }}</x-slot>
                 <x-slot:categories>
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>

@@ -28,13 +28,13 @@ class StoreProductRequest extends FormRequest
             'code' => 'required|string|min:6',
             'location' => 'required|string',
             'route' => 'required|string',
-            'purchase_at' => 'required|string',
-            'expire_at' => 'required|string',
-            'purchase_price' => 'required|string',
-            'selling_price' => 'required|string',
-            'category_id' => 'required|string',
-            'sub_category_id' => 'required|string',
-            'supplier_id' => 'required|string',
+            'purchase_price' => 'required|integer',
+            'purchase_at' => 'required|date',
+            'expire_at' => 'required|date',
+            'selling_price' => 'nullable|integer',
+            'category' => 'required|exists:categories,id',
+            'sub_category' => 'required|exists:sub_categories,id',
+            'supplier' => 'required|exists:suppliers,id',
         ];
     }
 }

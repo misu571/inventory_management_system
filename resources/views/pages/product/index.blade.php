@@ -4,13 +4,14 @@
     <x-slot:page_name>Product List</x-slot>
     <x-slot:create_route>{{ route('product.create') }}</x-slot>
     <x-pages.elements.table>
-        <x-slot:colunm_name>{{ 'Name, image, category, supplier, code, Purchase Price, Purchase At, Expire At, Selling Price' }}</x-slot>
+        <x-slot:colunm_name>{{ 'Name, image, category,sub category, supplier, code, Purchase Price, Purchase At, Expire At, Selling Price' }}</x-slot>
         @foreach ($products as $product)
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $product->name }}</td>
                 <td><img src="{{ $product->image }}" alt="" width="20"></td>
                 <td>{{ $product->category_name }}</td>
+                <td>{{ $product->sub_category_name }}</td>
                 <td>{{ $product->supplier_name }}</td>
                 <td>{{ $product->code }}</td>
                 <td>{{ $product->purchase_price }}</td>
