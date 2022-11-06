@@ -31,13 +31,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     Route::resources([
-        'employee' => App\Http\Controllers\EmployeeController::class,
-        'customer' => App\Http\Controllers\CustomerController::class,
-        'supplier' => App\Http\Controllers\SupplierController::class,
-        'salary' => App\Http\Controllers\SalaryController::class,
         'category' => App\Http\Controllers\CategoryController::class,
         'sub-category' => App\Http\Controllers\SubCategoryController::class,
         'product' => App\Http\Controllers\ProductController::class,
+        'report' => App\Http\Controllers\ReportController::class,
         'expense' => App\Http\Controllers\ExpenseController::class,
+        'customer' => App\Http\Controllers\CustomerController::class,
+        'supplier' => App\Http\Controllers\SupplierController::class,
+        'employee' => App\Http\Controllers\EmployeeController::class,
+        'attendance' => App\Http\Controllers\AttendanceController::class,
+        'salary' => App\Http\Controllers\SalaryController::class,
     ]);
 });

@@ -32,7 +32,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('expense.index') }}" class="dropdown-toggle no-arrow @if(Route::is('expense.*')) active @endif">
+                    <a href="{{ route('report.index') }}" class="dropdown-toggle no-arrow @if(Route::is('report.*')) active @endif">
                         <span class="micon dw dw-bar-chart-1"></span><span class="mtext">Sales Report</span>
                     </a>
                 </li>
@@ -57,7 +57,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('salary.index') }}" class="dropdown-toggle no-arrow @if(Route::is('salary.*')) active @endif">
+                    <a href="{{ route('attendance.index') }}" class="dropdown-toggle no-arrow @if(Route::is('attendance.*')) active @endif">
                         <span class="micon dw dw-wall-clock1"></span><span class="mtext">Attendance</span>
                     </a>
                 </li>

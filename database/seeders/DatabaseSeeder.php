@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -24,16 +23,17 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
             'email_verified_at' => now(),
             'password' => bcrypt('qwe123asd'),
-            'remember_token' => Str::random(10),
         ]);
 
-        \App\Models\Employee::factory(16)->create();
-        \App\Models\Customer::factory(16)->create();
-        \App\Models\Supplier::factory(16)->create();
-        \App\Models\Salary::factory(16)->create();
         \App\Models\Category::factory(13)->create();
         \App\Models\SubCategory::factory(16)->create();
         \App\Models\Product::factory(16)->create();
+        \App\Models\Report::factory(7)->create();
         \App\Models\Expense::factory(28)->create();
+        \App\Models\Customer::factory(16)->create();
+        \App\Models\Supplier::factory(16)->create();
+        \App\Models\Employee::factory(16)->create();
+        \App\Models\Attendance::factory(33)->create();
+        \App\Models\Salary::factory(16)->create();
     }
 }
