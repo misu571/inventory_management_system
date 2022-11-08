@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
@@ -35,10 +36,9 @@ class ProductController extends Controller
     public function create()
     {
         $categories = DB::table('categories')->select('id', 'name')->get()->toArray();
-        $subCategories = DB::table('sub_categories')->select('id', 'category_id', 'name')->get()->toArray();
         $suppliers = DB::table('suppliers')->select('id', 'name')->get()->toArray();
         
-        return view('pages.product.create', compact('categories', 'subCategories', 'suppliers'));
+        return view('pages.product.create', compact('categories', 'suppliers'));
     }
 
     /**
@@ -99,7 +99,6 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, Product $product)
     {
         $array = $request->validated();
-        dd($array);
         data_set($array, 'purchase_at', date_format(date_create($request->purchase_at), 'Y-m-d'));
         data_set($array, 'expire_at', date_format(date_create($request->expire_at), 'Y-m-d'));
         $data = array_replace(Arr::except($array, ['category', 'sub_category', 'supplier']), [
@@ -125,5 +124,15 @@ class ProductController extends Controller
         $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
 
         return back()->with(compact('alert'));
+    }
+
+    public function subCategories(Request $request)
+    {
+        $request->validate([
+            'category' => ['required', 'exists:categories,id'],
+        ]);
+        $subCategories = DB::table('sub_categories')->where('category_id', $request->category)->select('id', 'category_id', 'name')->get()->toArray();
+        
+        return response()->json(compact('subCategories'));
     }
 }

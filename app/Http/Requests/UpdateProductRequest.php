@@ -32,9 +32,9 @@ class UpdateProductRequest extends FormRequest
             'purchase_at' => 'required|date',
             'expire_at' => 'required|date',
             'selling_price' => 'nullable|integer',
-            'category_id' => 'required|exists:categories,id',
-            'sub_category_id' => 'required|exists:sub_categories,id',
-            'supplier_id' => 'required|exists:suppliers,id',
+            'category' => 'required|exists:categories,id',
+            'sub_category' => 'required|exists:sub_categories,id',
+            'supplier' => 'required|exists:suppliers,id',
         ];
     }
 }

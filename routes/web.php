@@ -30,6 +30,9 @@ Route::middleware(['auth'])->group(function () {
     // Dashboard
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+    // Product
+    Route::post('/product/sub-categories', [App\Http\Controllers\ProductController::class, 'subCategories'])->name('product.subCategories');
+
     Route::resources([
         'category' => App\Http\Controllers\CategoryController::class,
         'sub-category' => App\Http\Controllers\SubCategoryController::class,
