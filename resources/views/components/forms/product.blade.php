@@ -2,7 +2,7 @@
     {{ $method_type ?? null }}
     @csrf
     <div class="row">
-        <div class="col-8">
+        <div class="col-6">
             <x-forms.type.text-input type="text" id="name" label="Name" name="name" classes="" :value="$name_value" validations="required" />
             <div class="row">
                 <div class="col">
@@ -31,8 +31,10 @@
             <x-forms.type.text-input type="text" id="purchase_at" label="Purchase Date" name="purchase_at" classes="date-picker" :value="$purchase_at_value" validations="required" />
             <x-forms.type.text-input type="text" id="expire_at" label="Expire Date" name="expire_at" classes="date-picker" :value="$expire_at_value" validations="required" />
             <x-forms.type.text-input type="number" id="selling_price" label="Selling Price" name="selling_price" classes="" :value="$selling_price_value" validations="" />
+        </div>
+        <div class="col">
+            <img id="thumbnail" class="img-thumbnail w-100" src="{{ asset('images/product_icon.png') }}" alt="Product image">
             <x-forms.type.file-input id="image" label="Product Image" name="image" validations="" />
-            <img id="previewImg w-25" src="{{ asset('images/product_icon.png') }}" alt="Placeholder">
         </div>
     </div>
     <div class="d-flex justify-content-start mt-5">

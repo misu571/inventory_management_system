@@ -63,8 +63,8 @@ class ProductController extends Controller
             $image = $request->file('image');
             $fileName = $image->getClientOriginalName();
             $folder = uniqid('product_', false);
-            // $image->storeAs('content/video', $fileName, 'public');
-            // Storage::disk('local')->put('example.txt', 'Contents');
+            // $image->storeAs('products', $fileName, 'public');
+            // Storage::disk('public')->put('example.txt', 'products');
         }
         
         Product::create($data);
