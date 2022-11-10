@@ -31,7 +31,7 @@
             <x-forms.type.text-input type="text" id="purchase_at" label="Purchase Date" name="purchase_at" classes="date-picker" :value="$purchase_at_value" validations="required" />
             <x-forms.type.text-input type="text" id="expire_at" label="Expire Date" name="expire_at" classes="date-picker" :value="$expire_at_value" validations="required" />
             <x-forms.type.text-input type="number" id="selling_price" label="Selling Price" name="selling_price" classes="" :value="$selling_price_value" validations="" />
-            <x-forms.type.file-input id="image" label="Product Image" name="image" validations="required"></x-forms.type.file-input>
+            <x-forms.type.file-input id="image" label="Product Image" name="image" validations="" />
             <img id="previewImg w-25" src="{{ asset('images/product_icon.png') }}" alt="Placeholder">
         </div>
     </div>

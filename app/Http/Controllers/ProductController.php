@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 
@@ -57,6 +58,15 @@ class ProductController extends Controller
             'sub_category_id' => $request->sub_category,
             'supplier_id' => $request->supplier
         ]);
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $fileName = $image->getClientOriginalName();
+            $folder = uniqid('product_', false);
+            // $image->storeAs('content/video', $fileName, 'public');
+            // Storage::disk('local')->put('example.txt', 'Contents');
+        }
+        
         Product::create($data);
         $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
 

@@ -28,6 +28,7 @@ class StoreProductRequest extends FormRequest
             'code' => 'required|string|min:6',
             'location' => 'required|string',
             'route' => 'required|string',
+            'image' => 'nullable|image',
             'purchase_price' => 'required|integer',
             'purchase_at' => 'required|date',
             'expire_at' => 'required|date',

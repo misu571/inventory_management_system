@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-6">
         <div class="card-box p-3 mb-30">
-            <x-forms.product action="{{ route('product.update', [$product->id]) }}">
+            <x-forms.product action="{{ route('product.update', [$product->id]) }}" enctype="multipart/form-data">
                 <x-slot:method_type>
                     @method('PATCH')
                 </x-slot>
@@ -47,7 +47,7 @@
         $(this).removeClass('is-invalid')
         $($(this).parent()).find('.invalid-feedback').remove()
         $('#sub_category option:not(:first)').remove()
-        $.ajaxSetup({headers: {'X-CSRF-TOKEN': $("meta[name='csrf-token']").attr('content')}})
+        $.ajaxSetup({headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'}})
         $.ajax({
             url: "{{ route('product.subCategories') }}",
             method: "POST",
