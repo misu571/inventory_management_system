@@ -152,7 +152,7 @@ class ProductController extends Controller
                 Storage::disk('public')->delete('products/' . $updateWith);
             }
         } catch (\Exception $th) {
-            $alert = (object) ['status' => 'warning', 'message' => 'Something went wrong, form not submitted'];
+            $alert = (object) ['status' => 'warning', 'message' => 'Something went wrong, file not uploaded'];
             return back()->with(compact('alert'));
         }
 
