@@ -1,8 +1,8 @@
 <div class="login-header box-shadow">
     <div class="container-fluid d-flex justify-content-between align-items-center">
         <div class="brand-logo">
-            <a href="login.html">
-                <img src="{{ asset('deskapp/vendors/images/deskapp-logo.svg') }}" alt="">
+            <a href="{{ url('/') }}">
+                <img src="{{ asset('images/logo.png') }}" alt="logo">
             </a>
         </div>
         <div class="login-menu">
@@ -12,7 +12,7 @@
                         @auth
                             <a href="{{ route('home') }}">Dashboard</a>
                         @else
-                            @if (Route::currentRouteName() == 'login')
+                            @if (Route::is('login'))
                                 <a href="{{ route('register') }}">Register</a>
                             @else
                                 <a href="{{ route('login') }}">Login</a>
