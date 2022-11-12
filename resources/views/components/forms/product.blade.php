@@ -33,7 +33,7 @@
             <x-forms.type.text-input type="number" id="selling_price" label="Selling Price" name="selling_price" classes="" :value="$selling_price_value" validations="" />
         </div>
         <div class="col">
-            <img id="thumbnail" class="img-thumbnail w-100" src="{{ asset('images/product_icon.png') }}" alt="Product image">
+            <img id="thumbnail" class="img-thumbnail w-100 mb-3" src="{{ $image_thumbnail != '' ? $image_thumbnail : asset('images/product_icon.png') }}" alt="Product image">
             <x-forms.type.file-input id="image" label="Product Image" name="image" validations="" />
         </div>
     </div>

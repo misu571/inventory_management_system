@@ -3,7 +3,7 @@
 @section('content')
 <x-pages.elements.title title="Form" route="{{ route('product.index') }}" parentPage="product" currentPage="create" />
 <div class="row">
-    <div class="col-8">
+    <div class="col-10">
         <div class="card-box p-3 mb-30">
             <x-forms.product action="{{ route('product.store') }}" enctype="multipart/form-data">
                 <x-slot:name_value>{{ old('name') }}</x-slot>
@@ -14,15 +14,16 @@
                 <x-slot:purchase_at_value>{{ old('purchase_at') }}</x-slot>
                 <x-slot:expire_at_value>{{ old('expire_at') }}</x-slot>
                 <x-slot:selling_price_value>{{ old('selling_price') }}</x-slot>
+                <x-slot:image_thumbnail></x-slot>
                 <x-slot:categories>
                     @foreach ($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        <option value="{{ $category->id }}" @if($category->id == old('category')) selected @endif>{{ $category->name }}</option>
                     @endforeach
                 </x-slot>
                 <x-slot:subCategories></x-slot>
                 <x-slot:suppliers>
                     @foreach ($suppliers as $supplier)
-                        <option value="{{ $supplier->id }}">{{ $supplier->name }}</option>
+                        <option value="{{ $supplier->id }}" @if($supplier->id == old('supplier')) selected @endif>{{ $supplier->name }}</option>
                     @endforeach
                 </x-slot>
                 <x-slot:button>
@@ -36,26 +37,37 @@
 
 @section('deskapp_scripts')
 <script>
-    $('#image').on('change', function (event) {
-        console.log('Selected file: ' + this.value);
-    })
+    // Preview image before upload
+    image.onchange = evt => {
+        const [file] = image.files
+        if (file) {thumbnail.src = URL.createObjectURL(file)}
+    }
+
+    // Select sub-category on page load or change based on category
+    if ("{{ old('category') }}") {
+        $(document).ready(function () {
+            getSubCategories("{{ old('category') }}", "{{ old('sub_category') }}")
+        })
+    }
     $('#category').on('change', function () {
-        $(this).removeClass('is-invalid')
-        $($(this).parent()).find('.invalid-feedback').remove()
+        getSubCategories(this.value)
+    })
+
+    // Get data from server
+    function getSubCategories(category, sub_category = '') {
+        $('#category').removeClass('is-invalid')
+        $($('#category').parent()).find('.invalid-feedback').remove()
         $('#sub_category option:not(:first)').remove()
         $.ajaxSetup({headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'}})
         $.ajax({
             url: "{{ route('product.subCategories') }}",
             method: "POST",
-            data: {category: this.value},
+            data: {category: category},
             success: function (result) {
                 const array = result.subCategories
                 array.filter(function (row) {
                     if (row['category_id'] == $('#category').val()) {
-                        $('#sub_category').append($('<option>', {
-                            value: row['id'],
-                            text: row['name']
-                        }))
+                        $('#sub_category').append(`<option value="${row['id']}" ${row['id'] == sub_category ? 'selected' : ''}>${row['name']}</option>`)
                     }
                 })
             },
@@ -68,6 +80,6 @@
                 )
             }
         })
-    })
+    }
 </script>
 @endsection
