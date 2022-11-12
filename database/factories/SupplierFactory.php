@@ -22,7 +22,7 @@ class SupplierFactory extends Factory
             'phone' => fake()->phoneNumber(),
             'city' => fake()->city(),
             'address' => fake()->address(),
-            'image' => fake()->imageUrl(100, 100),
+            'image' => null,
             'type' => fake()->randomElement(['Wholeseler', 'Distributor']),
             'shop_name' => fake()->streetName(),
             'account_name' => fake()->name(),

@@ -4,18 +4,19 @@
     <x-slot:page_name>Customer List</x-slot>
     <x-slot:create_route>{{ route('customer.create') }}</x-slot>
     <x-pages.elements.table>
-        <x-slot:colunm_name>{{ 'Name, Email, Phone, shop name, account name, account number, bank name, branch name' }}</x-slot>
+        <x-slot:colunm_name>{{ 'Name, image, Email, Phone, shop name, account name, account number' }}</x-slot>
         @foreach ($customers as $customer)
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $customer->name }}</td>
+                <td>
+                    <img class="img-thumbnail" src="{{ $customer->image ? asset('storage/avatar/customer/' . $customer->image) : asset('images/avatar.png') }}" alt="" width="50">
+                </td>
                 <td>{{ $customer->email }}</td>
                 <td>{{ $customer->phone }}</td>
                 <td>{{ $customer->shop_name }}</td>
                 <td>{{ $customer->account_name }}</td>
                 <td>{{ $customer->account_number }}</td>
-                <td>{{ $customer->bank_name }}</td>
-                <td>{{ $customer->branch_name }}</td>
                 <td>
                     <x-pages.elements.action btn="a" name="customer" :nameId="$customer->id" />
                 </td>

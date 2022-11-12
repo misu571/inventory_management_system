@@ -9,7 +9,7 @@
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $product->name }}</td>
-                <td class="text-center">
+                <td>
                     <img class="img-thumbnail" src="{{ $product->image ? asset('storage/products/' . $product->image) : asset('images/product_icon.png') }}" alt="" width="50">
                 </td>
                 <td>{{ $product->category_name }}</td>

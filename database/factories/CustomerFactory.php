@@ -22,7 +22,7 @@ class CustomerFactory extends Factory
             'phone' => fake()->phoneNumber(),
             'city' => fake()->city(),
             'address' => fake()->address(),
-            'image' => fake()->imageUrl(100, 100),
+            'image' => null,
             'shop_name' => fake()->streetName(),
             'account_name' => fake()->name(),
             'account_number' => fake()->numberBetween(3040403600, 8147483647),

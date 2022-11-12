@@ -24,7 +24,7 @@ class ProductFactory extends Factory
             'code' => Str::random(10),
             'location' => fake()->city(),
             'route' => fake()->randomElement(['A', 'B', 'C']),
-            'image' => fake()->imageUrl(100, 100),
+            'image' => null,
             'purchase_at' => fake()->dateTimeBetween('-3 month', '-2 month'),
             'expire_at' => fake()->dateTimeBetween('-2 month', '+1 month'),
             'purchase_price' => $price,

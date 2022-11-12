@@ -7,7 +7,7 @@
             <div class="dropdown">
                 <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown">
                     <span class="user-icon">
-                        <img src="{{ asset('images/avatar.png') }}" alt="">
+                        <img src="{{ auth()->user()->image ? asset('storage/avatar/' . auth()->user()->image) : asset('images/avatar.png') }}" alt="">
                     </span>
                     <span class="user-name">{{ auth()->user()->name }}</span>
                 </a>

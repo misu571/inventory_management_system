@@ -23,7 +23,7 @@ class EmployeeFactory extends Factory
             'city' => fake()->city(),
             'address' => fake()->address(),
             'nid' => fake()->numberBetween(1040403600, 2147483647),
-            'image' => fake()->imageUrl(100, 100),
+            'image' => null,
             'experience' => fake()->randomElement(['Beginner', 'Expert', 'Avarage']),
             'salary' => fake()->numberBetween(10000, 50000),
             'vacation' => fake()->boolean(),
