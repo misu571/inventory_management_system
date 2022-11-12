@@ -145,17 +145,16 @@ class ProductController extends Controller
 
     private function storeFile($file, $updateWith = null, string $filePath = null)
     {
-        $name = $file->hashName();
         try {
+            $name = $file->hashName();
             $file->storeAs('products', $name, 'public');
             if ($updateWith) {
                 Storage::disk('public')->delete($filePath . '/' . $updateWith);
             }
+            return $name;
         } catch (\Exception $th) {
             $alert = (object) ['status' => 'warning', 'message' => 'Something went wrong, file not uploaded'];
             return back()->with(compact('alert'));
         }
-
-        return $name;
     }
 }
