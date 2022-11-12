@@ -103,7 +103,7 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, Product $product)
     {
         $array = $request->validated();
-        $image = $request->hasFile('image') ? $this->storeFile($request->file('image'), $product->image) : null;
+        $image = $request->hasFile('image') ? $this->storeFile($request->file('image'), $product->image, 'products') : null;
         data_set($array, 'purchase_at', date_format(date_create($request->purchase_at), 'Y-m-d'));
         data_set($array, 'expire_at', date_format(date_create($request->expire_at), 'Y-m-d'));
         $data = array_replace(Arr::except($array, ['category', 'sub_category', 'supplier']), [
@@ -143,13 +143,13 @@ class ProductController extends Controller
         return response()->json(compact('subCategories'));
     }
 
-    private function storeFile($file, $updateWith = null)
+    private function storeFile($file, $updateWith = null, string $filePath = null)
     {
         $name = $file->hashName();
         try {
             $file->storeAs('products', $name, 'public');
             if ($updateWith) {
-                Storage::disk('public')->delete('products/' . $updateWith);
+                Storage::disk('public')->delete($filePath . '/' . $updateWith);
             }
         } catch (\Exception $th) {
             $alert = (object) ['status' => 'warning', 'message' => 'Something went wrong, file not uploaded'];
