@@ -23,8 +23,8 @@
                 <td>{{ $product->supplier_name }}</td>
                 <td>{{ $product->code }}</td>
                 <td>{{ $product->purchase_price }}</td>
-                <td>{{ $product->purchase_at }}</td>
-                <td>{{ $product->selling_price }}</td>
+                <td>{{ date_format(date_create($product->purchase_at), 'd M Y') }}</td>
+                <td>{{ $product->selling_price ?? '--' }}</td>
                 <td>
                     <x-pages.elements.action btn="a" name="product" :nameId="$product->id" />
                 </td>

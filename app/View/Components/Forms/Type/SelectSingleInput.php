@@ -19,7 +19,7 @@ class SelectSingleInput extends Component
     public function __construct($id, $label, $name, $validations)
     {
         $this->id = $id;
-        $this->label = str_contains($validations, 'required') ? $label . ' <span class="text-danger">*</span>' : $label;
+        $this->label = str_contains($validations, 'required') ? ucfirst($label) . ' <span class="text-danger">*</span>' : ucfirst($label);
         $this->name = $name;
         $this->validations = $validations ?? null;
     }

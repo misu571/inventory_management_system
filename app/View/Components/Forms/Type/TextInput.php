@@ -23,7 +23,7 @@ class TextInput extends Component
     {
         $this->id = $id;
         $this->type = $type;
-        $this->label = str_contains($validations, 'required') ? $label . ' <span class="text-danger">*</span>' : $label;
+        $this->label = str_contains($validations, 'required') ? ucfirst($label) . ' <span class="text-danger">*</span>' : ucfirst($label);
         $this->name = $name;
         $this->classes = $classes ?? null;
         $this->validations = $validations ?? null;

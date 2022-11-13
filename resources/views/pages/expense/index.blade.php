@@ -8,7 +8,7 @@
         @foreach ($expenses as $expense)
             <tr>
                 <td>{{ $loop->iteration }}</td>
-                <td>{{ $expense->expense_at }}</td>
+                <td>{{ date_format(date_create($expense->expense_at), 'd M Y') }}</td>
                 <td>{{ $expense->details }}</td>
                 <td>{{ $expense->amount }}</td>
                 <td>

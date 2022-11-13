@@ -10,7 +10,7 @@
                 <x-slot:button>
                     <i class="icon-copy ion-plus-round mr-2"></i> Create New
                 </x-slot>
-            </x-forms.customer>
+            </x-forms.category>
         </div>
     </div>
 </div>

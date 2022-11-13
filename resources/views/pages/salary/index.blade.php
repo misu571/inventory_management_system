@@ -10,9 +10,9 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $salary->name }}</td>
                 <td>{{ $salary->amount }}</td>
-                <td>{{ $salary->given_at }}</td>
+                <td>{{ date_format(date_create($salary->given_at), 'd M Y') }}</td>
                 <td>{{ $salary->status }}</td>
-                <td>{{ $salary->advance_salary }}</td>
+                <td>{{ $salary->advance_salary ?? '--' }}</td>
                 <td>
                     <x-pages.elements.action btn="ed" name="salary" :nameId="$salary->id" />
                 </td>

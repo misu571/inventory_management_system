@@ -28,7 +28,7 @@ class ExpenseController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.expense.create');
     }
 
     /**
@@ -39,7 +39,12 @@ class ExpenseController extends Controller
      */
     public function store(StoreExpenseRequest $request)
     {
-        //
+        $data = $request->validated();
+        data_set($data, 'expense_at', date_format(date_create($request->purchase_at), 'Y-m-d'));
+        Expense::create($data);
+        $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+
+        return redirect()->route('expense.index')->with(compact('alert'));
     }
 
     /**
@@ -61,7 +66,7 @@ class ExpenseController extends Controller
      */
     public function edit(Expense $expense)
     {
-        //
+        return view('pages.expense.edit', compact('expense'));
     }
 
     /**
@@ -73,7 +78,12 @@ class ExpenseController extends Controller
      */
     public function update(UpdateExpenseRequest $request, Expense $expense)
     {
-        //
+        $data = $request->validated();
+        data_set($data, 'expense_at', date_format(date_create($request->purchase_at), 'Y-m-d'));
+        $expense->update($data);
+        $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -84,6 +94,9 @@ class ExpenseController extends Controller
      */
     public function destroy(Expense $expense)
     {
-        //
+        $expense->delete();
+        $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
+
+        return back()->with(compact('alert'));
     }
 }
