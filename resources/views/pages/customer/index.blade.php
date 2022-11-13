@@ -3,6 +3,9 @@
 <x-pages.index>
     <x-slot:page_name>Customer List</x-slot>
     <x-slot:create_route>{{ route('customer.create') }}</x-slot>
+    <x-slot:previewImage>
+        @include('pages.elements.modals.preview_image')
+    </x-slot>
     <x-pages.elements.table>
         <x-slot:colunm_name>{{ 'Name, image, Email, Phone, shop name, account name, account number' }}</x-slot>
         @foreach ($customers as $customer)
@@ -10,7 +13,10 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $customer->name }}</td>
                 <td>
-                    <img class="img-thumbnail" src="{{ $customer->image ? asset('storage/avatar/customer/' . $customer->image) : asset('images/avatar.png') }}" alt="" width="50">
+                    @php $image = $customer->image ? asset('storage/avatar/customer/' . $customer->image) : asset('images/avatar.png') @endphp
+                    <a href="#previewImage" role="button" data-toggle="modal" data-image="{{ $image }}">
+                        <img class="img-thumbnail" src="{{ $image }}" alt="" width="50">
+                    </a>
                 </td>
                 <td>{{ $customer->email }}</td>
                 <td>{{ $customer->phone }}</td>

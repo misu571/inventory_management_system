@@ -3,6 +3,9 @@
 <x-pages.index>
     <x-slot:page_name>Product List</x-slot>
     <x-slot:create_route>{{ route('product.create') }}</x-slot>
+    <x-slot:previewImage>
+        @include('pages.elements.modals.preview_image')
+    </x-slot>
     <x-pages.elements.table>
         <x-slot:colunm_name>{{ 'Name, image, category,sub category, supplier, code, Purchase Price, Purchase At,Selling Price' }}</x-slot>
         @foreach ($products as $product)
@@ -10,7 +13,10 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $product->name }}</td>
                 <td>
-                    <img class="img-thumbnail" src="{{ $product->image ? asset('storage/products/' . $product->image) : asset('images/product_icon.png') }}" alt="" width="50">
+                    @php $image = $product->image ? asset('storage/products/' . $product->image) : asset('images/product_icon.png') @endphp
+                    <a href="#previewImage" role="button" data-toggle="modal" data-image="{{ $image }}">
+                        <img class="img-thumbnail" src="{{ $image }}" alt="" width="50">
+                    </a>
                 </td>
                 <td>{{ $product->category_name }}</td>
                 <td>{{ $product->sub_category_name }}</td>

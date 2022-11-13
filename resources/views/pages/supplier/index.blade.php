@@ -3,6 +3,9 @@
 <x-pages.index>
     <x-slot:page_name>Supplier List</x-slot>
     <x-slot:create_route>{{ route('supplier.create') }}</x-slot>
+    <x-slot:previewImage>
+        @include('pages.elements.modals.preview_image')
+    </x-slot>
     <x-pages.elements.table>
         <x-slot:colunm_name>{{ 'Name, image, Email, Phone, type, shop name' }}</x-slot>
         @foreach ($suppliers as $supplier)
@@ -10,7 +13,10 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $supplier->name }}</td>
                 <td>
-                    <img class="img-thumbnail" src="{{ $supplier->image ? asset('storage/avatar/supplier/' . $supplier->image) : asset('images/avatar.png') }}" alt="" width="50">
+                    @php $image = $supplier->image ? asset('storage/avatar/supplier/' . $supplier->image) : asset('images/avatar.png') @endphp
+                    <a href="#previewImage" role="button" data-toggle="modal" data-image="{{ $image }}">
+                        <img class="img-thumbnail" src="{{ $image }}" alt="" width="50">
+                    </a>
                 </td>
                 <td>{{ $supplier->email }}</td>
                 <td>{{ $supplier->phone }}</td>

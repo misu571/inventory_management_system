@@ -16,6 +16,8 @@
     </div>
 </div>
 
+<!-- Preview image modal -->
+{{ $previewImage ?? null }}
 <!-- Delete modal -->
 @include('pages.elements.modals.delete')
 @endsection
@@ -36,10 +38,18 @@
 <!-- Datatable Setting js -->
 <script src="{{ asset('deskapp/vendors/scripts/datatable-setting.js') }}"></script>
 <script>
+    // Delete
     $('#deleteModal').on('show.bs.modal', function (event) {
         let button = $(event.relatedTarget)
         let modal = $(this)
         modal.find('form').attr('action', button.data('route'))
+    })
+
+    // Preview
+    $('#previewImage').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget)
+        let modal = $(this)
+        modal.find('img').attr('src', button.data('image'))
     })
 </script>
 @endsection
