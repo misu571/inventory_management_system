@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('employee_id')->constrained('employees');
+            $table->dateTime('present_at');
+            $table->boolean('is_present');
             $table->timestamps();
         });
     }

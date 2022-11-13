@@ -12,10 +12,8 @@ class Attendance extends Model
     protected $table = 'attendances';
 
     protected $fillable = [
-        // 'employee_id',
-        // 'amount',
-        // 'given_at',
-        // 'status',
-        // 'advance_salary',
+        'employee_id',
+        'present_at',
+        'is_present',
     ];
 }

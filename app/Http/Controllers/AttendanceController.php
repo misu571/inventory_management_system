@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreAttendanceRequest;
 use App\Http\Requests\UpdateAttendanceRequest;
-use App\Models\Attendance;
 
 class AttendanceController extends Controller
 {
@@ -15,7 +16,13 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        //
+        $attendances = DB::table('attendances')
+            ->join('employees', 'attendances.employee_id', '=', 'employees.id')
+            // ->join('suppliers', 'products.supplier_id', '=', 'suppliers.id')
+            ->select('attendances.*', 'employees.name as employee_name')
+            ->orderByDesc('attendances.present_at')->get()->toArray();
+
+        return view('pages.attendances.index', compact('attendances'));
     }
 
     /**

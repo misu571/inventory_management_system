@@ -27,12 +27,12 @@ class DatabaseSeeder extends Seeder
         \App\Models\Customer::factory(16)->create();
         \App\Models\Supplier::factory(16)->create();
         \App\Models\Employee::factory(16)->create();
-        \App\Models\Attendance::factory(33)->create();
+        // \App\Models\Attendance::factory(33)->create();
         \App\Models\Salary::factory(16)->create();
         \App\Models\Category::factory(13)->create();
         \App\Models\SubCategory::factory(16)->create();
         \App\Models\Product::factory(16)->create();
-        \App\Models\Report::factory(7)->create();
         \App\Models\Expense::factory(28)->create();
+        // \App\Models\Report::factory(7)->create();
     }
 }
