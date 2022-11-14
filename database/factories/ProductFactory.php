@@ -18,6 +18,40 @@ class ProductFactory extends Factory
     public function definition()
     {
         $price = fake()->numberBetween(100, 5000);
+        $categoryId = fake()->numberBetween(1, 8);
+        switch ($categoryId) {
+            case 1:
+                $subCategoryId = fake()->numberBetween(1, 8);
+                break;
+            
+            case 2:
+                $subCategoryId = fake()->numberBetween(9, 25);
+                break;
+            
+            case 3:
+                $subCategoryId = fake()->numberBetween(26, 31);
+                break;
+            
+            case 4:
+                $subCategoryId = fake()->numberBetween(32, 36);
+                break;
+            
+            case 5:
+                $subCategoryId = fake()->numberBetween(37, 38);
+                break;
+            
+            case 6:
+                $subCategoryId = fake()->numberBetween(39, 40);
+                break;
+            
+            case 7:
+                $subCategoryId = fake()->numberBetween(41, 45);
+                break;
+            
+            default:
+                $subCategoryId = fake()->numberBetween(46, 48);
+                break;
+        }
         
         return [
             'name' => fake()->name(),
@@ -29,8 +63,8 @@ class ProductFactory extends Factory
             'expire_at' => fake()->dateTimeBetween('-2 month', '+1 month'),
             'purchase_price' => $price,
             'selling_price' => fake()->randomElement([null, fake()->numberBetween($price + 250, $price + 1680)]),
-            'category_id' => fake()->numberBetween(1, 8),
-            'sub_category_id' => fake()->numberBetween(1, 48),
+            'category_id' => $categoryId,
+            'sub_category_id' => $subCategoryId,
             'supplier_id' => fake()->numberBetween(1, 16),
         ];
     }

@@ -135,9 +135,7 @@ class ProductController extends Controller
 
     public function subCategories(Request $request)
     {
-        $request->validate([
-            'category' => ['required', 'exists:categories,id'],
-        ]);
+        $request->validate(['category' => 'required|exists:categories,id']);
         $subCategories = DB::table('sub_categories')->where('category_id', $request->category)->select('id', 'category_id', 'name')->get()->toArray();
         
         return response()->json(compact('subCategories'));
