@@ -20,7 +20,6 @@
                         <option value="{{ $category->id }}" @if($category->id == old('category')) selected @endif>{{ $category->name }}</option>
                     @endforeach
                 </x-slot>
-                <x-slot:subCategories></x-slot>
                 <x-slot:suppliers>
                     @foreach ($suppliers as $supplier)
                         <option value="{{ $supplier->id }}" @if($supplier->id == old('supplier')) selected @endif>{{ $supplier->name }}</option>
@@ -44,11 +43,11 @@
     }
 
     // Select sub-category on page load or change based on category
-    if ("{{ old('category') }}") {
-        $(document).ready(function () {
+    $(document).ready(function () {
+        if ("{{ old('category') }}") {
             getSubCategories("{{ old('category') }}", "{{ old('sub_category') }}")
-        })
-    }
+        }
+    })
     $('#category').on('change', function () {
         getSubCategories(this.value)
     })

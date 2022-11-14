@@ -12,7 +12,6 @@
                     </x-forms.type.select-single-input>
                     <x-forms.type.select-single-input id="sub_category" label="Sub Category" name="sub_category" validations="required">
                         <x-slot:select>@if(!isset($method_type)) selected @endif</x-slot>
-                        {{ $subCategories }}
                     </x-forms.type.select-single-input>
                     <x-forms.type.select-single-input id="supplier" label="Supplier" name="supplier" validations="required">
                         <x-slot:select>@if(!isset($method_type)) selected @endif</x-slot>
