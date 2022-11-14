@@ -38,7 +38,7 @@ Route::middleware(['auth'])->group(function () {
         'category' => App\Http\Controllers\CategoryController::class,
         'sub-category' => App\Http\Controllers\SubCategoryController::class,
         'product' => App\Http\Controllers\ProductController::class,
-        'report' => App\Http\Controllers\ReportController::class,
+        // 'report' => App\Http\Controllers\ReportController::class,
         'expense' => App\Http\Controllers\ExpenseController::class,
         'customer' => App\Http\Controllers\CustomerController::class,
         'supplier' => App\Http\Controllers\SupplierController::class,

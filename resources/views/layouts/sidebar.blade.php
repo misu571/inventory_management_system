@@ -35,11 +35,11 @@
                         <span class="micon fa fa-cubes"></span><span class="mtext">Product</span>
                     </a>
                 </li>
-                <li>
+                {{-- <li>
                     <a href="{{ route('report.index') }}" class="dropdown-toggle no-arrow @if(Route::is('report.*')) active @endif">
                         <span class="micon dw dw-bar-chart-1"></span><span class="mtext">Sales Report</span>
                     </a>
-                </li>
+                </li> --}}
                 <li>
                     <a href="{{ route('expense.index') }}" class="dropdown-toggle no-arrow @if(Route::is('expense.*')) active @endif">
                         <span class="micon ion-arrow-graph-down-right"></span><span class="mtext">Expense</span>

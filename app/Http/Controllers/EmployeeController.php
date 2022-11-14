@@ -16,7 +16,18 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = DB::table('employees')->orderByDesc('updated_at')->get()->toArray();
+        $employees = DB::table('employees')
+            ->join('users', 'employees.user_id', '=', 'users.id')
+            ->join('levels', 'employees.level_id', '=', 'levels.id')
+            ->select(
+                'employees.*',
+                'users.name as employee_name',
+                'users.email as employee_email',
+                'users.phone as employee_phone',
+                'users.image as employee_image',
+                'levels.level as employee_level',
+            )
+            ->orderByDesc('employees.updated_at')->get()->toArray();
         
         return view('pages.employee.index', compact('employees'));
     }

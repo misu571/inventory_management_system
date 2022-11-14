@@ -18,8 +18,8 @@ class AttendanceController extends Controller
     {
         $attendances = DB::table('attendances')
             ->join('employees', 'attendances.employee_id', '=', 'employees.id')
-            // ->join('suppliers', 'products.supplier_id', '=', 'suppliers.id')
-            ->select('attendances.*', 'employees.name as employee_name')
+            ->join('users', 'employees.user_id', '=', 'users.id')
+            ->select('attendances.*', 'users.name as employee_name')
             ->orderByDesc('attendances.present_at')->get()->toArray();
 
         return view('pages.attendances.index', compact('attendances'));

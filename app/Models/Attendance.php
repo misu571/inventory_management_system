@@ -16,6 +16,5 @@ class Attendance extends Model
         'present_at',
         'in_time',
         'out_time',
-        'is_present',
     ];
 }

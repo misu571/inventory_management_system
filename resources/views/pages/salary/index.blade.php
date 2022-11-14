@@ -8,7 +8,7 @@
         @foreach ($salaries as $salary)
             <tr>
                 <td>{{ $loop->iteration }}</td>
-                <td>{{ $salary->name }}</td>
+                <td>{{ $salary->employee_name }}</td>
                 <td>{{ $salary->amount }}</td>
                 <td>{{ date_format(date_create($salary->given_at), 'd M Y') }}</td>
                 <td>{{ $salary->status }}</td>
