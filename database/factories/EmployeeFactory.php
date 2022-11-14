@@ -17,13 +17,11 @@ class EmployeeFactory extends Factory
     public function definition()
     {
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'phone' => fake()->phoneNumber(),
+            'user_id' => fake()->numberBetween(1, 4),
+            'level_id' => fake()->numberBetween(1, 3),
             'city' => fake()->city(),
             'address' => fake()->address(),
             'nid' => fake()->numberBetween(1040403600, 2147483647),
-            'image' => null,
             'experience' => fake()->randomElement(['Beginner', 'Expert', 'Avarage']),
             'salary' => fake()->numberBetween(10000, 50000),
             'vacation' => fake()->boolean(),

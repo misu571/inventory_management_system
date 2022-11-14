@@ -26,8 +26,8 @@ class CustomerFactory extends Factory
             'shop_name' => fake()->streetName(),
             'account_name' => fake()->name(),
             'account_number' => fake()->numberBetween(3040403600, 8147483647),
-            'bank_name' => 'City Bank',
-            'branch_name' => 'Gulshan',
+            'bank_name' => fake()->randomElement(['City Bank', 'Brac Bank', 'Islami Bank']),
+            'branch_name' => fake()->randomElement(['Gulshan', 'Mohammadpur', 'Mirpur']),
         ];
     }
 }

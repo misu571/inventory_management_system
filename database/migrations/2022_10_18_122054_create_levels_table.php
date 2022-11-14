@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('attendances', function (Blueprint $table) {
+        Schema::create('levels', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('employee_id')->constrained('employees');
-            $table->date('present_at');
-            $table->dateTime('in_time');
-            $table->dateTime('out_time');
+            $table->string('level');
             $table->timestamps();
         });
     }
@@ -30,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('attendances');
+        Schema::dropIfExists('levels');
     }
 };

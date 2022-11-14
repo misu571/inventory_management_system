@@ -29,8 +29,8 @@ class ProductFactory extends Factory
             'expire_at' => fake()->dateTimeBetween('-2 month', '+1 month'),
             'purchase_price' => $price,
             'selling_price' => fake()->randomElement([null, fake()->numberBetween($price + 250, $price + 1680)]),
-            'category_id' => fake()->numberBetween(1, 13),
-            'sub_category_id' => fake()->numberBetween(1, 16),
+            'category_id' => fake()->numberBetween(1, 8),
+            'sub_category_id' => fake()->numberBetween(1, 48),
             'supplier_id' => fake()->numberBetween(1, 16),
         ];
     }

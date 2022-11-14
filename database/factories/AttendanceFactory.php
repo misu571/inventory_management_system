@@ -16,8 +16,15 @@ class AttendanceFactory extends Factory
      */
     public function definition()
     {
+        $presentAt = fake()->dateTimeBetween('-5 month', now());
+        $inTime = fake()->dateTimeInInterval($presentAt, '+' . fake()->numberBetween(25200, 28800) . ' seconds');
+        $outTime = fake()->dateTimeInInterval($presentAt, '+' . fake()->numberBetween(61200, 63000) . ' seconds');
+        
         return [
-            //
+            'employee_id' => fake()->numberBetween(1, 4),
+            'present_at' => $presentAt,
+            'in_time' => $inTime,
+            'out_time' => $outTime,
         ];
     }
 }

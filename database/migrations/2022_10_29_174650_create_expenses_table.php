@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->id();
-            
             $table->longText('details');
             $table->integer('amount')->unsigned();
             $table->date('expense_at');

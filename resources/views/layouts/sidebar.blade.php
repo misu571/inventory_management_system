@@ -15,6 +15,11 @@
                         <span class="micon bi bi-house"></span><span class="mtext">Dashboard</span>
                     </a>
                 </li>
+                {{-- <li>
+                    <a href="{{ route('pos') }}" class="dropdown-toggle no-arrow @if(Route::is('pos')) active @endif">
+                        <span class="micon bi bi-house"></span><span class="mtext">POS</span>
+                    </a>
+                </li> --}}
                 <li>
                     <a href="{{ route('category.index') }}" class="dropdown-toggle no-arrow @if(Route::is('category.*')) active @endif">
                         <span class="micon dw dw-share2"></span><span class="mtext">Category</span>

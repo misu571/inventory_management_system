@@ -15,16 +15,14 @@ return new class extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->string('phone');
+            $table->foreignId('user_id')->constrained('users');
+            $table->foreignId('level_id')->constrained('levels');
             $table->string('city')->nullable();
-            $table->string('address');
-            $table->string('nid');
-            $table->string('image')->nullable();
-            $table->string('experience');
+            $table->string('address')->nullable();
+            $table->string('nid')->nullable();
+            $table->string('experience')->nullable();
             $table->double('salary', 15, 8);
-            $table->boolean('vacation');
+            $table->boolean('vacation')->nullable();
             $table->timestamps();
         });
     }

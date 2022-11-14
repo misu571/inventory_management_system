@@ -17,10 +17,11 @@ class SalaryFactory extends Factory
     public function definition()
     {
         return [
-            'employee_id' => fake()->numberBetween(1, 16),
-            'amount' => fake()->numberBetween(10000, 40000),
+            'employee_id' => fake()->numberBetween(1, 4),
+            'amount' => fake()->numberBetween(20000, 60000),
             'given_at' => fake()->dateTimeBetween('-1 years'),
             'status' => fake()->boolean(),
+            'advance_salary' => fake()->randomElement([null, fake()->numberBetween(10000, 20000)]),
         ];
     }
 }

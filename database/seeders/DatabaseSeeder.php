@@ -18,21 +18,19 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        \App\Models\User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@admin.com',
-            'password' => bcrypt('qwe123asd'),
+        $this->call([
+            UserSeeder::class,
+            LevelSeeder::class,
+            EmployeeSeeder::class,
+            CustomerSeeder::class,
+            SupplierSeeder::class,
+            AttendanceSeeder::class,
+            SalarySeeder::class,
+            CategorySeeder::class,
+            SubCategorySeeder::class,
+            ProductSeeder::class,
+            ExpenseSeeder::class,
+            // ReportSeeder::class,
         ]);
-
-        \App\Models\Customer::factory(16)->create();
-        \App\Models\Supplier::factory(16)->create();
-        \App\Models\Employee::factory(16)->create();
-        // \App\Models\Attendance::factory(33)->create();
-        \App\Models\Salary::factory(16)->create();
-        \App\Models\Category::factory(13)->create();
-        \App\Models\SubCategory::factory(16)->create();
-        \App\Models\Product::factory(16)->create();
-        \App\Models\Expense::factory(28)->create();
-        // \App\Models\Report::factory(7)->create();
     }
 }

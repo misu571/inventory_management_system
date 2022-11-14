@@ -19,7 +19,7 @@ class ExpenseFactory extends Factory
         return [
             'details' => fake()->paragraph(1),
             'amount' => fake()->numberBetween(70, 10000),
-            'expense_at' => fake()->dateTimeBetween('-1 month'),
+            'expense_at' => fake()->dateTimeBetween('-2 month'),
         ];
     }
 }
