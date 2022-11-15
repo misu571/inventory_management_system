@@ -18,4 +18,14 @@ class PosController extends Controller
 
         return view('pages.pos.index', compact('products'));
     }
+
+    public function searchProduct(Request $request)
+    {
+        $request->validate(['search' => 'required|string']);
+        $products = DB::table('products')->where(function ($query) {
+                $query->where('code', 'like', '%' . request()->search . '%')->orWhere('name', 'like', '%' . request()->search . '%');
+            })->get()->toArray();
+
+        return response()->json(compact('products'));
+    }
 }

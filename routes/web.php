@@ -33,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
 
     // POS
     Route::get('/pos', [App\Http\Controllers\PosController::class, 'index'])->name('pos');
+    Route::post('/pos/search-product', [App\Http\Controllers\PosController::class, 'searchProduct'])->name('search.product');
 
     // Product
     Route::post('/product/sub-categories', [App\Http\Controllers\ProductController::class, 'subCategories'])->name('product.subCategories');

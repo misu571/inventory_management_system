@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('sub_category_id')->constrained('sub_categories');
             $table->foreignId('supplier_id')->constrained('suppliers');
             $table->string('name');
-            $table->string('code');
+            $table->string('code')->unique();
             $table->string('location');
             $table->string('route');
             $table->string('image')->nullable();

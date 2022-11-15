@@ -25,7 +25,7 @@ class UpdateProductRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'code' => 'required|string|min:6',
+            'code' => 'required|string|min:6|unique:products,code',
             'location' => 'required|string',
             'route' => 'required|string',
             'image' => 'sometimes|file|image|max:2000',

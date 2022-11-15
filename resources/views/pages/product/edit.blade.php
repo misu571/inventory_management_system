@@ -10,7 +10,7 @@
                     @method('PATCH')
                 </x-slot>
                 <x-slot:name_value>{{ old('name') ?? $product->name }}</x-slot>
-                <x-slot:code_value>{{ old('code') ?? $product->code }}</x-slot>
+                <x-slot:code_value></x-slot>
                 <x-slot:location_value>{{ old('location') ?? $product->location }}</x-slot>
                 <x-slot:route_value>{{ old('route') ?? $product->route }}</x-slot>
                 <x-slot:purchase_price_value>{{ old('purchase_price') ?? $product->purchase_price }}</x-slot>

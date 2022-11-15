@@ -8,15 +8,25 @@
 @section('content')
 <div class="mb-30">
     <div class="row">
-        <div class="col-5">
+        <div class="col-8">
             <div class="card card-box">
                 <div class="card-body">
-                    <h5 class="card-title">Buy & Sell</h5>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control form-control-sm border border-secondary" data-toggle="modal" data-target="#searchProduct" placeholder="Click to search">
+                        </div>
+                        <div class="col-4">
+                            <div class="btn-group btn-block" role="group">
+                                <button type="button" class="btn btn-danger btn-sm m-0"><i class="icon-copy ion-close-round mr-1"></i> CANCEL SALE</button>
+                                <button type="button" class="btn btn-warning btn-sm m-0"><i class="icon-copy fa fa-pause mr-1" aria-hidden="true"></i> PAUSE</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="col">
-            <div class="card card-box">
+            {{-- <div class="card card-box">
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table checkbox-datatable stripe hover">
@@ -55,6 +65,20 @@
                         </table>
                     </div>
                 </div>
+            </div> --}}
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="searchProduct" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <input type="text" class="form-control border border-secondary" id="searchText" placeholder="Search item">
+            </div>
+            <div class="modal-body">
+                <p class="text-center text-secondary m-0">No product found</p>
             </div>
         </div>
     </div>
@@ -80,6 +104,49 @@
 <!-- Datatable Setting js -->
 <script src="{{ asset('deskapp/vendors/scripts/datatable-setting.js') }}"></script>
 <script>
+    // Search modal
+    $('#searchProduct').on('show.bs.modal', function () {
+        $(this).find('.modal-body').remove()
+    })
+    // Search item
+    $('#searchText').on('keyup', function (event) {
+        const modal = $('#searchProduct')
+        let rowData = ''
+        if (this.value.length >= 3) {
+            if (!modal.find('.modal-body').length) {
+                modal.find('.modal-content').append(
+                    `<div class="modal-body">
+                    </div>`
+                )
+            }
+            $.ajaxSetup({headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'}})
+            $.ajax({
+                url: "{{ route('search.product') }}",
+                method: "POST",
+                data: {search: this.value},
+                success: function (result) {
+                    const array = result.products
+                    if (array.length > 0) {
+                        array.filter(function (row) {
+                            rowData += `<tr><td>${row['name']}</td></td>`
+                        })
+                        modal.find('.modal-body').empty().append(
+                            `<div class="table-responsive rounded-lg">
+                                <table class="table table-borderless table-hover table-sm mb-0">
+                                    <tbody>
+                                        ${rowData}
+                                    </tbody>
+                                </table>
+                            </div>`
+                        )
+                    } else {
+                        modal.find('.modal-body').empty().append(`<p class="text-center text-secondary m-0">No product found</p>`)
+                    }
+                }
+            })
+        }
+    })
+
     // Preview
     $('#previewImage').on('show.bs.modal', function (event) {
         let button = $(event.relatedTarget)
