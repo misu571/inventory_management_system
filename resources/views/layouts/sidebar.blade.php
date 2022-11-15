@@ -15,11 +15,11 @@
                         <span class="micon bi bi-house"></span><span class="mtext">Dashboard</span>
                     </a>
                 </li>
-                {{-- <li>
+                <li>
                     <a href="{{ route('pos') }}" class="dropdown-toggle no-arrow @if(Route::is('pos')) active @endif">
-                        <span class="micon bi bi-house"></span><span class="mtext">POS</span>
+                        <span class="micon dw dw-shopping-cart1"></span><span class="mtext">POS</span>
                     </a>
-                </li> --}}
+                </li>
                 <li>
                     <a href="{{ route('category.index') }}" class="dropdown-toggle no-arrow @if(Route::is('category.*')) active @endif">
                         <span class="micon dw dw-share2"></span><span class="mtext">Category</span>
@@ -62,7 +62,7 @@
                 </li>
                 <li>
                     <a href="{{ route('attendance.index') }}" class="dropdown-toggle no-arrow @if(Route::is('attendance.*')) active @endif">
-                        <span class="micon dw dw-wall-clock1"></span><span class="mtext">Attendance</span>
+                        <span class="micon dw dw-calendar1"></span><span class="mtext">Attendance</span>
                     </a>
                 </li>
                 <li>
