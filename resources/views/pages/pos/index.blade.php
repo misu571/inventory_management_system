@@ -8,7 +8,7 @@
 @section('content')
 <div class="mb-30">
     <div class="row">
-        <div class="col-8">
+        <div class="col-md-8">
             <div class="card card-box">
                 <div class="card-body">
                     <div class="row">

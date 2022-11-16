@@ -31,6 +31,11 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('brand.index') }}" class="dropdown-toggle no-arrow @if(Route::is('brand.*')) active @endif">
+                        <span class="micon bi bi-ui-checks-grid"></span><span class="mtext">Brand</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{{ route('product.index') }}" class="dropdown-toggle no-arrow @if(Route::is('product.*')) active @endif">
                         <span class="micon fa fa-cubes"></span><span class="mtext">Product</span>
                     </a>

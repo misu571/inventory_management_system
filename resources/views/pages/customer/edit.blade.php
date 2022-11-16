@@ -3,7 +3,7 @@
 @section('content')
 <x-pages.elements.title title="Form" route="{{ route('customer.index') }}" parentPage="customer" currentPage="edit" />
 <div class="row">
-    <div class="col-6">
+    <div class="col-md-4">
         <div class="card-box p-3 mb-30">
             <x-forms.customer action="{{ route('customer.update', [$customer->id]) }}">
                 <x-slot:method_type>

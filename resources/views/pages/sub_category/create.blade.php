@@ -3,7 +3,7 @@
 @section('content')
 <x-pages.elements.title title="Form" route="{{ route('sub-category.index') }}" parentPage="sub category" currentPage="create" />
 <div class="row">
-    <div class="col-6">
+    <div class="col-md-4">
         <div class="card-box p-3 mb-30">
             <x-forms.sub-category action="{{ route('sub-category.store') }}">
                 <x-slot:categories>

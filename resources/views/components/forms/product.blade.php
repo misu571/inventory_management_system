@@ -2,7 +2,7 @@
     {{ $method_type ?? null }}
     @csrf
     <div class="row">
-        <div class="col-6">
+        <div class="col-md-6">
             <x-forms.type.text-input type="text" id="name" label="Name" name="name" classes="" :value="$name_value" validations="required" />
             <div class="row">
                 <div class="col">

@@ -22,7 +22,7 @@
 </div>
 
 <div class="row">
-    <div class="col-6">
+    <div class="col-md-6">
         <div class="card-box p-3 mb-30">
             <div class="card card-box">
                 <div class="card-header">Featured</div>

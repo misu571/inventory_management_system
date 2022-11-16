@@ -33,13 +33,6 @@ use Illuminate\Support\Facades\Artisan;
 //     $alert = (object) ['status' => 'success', 'message' => $exitCode];
 //     return redirect('/')->with(compact('alert'));
 // });
-// Route::get('/get-composer', function () {
-//     $output = null;
-//     $retval = null;
-//     exec('pwd', $output, $retval);
-//     $alert = (object) ['status' => 'success', 'message' => $output[0]];
-//     return redirect('/')->with(compact('alert'));
-// });
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -66,6 +59,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/product/sub-categories', [App\Http\Controllers\ProductController::class, 'subCategories'])->name('product.subCategories');
 
     Route::resources([
+        'brand' => App\Http\Controllers\BrandController::class,
         'category' => App\Http\Controllers\CategoryController::class,
         'sub-category' => App\Http\Controllers\SubCategoryController::class,
         'product' => App\Http\Controllers\ProductController::class,

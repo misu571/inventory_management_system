@@ -3,7 +3,7 @@
 @section('content')
 <x-pages.elements.title title="Form" route="{{ route('supplier.index') }}" parentPage="supplier" currentPage="create" />
 <div class="row">
-    <div class="col-6">
+    <div class="col-md-4">
         <div class="card-box p-3 mb-30">
             <x-forms.supplier action="{{ route('supplier.store') }}">
                 <x-slot:name_value>{{ old('name') }}</x-slot>
