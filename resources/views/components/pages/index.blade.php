@@ -40,16 +40,12 @@
 <script>
     // Delete
     $('#deleteModal').on('show.bs.modal', function (event) {
-        let button = $(event.relatedTarget)
-        let modal = $(this)
-        modal.find('form').attr('action', button.data('route'))
+        $(this).find('form').attr('action', $(event.relatedTarget).data('route'))
     })
 
     // Preview
     $('#previewImage').on('show.bs.modal', function (event) {
-        let button = $(event.relatedTarget)
-        let modal = $(this)
-        modal.find('img').attr('src', button.data('image'))
+        $(this).find('img').attr('src', $(event.relatedTarget).data('image'))
     })
 </script>
 @endsection

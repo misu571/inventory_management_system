@@ -49,6 +49,8 @@
             </div>
         </div>
     @else
+        <!-- Session alert -->
+        @include('layouts.alert')
         <!-- Application login header -->
         @include('layouts.login_header')
         

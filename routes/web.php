@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,32 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// Route::get('/recreate-db', function () {
+//     $exitCode = Artisan::call('migrate:fresh', [
+//         '--force' => true,
+//         '--seed' => true
+//     ]);
+//     $alert = (object) ['status' => 'success', 'message' => $exitCode];
+//     return redirect('/')->with(compact('alert'));
+// });
+// Route::get('/clear-config', function () {
+//     $exitCode = Artisan::call('config:cache');
+//     $alert = (object) ['status' => 'success', 'message' => $exitCode];
+//     return redirect('/')->with(compact('alert'));
+// });
+// Route::get('/storage-link', function () {
+//     $exitCode = Artisan::call('storage:link');
+//     $alert = (object) ['status' => 'success', 'message' => $exitCode];
+//     return redirect('/')->with(compact('alert'));
+// });
+// Route::get('/get-composer', function () {
+//     $output = null;
+//     $retval = null;
+//     exec('pwd', $output, $retval);
+//     $alert = (object) ['status' => 'success', 'message' => $output[0]];
+//     return redirect('/')->with(compact('alert'));
+// });
 
 // Route::get('/', function () {
 //     return view('welcome');
