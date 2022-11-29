@@ -16,27 +16,31 @@ use Illuminate\Support\Facades\Artisan;
 */
 
 // Route::get('/recreate-db', function () {
-//     $exitCode = Artisan::call('migrate:fresh', [
+//     Artisan::call('migrate:fresh', [
 //         '--force' => true,
 //         '--seed' => true
 //     ]);
-//     $alert = (object) ['status' => 'success', 'message' => $exitCode];
+//     $alert = (object) ['status' => 'success', 'message' => 'Database migrated'];
 //     return redirect('/')->with(compact('alert'));
 // });
 // Route::get('/clear-config', function () {
-//     $exitCode = Artisan::call('config:cache');
-//     $alert = (object) ['status' => 'success', 'message' => $exitCode];
+//     Artisan::call('config:cache');
+//     $alert = (object) ['status' => 'success', 'message' => 'Config clear'];
 //     return redirect('/')->with(compact('alert'));
 // });
 // Route::get('/storage-link', function () {
-//     $exitCode = Artisan::call('storage:link');
-//     $alert = (object) ['status' => 'success', 'message' => $exitCode];
+//     Artisan::call('storage:link');
+//     $alert = (object) ['status' => 'success', 'message' => 'Storage linked'];
 //     return redirect('/')->with(compact('alert'));
 // });
 
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+// if (!Auth::check()) {
+//     return redirect('/');
+// }
+
 Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm']);
 
 Auth::routes();
@@ -52,8 +56,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
     // POS
-    Route::get('/pos', [App\Http\Controllers\PosController::class, 'index'])->name('pos');
-    Route::post('/pos/search-product', [App\Http\Controllers\PosController::class, 'searchProduct'])->name('search.product');
+    // Route::get('/pos', [App\Http\Controllers\PosController::class, 'index'])->name('pos');
+    // Route::post('/pos/search-product', [App\Http\Controllers\PosController::class, 'searchProduct'])->name('search.product');
 
     // Product
     Route::post('/product/sub-categories', [App\Http\Controllers\ProductController::class, 'subCategories'])->name('product.subCategories');
@@ -64,11 +68,11 @@ Route::middleware(['auth'])->group(function () {
         'sub-category' => App\Http\Controllers\SubCategoryController::class,
         'product' => App\Http\Controllers\ProductController::class,
         // 'report' => App\Http\Controllers\ReportController::class,
-        'expense' => App\Http\Controllers\ExpenseController::class,
+        // 'expense' => App\Http\Controllers\ExpenseController::class,
         'customer' => App\Http\Controllers\CustomerController::class,
         'supplier' => App\Http\Controllers\SupplierController::class,
         'employee' => App\Http\Controllers\EmployeeController::class,
-        'attendance' => App\Http\Controllers\AttendanceController::class,
-        'salary' => App\Http\Controllers\SalaryController::class,
+        // 'attendance' => App\Http\Controllers\AttendanceController::class,
+        // 'salary' => App\Http\Controllers\SalaryController::class,
     ]);
 });

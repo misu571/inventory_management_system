@@ -16,22 +16,10 @@ class EmployeeSeeder extends Seeder
     public function run()
     {
         $data = [
-            [
-                'user_id' => 1,
-                'level_id' => 1,
-            ],
-            [
-                'user_id' => 2,
-                'level_id' => 2,
-            ],
-            [
-                'user_id' => 3,
-                'level_id' => 3,
-            ],
-            [
-                'user_id' => 4,
-                'level_id' => 3,
-            ]
+            ['user_id' => 1],
+            ['user_id' => 2],
+            ['user_id' => 3],
+            ['user_id' => 4]
         ];
 
         foreach ($data as $row) {

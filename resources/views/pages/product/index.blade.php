@@ -9,7 +9,7 @@
     <x-pages.elements.table>
         <x-slot:colunm_name>{{ 'Name, image, category,sub category, supplier, code, Purchase Price, Purchase At,Selling Price' }}</x-slot>
         @foreach ($products as $product)
-            <tr>
+            <tr id="{{ $product->id }}">
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $product->name }}</td>
                 <td>

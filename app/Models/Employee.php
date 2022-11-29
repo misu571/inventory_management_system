@@ -12,13 +12,12 @@ class Employee extends Model
     protected $table = 'employees';
 
     protected $fillable = [
+        'user_id',
         'city',
         'address',
         'nid',
         'experience',
         'salary',
         'vacation',
-        'user_id',
-        'level_id',
     ];
 }
