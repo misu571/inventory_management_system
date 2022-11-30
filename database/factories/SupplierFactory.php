@@ -16,8 +16,10 @@ class SupplierFactory extends Factory
      */
     public function definition()
     {
+        $name = fake()->name();
+        
         return [
-            'name' => fake()->name(),
+            'name' => $name,
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->phoneNumber(),
             'city' => fake()->city(),
@@ -25,7 +27,7 @@ class SupplierFactory extends Factory
             'image' => null,
             'type' => fake()->randomElement(['Wholeseler', 'Distributor']),
             'shop_name' => fake()->streetName(),
-            'account_name' => fake()->name(),
+            'account_name' => $name,
             'account_number' => fake()->numberBetween(3040403600, 8147483647),
             'bank_name' => fake()->randomElement(['Duch-Bangla Bank', 'IFIC Bank', 'EXIM Bank']),
             'branch_name' => fake()->randomElement(['Savar', 'New Market', 'Farmgate']),

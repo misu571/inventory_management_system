@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             SupplierSeeder::class,
             AttendanceSeeder::class,
             SalarySeeder::class,
+            CountrySeeder::class,
             BrandSeeder::class,
             CategorySeeder::class,
             SubCategorySeeder::class,

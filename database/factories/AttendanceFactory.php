@@ -21,7 +21,7 @@ class AttendanceFactory extends Factory
         $outTime = fake()->dateTimeInInterval($presentAt, '+' . fake()->numberBetween(61200, 63000) . ' seconds');
         
         return [
-            'employee_id' => fake()->numberBetween(1, 4),
+            'employee_id' => fake()->numberBetween(1, 6),
             'present_at' => $presentAt,
             'in_time' => $inTime,
             'out_time' => $outTime,

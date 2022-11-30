@@ -23,15 +23,23 @@ class UserSeeder extends Seeder
             ],
             [
                 'email' => 'manager@admin.com',
-                'password' => bcrypt('qwe123asd'),
+                'password' => bcrypt('aq1sw2de3'),
             ],
             [
                 'email' => 'employee1@admin.com',
-                'password' => bcrypt('qwe123asd'),
+                'password' => bcrypt('q1w2e3r4'),
             ],
             [
                 'email' => 'employee2@admin.com',
-                'password' => bcrypt('qwe123asd'),
+                'password' => bcrypt('q2w3e4r5'),
+            ],
+            [
+                'email' => 'employee3@admin.com',
+                'password' => bcrypt('q3w4e5r6'),
+            ],
+            [
+                'email' => 'employee4@admin.com',
+                'password' => bcrypt('q4e5r6t7'),
             ]
         ];
         

@@ -12,17 +12,22 @@ class Product extends Model
     protected $table = 'products';
 
     protected $fillable = [
-        'name',
-        'code',
-        'location',
-        'route',
-        'image',
-        'purchase_price',
-        'purchase_at',
-        'expire_at',
-        'selling_price',
+        'brand_id',
         'category_id',
         'sub_category_id',
         'supplier_id',
+        'department',
+        'serial_number',
+        'parts_number',
+        'location',
+        'rack_number',
+        'image',
+        'purchase_order_number',
+        'purchase_at',
+        'expire_at',
+        'purchase_price',
+        'selling_price',
+        'quantity',
+        'country_origin',
     ];
 }
