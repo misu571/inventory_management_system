@@ -16,11 +16,12 @@ return new class extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
+            $table->string('position');
             $table->string('city')->nullable();
             $table->string('address')->nullable();
             $table->string('nid')->nullable();
             $table->string('experience')->nullable();
-            $table->double('salary', 15, 8);
+            $table->double('salary', 15, 8)->unsigned()->nullable()->default(0);
             $table->boolean('vacation')->nullable();
             $table->timestamps();
         });

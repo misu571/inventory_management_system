@@ -9,11 +9,11 @@
     <x-pages.elements.table>
         <x-slot:colunm_name>{{ 'Name, image, Email, Phone, shop name, account name, account number' }}</x-slot>
         @foreach ($customers as $customer)
+            @php $image = $customer->image ? asset('storage/avatar/customer/' . $customer->image) : asset('images/avatar.png') @endphp
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $customer->name }}</td>
                 <td>
-                    @php $image = $customer->image ? asset('storage/avatar/customer/' . $customer->image) : asset('images/avatar.png') @endphp
                     <a href="#previewImage" role="button" data-toggle="modal" data-image="{{ $image }}">
                         <img class="img-thumbnail" src="{{ $image }}" alt="" width="50">
                     </a>

@@ -18,6 +18,7 @@ class EmployeeFactory extends Factory
     {
         return [
             'user_id' => fake()->numberBetween(1, 4),
+            'position' => fake()->randomElement(['Admin', 'Manager', 'Employee']),
             'city' => fake()->city(),
             'address' => fake()->address(),
             'nid' => fake()->numberBetween(1040403600, 2147483647),

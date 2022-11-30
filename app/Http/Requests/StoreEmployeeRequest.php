@@ -25,13 +25,11 @@ class StoreEmployeeRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'email' => 'required|email|unique:employees,email',
+            'email' => 'required|email|unique:users,email',
             'phone' => 'required|string',
-            'address' => 'required|string',
-            'experience' => 'required|string',
-            'salary' => 'required|integer',
-            'vacation' => 'required|boolean',
-            'city' => 'required|string',
+            'position' => 'required|string',
+            'nid' => 'required|string',
+            'address' => 'nullable|string|max:200',
         ];
     }
 }

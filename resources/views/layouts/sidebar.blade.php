@@ -24,6 +24,13 @@
                     </a>
                 </li>
                 @endif
+                @if (Route::has('brand.index'))
+                <li>
+                    <a href="{{ route('brand.index') }}" class="dropdown-toggle no-arrow @if(Route::is('brand.*')) active @endif">
+                        <span class="micon bi bi-ui-checks-grid"></span><span class="mtext">Brand</span>
+                    </a>
+                </li>
+                @endif
                 @if (Route::has('category.index'))
                 <li>
                     <a href="{{ route('category.index') }}" class="dropdown-toggle no-arrow @if(Route::is('category.*')) active @endif">
@@ -35,13 +42,6 @@
                 <li>
                     <a href="{{ route('sub-category.index') }}" class="dropdown-toggle no-arrow @if(Route::is('sub-category.*')) active @endif">
                         <span class="micon bi bi-diagram-3"></span><span class="mtext">Sub-Category</span>
-                    </a>
-                </li>
-                @endif
-                @if (Route::has('brand.index'))
-                <li>
-                    <a href="{{ route('brand.index') }}" class="dropdown-toggle no-arrow @if(Route::is('brand.*')) active @endif">
-                        <span class="micon bi bi-ui-checks-grid"></span><span class="mtext">Brand</span>
                     </a>
                 </li>
                 @endif

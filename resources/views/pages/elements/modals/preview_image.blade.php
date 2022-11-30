@@ -7,7 +7,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body text-center p-0">
+            <div class="modal-body text-center p-4">
                 <img class="img-thumbnail mw-100" src="#" alt="">
             </div>
         </div>

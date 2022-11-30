@@ -5,16 +5,20 @@
 <div class="row">
     <div class="col-md-10">
         <div class="card-box p-3 mb-30">
-            <x-forms.product action="{{ route('product.store') }}" enctype="multipart/form-data">
-                <x-slot:name_value>{{ old('name') }}</x-slot>
-                <x-slot:code_value>{{ old('code') }}</x-slot>
+            <x-forms.product.create action="{{ route('product.store') }}" enctype="multipart/form-data">
+                <x-slot:department_value>{{ old('department') }}</x-slot>
+                <x-slot:serial_number_value>{{ old('serial_number') }}</x-slot>
                 <x-slot:location_value>{{ old('location') }}</x-slot>
-                <x-slot:route_value>{{ old('route') }}</x-slot>
+                <x-slot:rack_number_value>{{ old('rack_number') }}</x-slot>
                 <x-slot:purchase_price_value>{{ old('purchase_price') }}</x-slot>
                 <x-slot:purchase_at_value>{{ old('purchase_at') }}</x-slot>
-                <x-slot:expire_at_value>{{ old('expire_at') }}</x-slot>
-                <x-slot:selling_price_value>{{ old('selling_price') }}</x-slot>
+                <x-slot:purchase_order_number_value>{{ old('purchase_order_number') }}</x-slot>
                 <x-slot:image_thumbnail></x-slot>
+                <x-slot:brands>
+                    @foreach ($brands as $brand)
+                        <option value="{{ $brand->id }}" @if($brand->id == old('brand')) selected @endif>{{ $brand->name }}</option>
+                    @endforeach
+                </x-slot>
                 <x-slot:categories>
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}" @if($category->id == old('category')) selected @endif>{{ $category->name }}</option>
@@ -28,7 +32,7 @@
                 <x-slot:button>
                     <i class="icon-copy ion-plus-round mr-2"></i> Create New
                 </x-slot>
-            </x-forms.product>
+            </x-forms.product.create>
         </div>
     </div>
 </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreEmployeeRequest;
@@ -18,14 +19,12 @@ class EmployeeController extends Controller
     {
         $employees = DB::table('employees')
             ->join('users', 'employees.user_id', '=', 'users.id')
-            ->join('levels', 'employees.level_id', '=', 'levels.id')
             ->select(
                 'employees.*',
-                'users.name as employee_name',
-                'users.email as employee_email',
-                'users.phone as employee_phone',
-                'users.image as employee_image',
-                'levels.level as employee_level',
+                'users.name',
+                'users.email',
+                'users.phone',
+                'users.image'
             )
             ->orderByDesc('employees.updated_at')->get()->toArray();
         
@@ -50,8 +49,26 @@ class EmployeeController extends Controller
      */
     public function store(StoreEmployeeRequest $request)
     {
-        Employee::create($request->validated());
-        $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+        DB::beginTransaction();
+        try {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt('q1w2e3r4t5'),
+                'phone' => $request->phone
+            ]);
+            Employee::create([
+                'user_id' => $user->id,
+                'position' => $request->position,
+                'nid' => $request->nid,
+                'address' => $request->address
+            ]);
+            DB::commit();
+            $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+        } catch (\Exception $e) {
+            $alert = (object) ['status' => 'danger', 'message' => 'Something went wrong!'];
+            DB::rollback();
+        }
 
         return redirect()->route('employee.index')->with(compact('alert'));
     }
@@ -75,7 +92,9 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
-        return view('pages.employee.edit', compact('employee'));
+        $user = User::where('id', $employee->user_id)->first();
+        
+        return view('pages.employee.edit', compact('employee', 'user'));
     }
 
     /**
@@ -87,8 +106,24 @@ class EmployeeController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
-        $employee->update($request->validated());
-        $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+        DB::beginTransaction();
+        try {
+            $employee->update([
+                'position' => $request->position,
+                'nid' => $request->nid,
+                'salary' => $request->salary,
+                'address' => $request->address
+            ]);
+            $user = User::where('id', $employee->user_id)->update([
+                'name' => $request->name,
+                'phone' => $request->phone
+            ]);
+            DB::commit();
+            $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+        } catch (\Exception $e) {
+            $alert = (object) ['status' => 'danger', 'message' => 'Something went wrong!'];
+            DB::rollback();
+        }
 
         return back()->with(compact('alert'));
     }
@@ -101,8 +136,13 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
-        $employee->delete();
-        $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
+        try {
+            $employee->delete();
+            User::where('id', $employee->user_id)->delete();
+            $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
+        } catch (\Exception $e) {
+            $alert = (object) ['status' => 'danger', 'message' => 'One or more record is being used with this category'];
+        }
 
         return back()->with(compact('alert'));
     }
