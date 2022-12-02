@@ -55,12 +55,12 @@ class ProductController extends Controller
         $array = $request->validated();
         $image = $request->hasFile('image') ? $this->storeFile($request->file('image')) : null;
         data_set($array, 'purchase_at', date_format(date_create($request->purchase_at), 'Y-m-d'));
-        data_set($array, 'expire_at', date_format(date_create($request->expire_at), 'Y-m-d'));
-        $data = array_replace(Arr::except($array, ['category', 'sub_category', 'supplier']), [
-            'image' => $image,
+        $data = array_replace(Arr::except($array, ['brand', 'category', 'sub_category', 'supplier']), [
+            'brand_id' => $request->brand,
             'category_id' => $request->category,
             'sub_category_id' => $request->sub_category,
-            'supplier_id' => $request->supplier
+            'supplier_id' => $request->supplier,
+            'image' => $image
         ]);
         
         Product::create($data);
@@ -88,11 +88,12 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
+        $brands = DB::table('brands')->select('id', 'name')->get()->toArray();
         $categories = DB::table('categories')->select('id', 'name')->get()->toArray();
         $subCategories = DB::table('sub_categories')->select('id', 'category_id', 'name')->get()->toArray();
         $suppliers = DB::table('suppliers')->select('id', 'name')->get()->toArray();
 
-        return view('pages.product.edit', compact('product', 'categories', 'subCategories', 'suppliers'));
+        return view('pages.product.edit', compact('product', 'brands', 'categories', 'subCategories', 'suppliers'));
     }
 
     /**
@@ -107,12 +108,12 @@ class ProductController extends Controller
         $array = $request->validated();
         $image = $request->hasFile('image') ? $this->storeFile($request->file('image'), $product->image, 'products') : null;
         data_set($array, 'purchase_at', date_format(date_create($request->purchase_at), 'Y-m-d'));
-        data_set($array, 'expire_at', date_format(date_create($request->expire_at), 'Y-m-d'));
-        $data = array_replace(Arr::except($array, ['category', 'sub_category', 'supplier']), [
-            'image' => $image,
+        $data = array_replace(Arr::except($array, ['brand', 'category', 'sub_category', 'supplier']), [
+            'brand_id' => $request->brand,
             'category_id' => $request->category,
             'sub_category_id' => $request->sub_category,
-            'supplier_id' => $request->supplier
+            'supplier_id' => $request->supplier,
+            'image' => $image
         ]);
         
         $product->update($data);

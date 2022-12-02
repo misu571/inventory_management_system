@@ -5,19 +5,23 @@
 <div class="row">
     <div class="col-md-10">
         <div class="card-box p-3 mb-30">
-            <x-forms.product action="{{ route('product.update', [$product->id]) }}" enctype="multipart/form-data">
+            <x-forms.product.edit action="{{ route('product.update', [$product->id]) }}" enctype="multipart/form-data">
                 <x-slot:method_type>
                     @method('PATCH')
                 </x-slot>
-                <x-slot:name_value>{{ old('name') ?? $product->name }}</x-slot>
-                <x-slot:code_value></x-slot>
+                <x-slot:department_value>{{ old('department') ?? $product->department }}</x-slot>
+                <x-slot:serial_number_value>{{ old('serial_number') ?? $product->serial_number }}</x-slot>
                 <x-slot:location_value>{{ old('location') ?? $product->location }}</x-slot>
-                <x-slot:route_value>{{ old('route') ?? $product->route }}</x-slot>
+                <x-slot:rack_number_value>{{ old('rack_number') ?? $product->rack_number }}</x-slot>
                 <x-slot:purchase_price_value>{{ old('purchase_price') ?? $product->purchase_price }}</x-slot>
-                <x-slot:purchase_at_value>{{ old('purchase_at') ?? date_format(date_create($product->purchase_at), 'd F Y') }}</x-slot>
-                <x-slot:expire_at_value>{{ old('expire_at') ?? date_format(date_create($product->expire_at), 'd F Y') }}</x-slot>
-                <x-slot:selling_price_value>{{ old('selling_price') ?? $product->selling_price }}</x-slot>
+                <x-slot:purchase_at_value>{{ old('purchase_at') ?? $product->purchase_at }}</x-slot>
+                <x-slot:parts_number_value>{{ old('parts_number') ?? $product->parts_number }}</x-slot>
                 <x-slot:image_thumbnail>{{ $product->image != '' ? asset('storage/products/' . $product->image) : '' }}</x-slot>
+                <x-slot:brands>
+                    @foreach ($brands as $brand)
+                        <option value="{{ $brand->id }}" @if($brand->id == $product->brand_id) selected @endif>{{ $brand->name }}</option>
+                    @endforeach
+                </x-slot>
                 <x-slot:categories>
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}" @if($category->id == $product->category_id) selected @endif>{{ $category->name }}</option>
@@ -31,7 +35,7 @@
                 <x-slot:button>
                     <i class="icon-copy ion-android-create mr-2"></i> Edit Entry
                 </x-slot>
-            </x-forms.product>
+            </x-forms.product.edit>
         </div>
     </div>
 </div>

@@ -136,12 +136,15 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
+        DB::beginTransaction();
         try {
             $employee->delete();
             User::where('id', $employee->user_id)->delete();
+            DB::commit();
             $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
         } catch (\Exception $e) {
             $alert = (object) ['status' => 'danger', 'message' => 'One or more record is being used with this category'];
+            DB::rollback();
         }
 
         return back()->with(compact('alert'));

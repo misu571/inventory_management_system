@@ -24,18 +24,19 @@ class StoreProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|string',
-            'code' => 'required|string|min:6|unique:products,code',
-            'location' => 'required|string',
-            'route' => 'required|string',
-            'image' => 'sometimes|file|image|max:2000',
-            'purchase_price' => 'required|integer',
-            'purchase_at' => 'required|date',
-            'expire_at' => 'required|date|after:purchase_at',
-            'selling_price' => 'nullable|integer',
+            'brand' => 'required|exists:brands,id',
             'category' => 'required|exists:categories,id',
             'sub_category' => 'required|exists:sub_categories,id',
             'supplier' => 'required|exists:suppliers,id',
+            'department' => 'required|string',
+            'serial_number' => 'required|string',
+            'location' => 'required|string',
+            'rack_number' => 'required|string',
+            'image' => 'sometimes|file|image|max:2000',
+            'purchase_price' => 'required|integer',
+            'purchase_at' => 'required|date',
+            'purchase_order_number' => 'required|string|unique:products',
+            'parts_number' => 'required|string',
         ];
     }
 }

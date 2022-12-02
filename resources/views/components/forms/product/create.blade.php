@@ -28,8 +28,9 @@
         <div class="col-md-3">
             <x-forms.type.text-input type="number" id="purchase_price" label="Purchase Price" name="purchase_price" classes="" :value="$purchase_price_value" validations="required" />
             <x-forms.type.text-input type="text" id="purchase_at" label="Purchase Date" name="purchase_at" classes="date-picker" :value="$purchase_at_value" validations="required" />
-            <x-forms.type.text-input type="text" id="purchase_order_number" label="purchase order number" name="purchase_order_number" classes="date-picker" :value="$purchase_order_number_value" validations="required" />
+            <x-forms.type.text-input type="text" id="purchase_order_number" label="purchase order number" name="purchase_order_number" classes="" :value="$purchase_order_number_value" validations="required" />
             <x-forms.type.file-input id="image" label="Product Image" name="image" validations="" />
+            <input type="hidden" name="parts_number" value="efgr4t4">
         </div>
         <div class="col-md-3">
             <img id="thumbnail" class="img-thumbnail w-100 mb-3" src="{{ $image_thumbnail != '' ? $image_thumbnail : asset('images/product_icon.png') }}" alt="Product image">
