@@ -75,4 +75,13 @@ Route::middleware(['auth'])->group(function () {
         // 'attendance' => App\Http\Controllers\AttendanceController::class,
         // 'salary' => App\Http\Controllers\SalaryController::class,
     ]);
+
+    Route::group(['prefix' => '/setting/role', 'as' => 'setting.role.'], function () {
+        // Role
+        Route::get('/', [App\Http\Controllers\RoleController::class, 'index'])->name('index');
+        Route::post('/store', [App\Http\Controllers\RoleController::class, 'store'])->name('store');
+        Route::get('/{role}/edit', [App\Http\Controllers\RoleController::class, 'edit'])->name('edit');
+        Route::patch('/{role}', [App\Http\Controllers\RoleController::class, 'update'])->name('update');
+        Route::delete('/{role}', [App\Http\Controllers\RoleController::class, 'destroy'])->name('destroy');
+    });
 });

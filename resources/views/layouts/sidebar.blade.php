@@ -101,6 +101,19 @@
                     </a>
                 </li>
                 @endif
+                @if (auth()->user()->id == 1)
+                <li><div class="dropdown-divider"></div></li>
+                <li class="dropdown @if(Route::is('setting.role.*')) show @endif">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <span class="micon dw dw-settings2"></span><span class="mtext">Settings</span>
+                    </a>
+                    <ul class="submenu">
+                        @if (Route::has('setting.role.index'))
+                        <li><a href="{{ route('setting.role.index') }}" class="@if(Route::is('setting.role.*')) active @endif">User Roles</a></li>
+                        @endif
+                    </ul>
+                </li>
+                @endif
             </ul>
         </div>
     </div>
