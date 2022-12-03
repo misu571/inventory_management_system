@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
-use Illuminate\Support\Facades\Artisan;
 
 class RoleController extends Controller
 {
     public function index()
     {
-        $roles = DB::table('roles')->oldest()->get()->toArray();
+        $roles = auth()->user()->hasRole('super-admin') ? Role::oldest()->get() : Role::whereNotIn('id', [1])->oldest()->get();
         return view('pages.setting.role.index', compact('roles'));
     }
 

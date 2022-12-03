@@ -39,14 +39,11 @@
                         </thead>
                         <tbody>
                             @foreach ($roles as $role)
-                                @if (auth()->user()->id != 1 && $role->id == 1)
-                                    @continue
-                                @endif
                                 <tr id="{{ $role->id }}">
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ (ucfirst($role->name)) }}</td>
                                     <td class="text-right">
-                                        @if ($loop->iteration > 1)
+                                        @if ($role->id > 2)
                                             <div class="table-actions d-flex justify-content-end">
                                                 <a href="{{ route('setting.role.edit', [$role->id]) }}" data-color="#265ed7" style="color: rgb(38, 94, 215);">
                                                     <i class="icon-copy dw dw-edit2" data-toggle="tooltip" title="Edit"></i>

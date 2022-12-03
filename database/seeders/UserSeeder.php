@@ -56,7 +56,7 @@ class UserSeeder extends Seeder
         foreach ($data as $row) {
             $user = User::factory()->create($row);
             if ($user->email == 'shah.sami77@gmail.com' || $user->email == 'jubir.hosn@gmail.com') {
-                $user->assignRole('Super Admin');
+                $user->assignRole('super-admin');
             }
         }
     }

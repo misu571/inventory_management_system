@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Artisan;
 |
 */
 
-// Route::get('/recreate-db', function () {
+// Route::get('/create-db', function () {
 //     Artisan::call('migrate:fresh', [
 //         '--force' => true,
 //         '--seed' => true
@@ -23,9 +23,9 @@ use Illuminate\Support\Facades\Artisan;
 //     $alert = (object) ['status' => 'success', 'message' => 'Database migrated'];
 //     return redirect('/')->with(compact('alert'));
 // });
-// Route::get('/clear-config', function () {
-//     Artisan::call('config:cache');
-//     $alert = (object) ['status' => 'success', 'message' => 'Config clear'];
+// Route::get('/optimize-clear', function () {
+//     Artisan::call('optimize:clear');
+//     $alert = (object) ['status' => 'success', 'message' => 'App optimized'];
 //     return redirect('/')->with(compact('alert'));
 // });
 // Route::get('/storage-link', function () {

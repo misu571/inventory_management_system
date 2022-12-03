@@ -101,7 +101,7 @@
                     </a>
                 </li>
                 @endif
-                @if (auth()->user()->id == 1)
+                @if (auth()->user()->id < 3)
                 <li><div class="dropdown-divider"></div></li>
                 <li class="dropdown @if(Route::is('setting.role.*')) show @endif">
                     <a href="javascript:;" class="dropdown-toggle">
