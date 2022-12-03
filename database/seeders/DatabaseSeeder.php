@@ -19,6 +19,21 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
+        DB::table('roles')->insert([
+            [
+                'name' => 'Super Admin',
+                'guard_name' => 'web',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'name' => 'admin',
+                'guard_name' => 'web',
+                'created_at' => now(),
+                'updated_at' => now()
+            ]
+        ]);
+
         $this->call([
             UserSeeder::class,
             EmployeeSeeder::class,
@@ -33,21 +48,6 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             ExpenseSeeder::class,
             // ReportSeeder::class,
-        ]);
-
-        DB::table('roles')->insert([
-            [
-                'name' => 'Super Admin',
-                'guard_name' => 'web',
-                'created_at' => now(),
-                'updated_at' => now()
-            ],
-            [
-                'name' => 'admin',
-                'guard_name' => 'web',
-                'created_at' => now(),
-                'updated_at' => now()
-            ]
         ]);
     }
 }

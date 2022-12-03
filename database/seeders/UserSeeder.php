@@ -17,6 +17,16 @@ class UserSeeder extends Seeder
     {
         $data = [
             [
+                'name' => 'Sami',
+                'email' => 'shah.sami77@gmail.com',
+                'password' => bcrypt('samiq1w2e3!'),
+            ],
+            [
+                'name' => 'Jubair',
+                'email' => 'jubir.hosn@gmail.com',
+                'password' => bcrypt('jbirq!w2e34'),
+            ],
+            [
                 'name' => 'Test Admin',
                 'email' => 'test@admin.com',
                 'password' => bcrypt('qwe123asd'),
@@ -44,7 +54,10 @@ class UserSeeder extends Seeder
         ];
         
         foreach ($data as $row) {
-            User::factory()->create($row);
+            $user = User::factory()->create($row);
+            if ($user->email == 'shah.sami77@gmail.com' || $user->email == 'jubir.hosn@gmail.com') {
+                $user->assignRole('Super Admin');
+            }
         }
     }
 }
