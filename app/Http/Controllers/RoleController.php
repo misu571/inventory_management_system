@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
@@ -10,7 +9,7 @@ class RoleController extends Controller
 {
     public function index()
     {
-        $roles = auth()->user()->hasRole('super-admin') ? Role::oldest()->get() : Role::whereNotIn('id', [1])->oldest()->get();
+        $roles = auth()->user()->hasRole('super-admin') ? Role::all() : Role::whereNotIn('id', [1])->get();
         return view('pages.setting.role.index', compact('roles'));
     }
 
@@ -26,11 +25,19 @@ class RoleController extends Controller
 
     public function edit(Role $role)
     {
+        if ($role->id < 3) {
+            return redirect()->route('setting.role.index');
+        }
+        
         return view('pages.setting.role.edit', compact('role'));
     }
 
     public function update(Request $request, Role $role)
     {
+        if ($role->id < 3) {
+            return redirect()->route('setting.role.index');
+        }
+        
         request()->validate(['name' => ['required', 'string', 'unique:roles', 'max:50']]);
 
         $role->update(['name' => strtolower($request->name)]);
@@ -41,6 +48,10 @@ class RoleController extends Controller
 
     public function destroy(Role $role)
     {
+        if ($role->id < 3) {
+            return redirect()->route('setting.role.index');
+        }
+        
         try {
             $role->delete();
             $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];

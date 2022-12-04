@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Employee;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 
@@ -19,13 +22,7 @@ class EmployeeController extends Controller
     {
         $employees = DB::table('employees')
             ->join('users', 'employees.user_id', '=', 'users.id')
-            ->select(
-                'employees.*',
-                'users.name',
-                'users.email',
-                'users.phone',
-                'users.image'
-            )
+            ->select('employees.*', 'users.name', 'users.email', 'users.phone', 'users.image')
             ->orderByDesc('employees.updated_at')->get()->toArray();
         
         return view('pages.employee.index', compact('employees'));
@@ -38,7 +35,8 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        return view('pages.employee.create');
+        $roles = Role::whereNotIn('id', [1])->select('id', 'name')->get();
+        return view('pages.employee.create', compact('roles'));
     }
 
     /**
@@ -49,13 +47,17 @@ class EmployeeController extends Controller
      */
     public function store(StoreEmployeeRequest $request)
     {
+        $image = $request->hasFile('image') ? $this->storeFile('employees/avatar', $request->file('image')) : null;
+        $password = Str::random(8);
+        
         DB::beginTransaction();
         try {
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => bcrypt('q1w2e3r4t5'),
-                'phone' => $request->phone
+                'phone' => $request->phone,
+                'image' => $image
             ]);
             Employee::create([
                 'user_id' => $user->id,
@@ -63,6 +65,7 @@ class EmployeeController extends Controller
                 'nid' => $request->nid,
                 'address' => $request->address
             ]);
+            $user->assignRole(Role::findById($request->role)->name);
             DB::commit();
             $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
         } catch (\Exception $e) {
@@ -81,7 +84,21 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        return view('pages.employee.show', compact('employee'));
+        $employee = User::join('employees', 'users.id', '=', 'employees.user_id')->where('employees.id', $employee->id)
+            ->select(
+                'users.*',
+                'employees.id as employee_id',
+                'employees.position',
+                'employees.city',
+                'employees.address',
+                'employees.nid',
+                'employees.experience',
+                'employees.salary',
+                'employees.vacation'
+            )->first();
+        $roles = Role::whereNotIn('id', [1])->select('id', 'name')->get();
+
+        return view('pages.employee.show', compact('employee', 'roles'));
     }
 
     /**
@@ -92,9 +109,9 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
-        $user = User::where('id', $employee->user_id)->first();
+        // $user = User::where('id', $employee->user_id)->first();
         
-        return view('pages.employee.edit', compact('employee', 'user'));
+        // return view('pages.employee.edit', compact('employee', 'user'));
     }
 
     /**
@@ -106,6 +123,9 @@ class EmployeeController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
+        $user = User::find($employee->user_id);
+        $role = Role::findById($request->role)->name;
+        
         DB::beginTransaction();
         try {
             $employee->update([
@@ -114,10 +134,14 @@ class EmployeeController extends Controller
                 'salary' => $request->salary,
                 'address' => $request->address
             ]);
-            $user = User::where('id', $employee->user_id)->update([
+            $user->update([
                 'name' => $request->name,
+                // 'email' => $request->email,
                 'phone' => $request->phone
             ]);
+            if ($user->getRoleNames()->first() != $role) {
+                $user->assignRole($role);
+            }
             DB::commit();
             $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
         } catch (\Exception $e) {
@@ -148,5 +172,25 @@ class EmployeeController extends Controller
         }
 
         return back()->with(compact('alert'));
+    }
+
+    public function passwordUpdate(Employee $employee)
+    {
+        // dd($employee);
+    }
+
+    private function storeFile(string $location, $file, $replace = null)
+    {
+        try {
+            $name = $file->hashName();
+            $file->storeAs($location, $name, 'public');
+            if ($replace) {
+                Storage::disk('public')->delete($location . '/' . $replace);
+            }
+            return $name;
+        } catch (\Exception $th) {
+            $alert = (object) ['status' => 'warning', 'message' => 'Something went wrong, file not uploaded'];
+            return back()->with(compact('alert'));
+        }
     }
 }

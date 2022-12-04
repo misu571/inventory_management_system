@@ -20,7 +20,8 @@ use Illuminate\Support\Facades\Artisan;
 //         '--force' => true,
 //         '--seed' => true
 //     ]);
-//     $alert = (object) ['status' => 'success', 'message' => 'Database migrated'];
+//     Artisan::call('optimize:clear');
+//     $alert = (object) ['status' => 'success', 'message' => 'Database migrated & optimized'];
 //     return redirect('/')->with(compact('alert'));
 // });
 // Route::get('/optimize-clear', function () {
@@ -59,6 +60,9 @@ Route::middleware(['auth'])->group(function () {
     // Route::get('/pos', [App\Http\Controllers\PosController::class, 'index'])->name('pos');
     // Route::post('/pos/search-product', [App\Http\Controllers\PosController::class, 'searchProduct'])->name('search.product');
 
+    // Employee
+    Route::patch('/employee/{employee}/password/update', [App\Http\Controllers\EmployeeController::class, 'passwordUpdate'])->name('employee.password.update');
+
     // Product
     Route::post('/product/sub-categories', [App\Http\Controllers\ProductController::class, 'subCategories'])->name('product.subCategories');
 
@@ -76,12 +80,21 @@ Route::middleware(['auth'])->group(function () {
         // 'salary' => App\Http\Controllers\SalaryController::class,
     ]);
 
+    // Role
     Route::group(['prefix' => '/setting/role', 'as' => 'setting.role.'], function () {
-        // Role
         Route::get('/', [App\Http\Controllers\RoleController::class, 'index'])->name('index');
         Route::post('/store', [App\Http\Controllers\RoleController::class, 'store'])->name('store');
         Route::get('/{role}/edit', [App\Http\Controllers\RoleController::class, 'edit'])->name('edit');
         Route::patch('/{role}', [App\Http\Controllers\RoleController::class, 'update'])->name('update');
         Route::delete('/{role}', [App\Http\Controllers\RoleController::class, 'destroy'])->name('destroy');
+    });
+
+    // Permission
+    Route::group(['prefix' => '/setting/permission', 'as' => 'setting.permission.'], function () {
+        Route::get('/', [App\Http\Controllers\PermissionController::class, 'index'])->name('index');
+        Route::post('/store', [App\Http\Controllers\PermissionController::class, 'store'])->name('store');
+        Route::get('/{permission}/edit', [App\Http\Controllers\PermissionController::class, 'edit'])->name('edit');
+        Route::patch('/{permission}', [App\Http\Controllers\PermissionController::class, 'update'])->name('update');
+        Route::delete('/{permission}', [App\Http\Controllers\PermissionController::class, 'destroy'])->name('destroy');
     });
 });

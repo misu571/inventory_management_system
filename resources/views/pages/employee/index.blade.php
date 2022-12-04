@@ -9,7 +9,7 @@
     <x-pages.elements.table>
         <x-slot:colunm_name>{{ 'Name,image, position, Email, Phone, NID' }}</x-slot>
         @foreach ($employees as $employee)
-            @php $image = $employee->image ? asset('storage/avatar/employee/' . $employee->image) : asset('images/avatar.png') @endphp
+            @php $image = $employee->image ? asset('storage/employees/avatar/' . $employee->image) : asset('images/avatar.png') @endphp
             <tr id="{{ $employee->id }}">
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $employee->name }}</td>
@@ -23,7 +23,7 @@
                 <td>{{ $employee->phone }}</td>
                 <td>{{ $employee->nid }}</td>
                 <td>
-                    <x-pages.elements.action btn="a" name="employee" :nameId="$employee->id" />
+                    <x-pages.elements.action btn="vd" name="employee" :nameId="$employee->id" />
                 </td>
             </tr>
         @endforeach

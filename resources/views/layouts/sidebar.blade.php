@@ -101,15 +101,18 @@
                     </a>
                 </li>
                 @endif
-                @if (auth()->user()->id < 3)
+                @if (auth()->user()->hasRole('super-admin') || auth()->user()->hasRole('admin'))
                 <li><div class="dropdown-divider"></div></li>
-                <li class="dropdown @if(Route::is('setting.role.*')) show @endif">
+                <li class="dropdown @if(Route::is('setting.*')) show @endif">
                     <a href="javascript:;" class="dropdown-toggle">
                         <span class="micon dw dw-settings2"></span><span class="mtext">Settings</span>
                     </a>
                     <ul class="submenu">
                         @if (Route::has('setting.role.index'))
-                        <li><a href="{{ route('setting.role.index') }}" class="@if(Route::is('setting.role.*')) active @endif">User Roles</a></li>
+                        <li><a href="{{ route('setting.role.index') }}" class="@if(Route::is('setting.role.*')) active @endif">Roles</a></li>
+                        @endif
+                        @if (Route::has('setting.permission.index'))
+                        <li><a href="{{ route('setting.permission.index') }}" class="@if(Route::is('setting.permission.*')) active @endif">Permissions</a></li>
                         @endif
                     </ul>
                 </li>

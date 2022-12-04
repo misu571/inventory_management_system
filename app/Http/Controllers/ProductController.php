@@ -53,7 +53,7 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
         $array = $request->validated();
-        $image = $request->hasFile('image') ? $this->storeFile($request->file('image')) : null;
+        $image = $request->hasFile('image') ? $this->storeFile('products', $request->file('image')) : null;
         data_set($array, 'purchase_at', date_format(date_create($request->purchase_at), 'Y-m-d'));
         $data = array_replace(Arr::except($array, ['brand', 'category', 'sub_category', 'supplier']), [
             'brand_id' => $request->brand,
@@ -106,7 +106,7 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, Product $product)
     {
         $array = $request->validated();
-        $image = $request->hasFile('image') ? $this->storeFile($request->file('image'), $product->image, 'products') : null;
+        $image = $request->hasFile('image') ? $this->storeFile('products', $request->file('image'), $product->image) : null;
         data_set($array, 'purchase_at', date_format(date_create($request->purchase_at), 'Y-m-d'));
         $data = array_replace(Arr::except($array, ['brand', 'category', 'sub_category', 'supplier']), [
             'brand_id' => $request->brand,
@@ -144,13 +144,13 @@ class ProductController extends Controller
         return response()->json(compact('subCategories'));
     }
 
-    private function storeFile($file, $updateWith = null, string $filePath = null)
+    private function storeFile(string $location, $file, $replace = null)
     {
         try {
             $name = $file->hashName();
-            $file->storeAs('products', $name, 'public');
-            if ($updateWith) {
-                Storage::disk('public')->delete($filePath . '/' . $updateWith);
+            $file->storeAs($location, $name, 'public');
+            if ($replace) {
+                Storage::disk('public')->delete($location . '/' . $replace);
             }
             return $name;
         } catch (\Exception $th) {
