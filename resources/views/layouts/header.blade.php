@@ -7,12 +7,12 @@
             <div class="dropdown">
                 <a class="dropdown-toggle" href="#" role="button" data-toggle="dropdown">
                     <span class="user-icon">
-                        <img src="{{ auth()->user()->image ? asset('storage/avatar/' . auth()->user()->image) : asset('images/avatar.png') }}" alt="">
+                        <img src="{{ auth()->user()->image ? asset('storage/employees/avatar/' . auth()->user()->image) : asset('images/avatar.png') }}" alt="">
                     </span>
                     <span class="user-name">{{ auth()->user()->name }}</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
-                    <a class="dropdown-item" href="profile.html"><i class="dw dw-user1"></i> Profile</a>
+                    <a class="dropdown-item" href="{{ route('profile.index') }}"><i class="dw dw-user1"></i> Profile</a>
                     <a class="dropdown-item" @if (Route::has('logout')) href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" @else href="{{ url('/') }}" @endif>
                         <i class="dw dw-logout"></i> Log Out
                     </a>

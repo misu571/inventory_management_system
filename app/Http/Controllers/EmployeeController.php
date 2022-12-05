@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Employee;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Storage;
@@ -174,9 +175,19 @@ class EmployeeController extends Controller
         return back()->with(compact('alert'));
     }
 
-    public function passwordUpdate(Employee $employee)
+    public function passwordUpdate(Request $request, Employee $employee)
     {
         // dd($employee);
+    }
+
+    public function imageUpdate(Request $request, Employee $employee)
+    {
+        request()->validate(['image' => 'sometimes|file|image|max:2000']);
+        $image = $request->hasFile('image') ? $this->storeFile('employees/avatar', $request->file('image'), $employee->image) : null;
+        User::where('id', $employee->user_id)->update(['image' => $image]);
+        $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+
+        return back()->with(compact('alert'));
     }
 
     private function storeFile(string $location, $file, $replace = null)

@@ -48,10 +48,12 @@ Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
     // Loged in user's profile
-    // Route::group(['prefix' => '/profile', 'as' => 'profile.'], function () {
-    //     Route::get('/', [App\Http\Controllers\ProfileController::class, 'index'])->name('index');
-    //     Route::post('/password-update', [App\Http\Controllers\ProfileController::class, 'passwordUpdate'])->name('password.update');
-    // });
+    Route::group(['prefix' => '/profile', 'as' => 'profile.'], function () {
+        Route::get('/', [App\Http\Controllers\ProfileController::class, 'index'])->name('index');
+        Route::patch('/{user}', [App\Http\Controllers\ProfileController::class, 'update'])->name('update');
+        Route::patch('/{user}/password/update', [App\Http\Controllers\ProfileController::class, 'passwordUpdate'])->name('password.update');
+        Route::patch('/{user}/image/update', [App\Http\Controllers\ProfileController::class, 'imageUpdate'])->name('image.update');
+    });
 
     // Dashboard
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -62,6 +64,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Employee
     Route::patch('/employee/{employee}/password/update', [App\Http\Controllers\EmployeeController::class, 'passwordUpdate'])->name('employee.password.update');
+    Route::patch('/employee/{employee}/image/update', [App\Http\Controllers\EmployeeController::class, 'imageUpdate'])->name('employee.image.update');
 
     // Product
     Route::post('/product/sub-categories', [App\Http\Controllers\ProductController::class, 'subCategories'])->name('product.subCategories');
