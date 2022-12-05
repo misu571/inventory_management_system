@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Employee;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
@@ -30,15 +33,44 @@ class ProfileController extends Controller
 
     public function update(Request $request, User $user)
     {
-        // $brand->update($request->validated());
-        // $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+        request()->validate([
+            'name' => 'required|string',
+            'phone' => 'required|string'
+        ]);
+        if (!auth()->user()->hasRole('super-admin')) {
+            request()->validate(['address' => 'nullable|string|max:200']);
+        }
+        
+        DB::beginTransaction();
+        try {
+            $user->update([
+                'name' => $request->name,
+                'phone' => $request->phone
+            ]);
+            if (!auth()->user()->hasRole('super-admin')) {
+                Employee::where('user_id', $user->id)->update(['address' => $request->address]);
+            }
+            DB::commit();
+            $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+        } catch (\Exception $e) {
+            $alert = (object) ['status' => 'danger', 'message' => 'Something went wrong!'];
+            DB::rollback();
+        }
 
-        // return back()->with(compact('alert'));
+        return back()->with(compact('alert'));
     }
 
     public function passwordUpdate(Request $request, User $user)
     {
-        // dd($employee);
+        request()->validate([
+            'old_password' => 'required|string|current_password',
+            'password' => 'required|string|min:8|confirmed'
+        ]);
+
+        $user->update(['password' => bcrypt($request->password)]);
+        $alert = (object) ['status' => 'success', 'message' => 'Password has been updated'];
+        
+        return back()->with(compact('alert'));
     }
 
     public function imageUpdate(Request $request, User $user)
@@ -46,7 +78,7 @@ class ProfileController extends Controller
         request()->validate(['image' => 'sometimes|file|image|max:2000']);
         $image = $request->hasFile('image') ? $this->storeFile('employees/avatar', $request->file('image'), $user->image) : null;
         $user->update(['image' => $image]);
-        $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+        $alert = (object) ['status' => 'success', 'message' => 'Profile picture has been updated'];
 
         return back()->with(compact('alert'));
     }

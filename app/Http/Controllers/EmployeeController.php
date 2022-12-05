@@ -177,7 +177,12 @@ class EmployeeController extends Controller
 
     public function passwordUpdate(Request $request, Employee $employee)
     {
-        // dd($employee);
+        request()->validate(['password' => 'required|string|min:8|confirmed']);
+
+        User::where('id', $employee->user_id)->update(['password' => bcrypt($request->password)]);
+        $alert = (object) ['status' => 'success', 'message' => 'Password has been updated'];
+
+        return back()->with(compact('alert'));
     }
 
     public function imageUpdate(Request $request, Employee $employee)
@@ -185,7 +190,7 @@ class EmployeeController extends Controller
         request()->validate(['image' => 'sometimes|file|image|max:2000']);
         $image = $request->hasFile('image') ? $this->storeFile('employees/avatar', $request->file('image'), $employee->image) : null;
         User::where('id', $employee->user_id)->update(['image' => $image]);
-        $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+        $alert = (object) ['status' => 'success', 'message' => 'Profile picture has been updated'];
 
         return back()->with(compact('alert'));
     }

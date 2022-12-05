@@ -62,7 +62,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md">
+    <div class="col-md-6">
         <div class="card-box">
             <div class="row p-4">
                 <div class="col-md-6" style="border-right: 2px dashed #ecf0f4;">
