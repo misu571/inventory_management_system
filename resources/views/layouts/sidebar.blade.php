@@ -108,12 +108,24 @@
                         <span class="micon dw dw-settings2"></span><span class="mtext">Settings</span>
                     </a>
                     <ul class="submenu">
+                        @if (Route::has('setting.role-permission.index'))
+                        <li><a href="{{ route('setting.role-permission.index') }}" class="@if(Route::is('setting.role-permission.*')) active @endif">Roles & Permissions</a></li>
+                        @endif
                         @if (Route::has('setting.role.index'))
                         <li><a href="{{ route('setting.role.index') }}" class="@if(Route::is('setting.role.*')) active @endif">Roles</a></li>
                         @endif
                         @if (Route::has('setting.permission.index'))
                         <li><a href="{{ route('setting.permission.index') }}" class="@if(Route::is('setting.permission.*')) active @endif">Permissions</a></li>
                         @endif
+                        <li class="dropdown">
+                            <a href="javascript:;" class="dropdown-toggle">
+                                <span class="micon fa fa-plug"></span><span class="mtext">Level 2</span>
+                            </a>
+                            <ul class="submenu child">
+                                <li><a href="javascript:;">Level 2</a></li>
+                                <li><a href="javascript:;">Level 2</a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
                 @endif

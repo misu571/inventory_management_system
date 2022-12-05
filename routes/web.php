@@ -83,6 +83,15 @@ Route::middleware(['auth'])->group(function () {
         // 'salary' => App\Http\Controllers\SalaryController::class,
     ]);
 
+    // Role and Permission
+    Route::group(['prefix' => '/setting/role-permission', 'as' => 'setting.role-permission.'], function () {
+        Route::get('/', [App\Http\Controllers\RolesAndPermissionsController::class, 'index'])->name('index');
+        Route::post('/role/store', [App\Http\Controllers\RolesAndPermissionsController::class, 'roleStore'])->name('role.store');
+        // Route::get('/{role}/edit', [App\Http\Controllers\RoleController::class, 'edit'])->name('edit');
+        // Route::patch('/{role}', [App\Http\Controllers\RoleController::class, 'update'])->name('update');
+        // Route::delete('/{role}', [App\Http\Controllers\RoleController::class, 'destroy'])->name('destroy');
+    });
+
     // Role
     Route::group(['prefix' => '/setting/role', 'as' => 'setting.role.'], function () {
         Route::get('/', [App\Http\Controllers\RoleController::class, 'index'])->name('index');

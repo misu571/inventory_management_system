@@ -13,7 +13,7 @@
                 <h4 class="text-primary h4 my-0 mr-3">Create New Role</h4>
             </div>
             <div class="p-3">
-                <form action="{{ route('setting.role.store') }}" method="post">
+                <form action="{{ route('setting.role-permission.role.store') }}" method="post">
                     @csrf
                     <div class="input-group mb-0">
                         <input type="text" id="name" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="Add new role" aria-label="Add new role" aria-describedby="role">
@@ -71,6 +71,63 @@
         </div>
     </div>
     <div class="col-md-6">
+        <div class="card-box mb-3">
+            <div class="p-3 d-flex justify-content-start align-items-center">
+                <h4 class="text-primary h4 my-0 mr-3">Create New Permission</h4>
+            </div>
+            <div class="p-3">
+                <form action="#" method="post">
+                    @csrf
+                    <div class="input-group mb-0">
+                        <input type="text" id="name" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="Add new permission" aria-label="Add new permission" aria-describedby="permission">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-primary" type="submit" id="permission">Create New</button>
+                        </div>
+                        @error('name')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="card-box">
+            <div class="p-3 d-flex justify-content-start align-items-center">
+                <h4 class="text-primary h4 my-0 mr-3">Permissions</h4>
+            </div>
+            <div class="pb-20">
+                <div class="table-responsive">
+                    <table class="table data-table stripe hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th class="text-right datatable-nosort">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($permissions as $permission)
+                                <tr id="{{ $permission->id }}">
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $permission->name }}</td>
+                                    <td class="text-right">
+                                        <div class="table-actions d-flex justify-content-end">
+                                            <a href="{{ route('setting.permission.edit', [$permission->id]) }}" data-color="#265ed7" style="color: rgb(38, 94, 215);">
+                                                <i class="icon-copy dw dw-edit2" data-toggle="tooltip" title="Edit"></i>
+                                            </a>
+                                            <a href="#deleteModal" data-toggle="modal" data-route="{{ route('setting.permission.destroy', [$permission->id]) }}" data-color="#e95959" style="color: rgb(233, 89, 89);">
+                                                <i class="icon-copy dw dw-delete-3" data-toggle="tooltip" title="Delete"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
