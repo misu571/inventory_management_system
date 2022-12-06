@@ -3,8 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class UserSeeder extends Seeder
 {
@@ -64,7 +65,7 @@ class UserSeeder extends Seeder
         foreach ($data as $row) {
             $user = User::factory()->create($row);
             if ($user->email == 'shah.sami77@gmail.com' || $user->email == 'jubir.hosn@gmail.com') {
-                $user->assignRole('super-admin');
+                $user->assignRole(Role::findById(1)->name);
             }
         }
     }
