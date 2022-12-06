@@ -76,11 +76,19 @@ class RolesAndPermissionsController extends Controller
 
     public function permissionEdit(Permission $permission)
     {
+        if ($permission->id < 18) {
+            return redirect()->route('setting.role-permission.index');
+        }
+        
         return view('pages.setting.role_permission.permission_edit', compact('permission'));
     }
 
     public function permissionUpdate(Request $request, Permission $permission)
     {
+        if ($permission->id < 18) {
+            return redirect()->route('setting.role-permission.index');
+        }
+        
         request()->validate(['name' => ['required', 'string', 'unique:permissions', 'max:50']]);
 
         $permission->update(['name' => strtolower($request->name)]);
@@ -91,6 +99,10 @@ class RolesAndPermissionsController extends Controller
 
     public function permissionDestroy(Permission $permission)
     {
+        if ($permission->id < 18) {
+            return redirect()->route('setting.role-permission.index');
+        }
+        
         try {
             $permission->delete();
             $alert = (object) ['status' => 'success', 'message' => 'Permission has been deleted'];
