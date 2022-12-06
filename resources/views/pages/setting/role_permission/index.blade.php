@@ -50,11 +50,18 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ (ucfirst($role->name)) }}</td>
                                     <td class="text-center">
-                                        <a href="#assignPermissions" class="btn btn-sm btn-light px-2 py-1 m-0" data-toggle="modal" role="button">Assign</a>
+                                        @if ($role->id > 2)
+                                            <a href="#assignPermissions" data-route="{{ route('setting.role-permission.permission.assign.role', [$role->id]) }}" class="btn btn-sm btn-light px-2 py-1 m-0" data-toggle="modal" role="button">Assign</a>
+                                        @else
+                                            <i class="icon-copy ti-more-alt"></i>
+                                        @endif
                                     </td>
                                     <td class="text-right">
                                         @if ($role->id > 2)
                                             <div class="table-actions d-flex justify-content-end">
+                                                <a href="#showPermissions" data-route="{{ route('setting.role-permission.permission.assign.role.destroy', [$role->id]) }}" data-permissions="{{ $role->getAllPermissions() }}" data-toggle="modal" data-color="#6c757d" style="color: rgb(108,117,125);">
+                                                    <i class="icon-copy dw dw-view" data-toggle="tooltip" title="View permissions"></i>
+                                                </a>
                                                 <a href="{{ route('setting.role-permission.role.edit', [$role->id]) }}" data-color="#265ed7" style="color: rgb(38, 94, 215);">
                                                     <i class="icon-copy dw dw-edit2" data-toggle="tooltip" title="Edit"></i>
                                                 </a>
@@ -70,34 +77,6 @@
                             @endforeach
                         </tbody>
                     </table>
-                </div>
-            </div>
-            <div class="modal fade" id="assignPermissions" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Assign Permissions to Role</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <form action="" method="post">
-                            @csrf
-                            <div class="modal-body">
-                                <div class="form-group mb-0">
-                                    <label>Multiple Select</label>
-                                    <select class="custom-select2 form-control" multiple="multiple" style="width: 100%">
-                                        @foreach ($permissions as $permission)
-                                            <option value="{{ $permission->id }}">{{ $permission->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary">Save changes</button>
-                            </div>
-                        </form>
-                    </div>
                 </div>
             </div>
         </div>
@@ -167,8 +146,13 @@
     </div>
 </div>
 
-<!-- Delete modal -->
+<!-- All Modals -->
+<!-- Delete -->
 @include('pages.elements.modals.delete')
+<!-- Assign permissions -->
+@include('pages.elements.modals.assign_permissions')
+<!-- Show permissions -->
+@include('pages.elements.modals.show_permissions')
 @endsection
 
 @section('deskapp_scripts')
@@ -191,5 +175,42 @@
     $('#deleteModal').on('show.bs.modal', function (event) {
         $(this).find('form').attr('action', $(event.relatedTarget).data('route'))
     })
+
+    // Assign permissions
+    $('#assignPermissions').on('show.bs.modal', function (event) {
+        $(this).find('form').attr('action', $(event.relatedTarget).data('route'))
+    })
+
+    // Show role's permissions
+    $('#showPermissions').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget);
+        let permissions = button.data('permissions');
+        let route = button.data('route');
+        let list = '<li class="list-group-item text-center text-muted">No permission assigned</li>';
+        if (permissions.length > 0) {
+            list = '';
+            $.each(permissions, function(index, row) {
+                list += `<li class="list-group-item d-flex justify-content-between">
+                        <span>${row.name}</span>
+                        <button type="button" class="close" onclick="removePermission(${route}, ${row.id})">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </li>`;
+            });
+        }
+        $(this).find('.list-group').empty().append(list);
+    })
+
+    // function removePermission(route, permission) {
+    //     $.ajaxSetup({headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'}});
+    //     $.ajax({
+    //         url: `${route}`,
+    //         method: "POST",
+    //         data: {permission: permission},
+    //         success: function (result) {
+    //             console.log(result);
+    //         }
+    //     });
+    // }
 </script>
 @endsection

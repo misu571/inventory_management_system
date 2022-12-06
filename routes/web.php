@@ -47,7 +47,7 @@ Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLoginFor
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
-    // Loged in user's profile
+    // Loged-in user's profile
     Route::group(['prefix' => '/profile', 'as' => 'profile.'], function () {
         Route::get('/', [App\Http\Controllers\ProfileController::class, 'index'])->name('index');
         Route::patch('/{user}', [App\Http\Controllers\ProfileController::class, 'update'])->name('update');
@@ -85,6 +85,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Role and Permission
     Route::group(['prefix' => '/setting/role-permission', 'as' => 'setting.role-permission.'], function () {
+        // Access, Create, Update & Delete
         Route::get('/', [App\Http\Controllers\RolesAndPermissionsController::class, 'index'])->name('index');
         Route::post('/role/store', [App\Http\Controllers\RolesAndPermissionsController::class, 'roleStore'])->name('role.store');
         Route::get('/role/{role}/edit', [App\Http\Controllers\RolesAndPermissionsController::class, 'roleEdit'])->name('role.edit');
@@ -94,5 +95,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/permission/{permission}/edit', [App\Http\Controllers\RolesAndPermissionsController::class, 'permissionEdit'])->name('permission.edit');
         Route::patch('/permission/{permission}', [App\Http\Controllers\RolesAndPermissionsController::class, 'permissionUpdate'])->name('permission.update');
         Route::delete('/permission/{permission}', [App\Http\Controllers\RolesAndPermissionsController::class, 'permissionDestroy'])->name('permission.destroy');
+        
+        // Assign
+        Route::post('/permission/assign/role/{role}', [App\Http\Controllers\RolesAndPermissionsController::class, 'permissionAssignRole'])->name('permission.assign.role');
+        Route::post('/permission/assign/role/{role}/delete', [App\Http\Controllers\RolesAndPermissionsController::class, 'permissionAssignRoleDestroy'])->name('permission.assign.role.destroy');
     });
 });

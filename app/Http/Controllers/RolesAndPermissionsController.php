@@ -112,4 +112,32 @@ class RolesAndPermissionsController extends Controller
 
         return back()->with(compact('alert'));
     }
+
+    public function permissionAssignRole(Request $request, Role $role)
+    {
+        if ($role->id < 3) {
+            return redirect()->route('setting.role-permission.index');
+        }
+
+        $permissions = [];
+        $arr = explode(',', $request->permissions);
+        foreach ($arr as $value) {
+            try {
+                array_push($permissions, Permission::findById($value)->name);
+            } catch (\Throwable $th) {
+                $alert = (object) ['status' => 'danger', 'message' => 'Wrong permission data!'];
+                return redirect()->route('setting.role-permission.index')->with(compact('alert'));
+            }
+        }
+        $role->givePermissionTo($permissions);
+        $alert = (object) ['status' => 'success', 'message' => 'Permission(s) has been assigned'];
+
+        return redirect()->route('setting.role-permission.index')->with(compact('alert'));
+    }
+
+    public function permissionAssignRoleDestroy(Request $request, Role $role)
+    {
+        // $role->revokePermissionTo($permission);
+        return response()->json(compact('request'));
+    }
 }
