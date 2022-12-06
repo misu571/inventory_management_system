@@ -72,7 +72,7 @@ class RolesAndPermissionsSeeder extends Seeder
         ]);
 
         Role::insert([
-            ['name' => 'super admin', 'guard_name' => 'web', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'super-admin', 'guard_name' => 'web', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'admin', 'guard_name' => 'web', 'created_at' => now(), 'updated_at' => now()]
         ]);
     }

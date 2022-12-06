@@ -101,7 +101,7 @@
                     </a>
                 </li>
                 @endif
-                @if (auth()->user()->hasRole('super admin') || auth()->user()->hasRole('admin'))
+                @hasanyrole('super-admin|admin')
                 <li><div class="dropdown-divider"></div></li>
                 <li class="dropdown @if(Route::is('setting.*')) show @endif">
                     <a href="javascript:;" class="dropdown-toggle">
@@ -123,7 +123,7 @@
                         </li>
                     </ul>
                 </li>
-                @endif
+                @endhasanyrole
             </ul>
         </div>
     </div>
