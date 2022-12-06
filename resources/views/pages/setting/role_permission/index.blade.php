@@ -16,11 +16,11 @@
                 <form action="{{ route('setting.role-permission.role.store') }}" method="post">
                     @csrf
                     <div class="input-group mb-0">
-                        <input type="text" id="name" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="Add new role" aria-label="Add new role" aria-describedby="role">
+                        <input type="text" id="role_name" name="role_name" class="form-control @error('role_name') is-invalid @enderror" value="{{ old('role_name') }}" placeholder="Add new role" aria-label="Add new role" aria-describedby="role">
                         <div class="input-group-append">
                             <button class="btn btn-outline-primary" type="submit" id="role">Create New</button>
                         </div>
-                        @error('name')
+                        @error('role_name')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -51,10 +51,10 @@
                                     <td class="text-right">
                                         @if ($role->id > 2)
                                             <div class="table-actions d-flex justify-content-end">
-                                                <a href="{{ route('setting.role.edit', [$role->id]) }}" data-color="#265ed7" style="color: rgb(38, 94, 215);">
+                                                <a href="{{ route('setting.role-permission.role.edit', [$role->id]) }}" data-color="#265ed7" style="color: rgb(38, 94, 215);">
                                                     <i class="icon-copy dw dw-edit2" data-toggle="tooltip" title="Edit"></i>
                                                 </a>
-                                                <a href="#deleteModal" data-toggle="modal" data-route="{{ route('setting.role.destroy', [$role->id]) }}" data-color="#e95959" style="color: rgb(233, 89, 89);">
+                                                <a href="#deleteModal" data-toggle="modal" data-route="{{ route('setting.role-permission.role.destroy', [$role->id]) }}" data-color="#e95959" style="color: rgb(233, 89, 89);">
                                                     <i class="icon-copy dw dw-delete-3" data-toggle="tooltip" title="Delete"></i>
                                                 </a>
                                             </div>
@@ -76,14 +76,14 @@
                 <h4 class="text-primary h4 my-0 mr-3">Create New Permission</h4>
             </div>
             <div class="p-3">
-                <form action="#" method="post">
+                <form action="{{ route('setting.role-permission.permission.store') }}" method="post">
                     @csrf
                     <div class="input-group mb-0">
-                        <input type="text" id="name" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" placeholder="Add new permission" aria-label="Add new permission" aria-describedby="permission">
+                        <input type="text" id="permission_name" name="permission_name" class="form-control @error('permission_name') is-invalid @enderror" value="{{ old('permission_name') }}" placeholder="Add new permission" aria-label="Add new permission" aria-describedby="permission">
                         <div class="input-group-append">
                             <button class="btn btn-outline-primary" type="submit" id="permission">Create New</button>
                         </div>
-                        @error('name')
+                        @error('permission_name')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -113,10 +113,10 @@
                                     <td>{{ $permission->name }}</td>
                                     <td class="text-right">
                                         <div class="table-actions d-flex justify-content-end">
-                                            <a href="{{ route('setting.permission.edit', [$permission->id]) }}" data-color="#265ed7" style="color: rgb(38, 94, 215);">
+                                            <a href="{{ route('setting.role-permission.permission.edit', [$permission->id]) }}" data-color="#265ed7" style="color: rgb(38, 94, 215);">
                                                 <i class="icon-copy dw dw-edit2" data-toggle="tooltip" title="Edit"></i>
                                             </a>
-                                            <a href="#deleteModal" data-toggle="modal" data-route="{{ route('setting.permission.destroy', [$permission->id]) }}" data-color="#e95959" style="color: rgb(233, 89, 89);">
+                                            <a href="#deleteModal" data-toggle="modal" data-route="{{ route('setting.role-permission.permission.destroy', [$permission->id]) }}" data-color="#e95959" style="color: rgb(233, 89, 89);">
                                                 <i class="icon-copy dw dw-delete-3" data-toggle="tooltip" title="Delete"></i>
                                             </a>
                                         </div>
