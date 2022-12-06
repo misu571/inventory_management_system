@@ -40,6 +40,7 @@
                             <tr>
                                 <th>#</th>
                                 <th>Name</th>
+                                <th class="text-center">Permissions</th>
                                 <th class="text-right datatable-nosort">Action</th>
                             </tr>
                         </thead>
@@ -48,6 +49,9 @@
                                 <tr id="{{ $role->id }}">
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ (ucfirst($role->name)) }}</td>
+                                    <td class="text-center">
+                                        <a href="#assignPermissions" class="btn btn-sm btn-light px-2 py-1 m-0" data-toggle="modal" role="button">Assign</a>
+                                    </td>
                                     <td class="text-right">
                                         @if ($role->id > 2)
                                             <div class="table-actions d-flex justify-content-end">
@@ -66,6 +70,34 @@
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+            </div>
+            <div class="modal fade" id="assignPermissions" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Assign Permissions to Role</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="" method="post">
+                            @csrf
+                            <div class="modal-body">
+                                <div class="form-group mb-0">
+                                    <label>Multiple Select</label>
+                                    <select class="custom-select2 form-control" multiple="multiple" style="width: 100%">
+                                        @foreach ($permissions as $permission)
+                                            <option value="{{ $permission->id }}">{{ $permission->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

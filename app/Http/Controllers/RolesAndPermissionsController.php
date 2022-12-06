@@ -76,7 +76,7 @@ class RolesAndPermissionsController extends Controller
 
     public function permissionEdit(Permission $permission)
     {
-        if ($permission->id < 18) {
+        if ($permission->id < 19) {
             return redirect()->route('setting.role-permission.index');
         }
         
@@ -85,7 +85,7 @@ class RolesAndPermissionsController extends Controller
 
     public function permissionUpdate(Request $request, Permission $permission)
     {
-        if ($permission->id < 18) {
+        if ($permission->id < 19) {
             return redirect()->route('setting.role-permission.index');
         }
         
@@ -99,7 +99,7 @@ class RolesAndPermissionsController extends Controller
 
     public function permissionDestroy(Permission $permission)
     {
-        if ($permission->id < 18) {
+        if ($permission->id < 19) {
             return redirect()->route('setting.role-permission.index');
         }
         

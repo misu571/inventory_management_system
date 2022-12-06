@@ -71,9 +71,8 @@ class RolesAndPermissionsSeeder extends Seeder
             ['name' => 'product delete', 'guard_name' => 'web', 'created_at' => now(), 'updated_at' => now()]
         ]);
 
-        Role::insert([
-            ['name' => 'super-admin', 'guard_name' => 'web', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'admin', 'guard_name' => 'web', 'created_at' => now(), 'updated_at' => now()]
-        ]);
+        Role::create(['name' => 'super-admin'])->givePermissionTo(Permission::all());
+        Role::create(['name' => 'admin'])->givePermissionTo(Permission::all());
+        Role::create(['name' => 'manager']);
     }
 }
