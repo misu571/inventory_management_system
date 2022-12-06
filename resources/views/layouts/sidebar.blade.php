@@ -101,7 +101,7 @@
                     </a>
                 </li>
                 @endif
-                @if (auth()->user()->hasRole('super-admin') || auth()->user()->hasRole('admin'))
+                @if (auth()->user()->hasRole('super admin') || auth()->user()->hasRole('admin'))
                 <li><div class="dropdown-divider"></div></li>
                 <li class="dropdown @if(Route::is('setting.*')) show @endif">
                     <a href="javascript:;" class="dropdown-toggle">
@@ -113,11 +113,12 @@
                         @endif
                         <li class="dropdown">
                             <a href="javascript:;" class="dropdown-toggle">
-                                <span class="micon fa fa-plug"></span><span class="mtext">Level 2</span>
+                                <span class="micon dw dw-layers"></span><span class="mtext">Assign</span>
                             </a>
                             <ul class="submenu child">
-                                <li><a href="javascript:;">Level 2</a></li>
-                                <li><a href="javascript:;">Level 2</a></li>
+                                <li><a href="javascript:;">Role to User</a></li>
+                                <li><a href="javascript:;">Permissions to Role</a></li>
+                                <li><a href="javascript:;">Permissions to User</a></li>
                             </ul>
                         </li>
                     </ul>
