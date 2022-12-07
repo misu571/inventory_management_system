@@ -40,7 +40,6 @@
                             <tr>
                                 <th>#</th>
                                 <th>Name</th>
-                                <th class="text-center">Permissions</th>
                                 <th class="text-right datatable-nosort">Action</th>
                             </tr>
                         </thead>
@@ -49,19 +48,9 @@
                                 <tr id="{{ $role->id }}">
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ (ucfirst($role->name)) }}</td>
-                                    <td class="text-center">
-                                        @if ($role->id > 2)
-                                            <a href="#assignPermissions" data-route="{{ route('setting.role-permission.permission.assign.role', [$role->id]) }}" class="btn btn-sm btn-light px-2 py-1 m-0" data-toggle="modal" role="button">Assign</a>
-                                        @else
-                                            <i class="icon-copy ti-more-alt"></i>
-                                        @endif
-                                    </td>
                                     <td class="text-right">
                                         @if ($role->id > 2)
                                             <div class="table-actions d-flex justify-content-end">
-                                                <a href="#showPermissions" data-route="{{ route('setting.role-permission.permission.assign.role.destroy', [$role->id]) }}" data-permissions="{{ $role->getAllPermissions() }}" data-toggle="modal" data-color="#6c757d" style="color: rgb(108,117,125);">
-                                                    <i class="icon-copy dw dw-view" data-toggle="tooltip" title="View permissions"></i>
-                                                </a>
                                                 <a href="{{ route('setting.role-permission.role.edit', [$role->id]) }}" data-color="#265ed7" style="color: rgb(38, 94, 215);">
                                                     <i class="icon-copy dw dw-edit2" data-toggle="tooltip" title="Edit"></i>
                                                 </a>
@@ -125,7 +114,7 @@
                                     <td class="text-right">
                                         @if ($permission->id > 18)
                                             <div class="table-actions d-flex justify-content-end">
-                                                <a href="{{ route('setting.role-permission.permission.edit', [$permission->id]) }}" data-color="#265ed7" style="color: rgb(38, 94, 215);">
+                                                <a href="#permissionEdit" data-toggle="modal" data-permission="{{ $permission->name }}" data-route="{{ route('setting.role-permission.permission.update', [$permission->id]) }}" data-color="#265ed7" style="color: rgb(38, 94, 215);">
                                                     <i class="icon-copy dw dw-edit2" data-toggle="tooltip" title="Edit"></i>
                                                 </a>
                                                 <a href="#deleteModal" data-toggle="modal" data-route="{{ route('setting.role-permission.permission.destroy', [$permission->id]) }}" data-color="#e95959" style="color: rgb(233, 89, 89);">
@@ -146,13 +135,10 @@
     </div>
 </div>
 
-<!-- All Modals -->
 <!-- Delete -->
 @include('pages.elements.modals.delete')
-<!-- Assign permissions -->
-@include('pages.elements.modals.assign_permissions')
-<!-- Show permissions -->
-@include('pages.elements.modals.show_permissions')
+<!-- Edit permission -->
+@include('pages.elements.modals.permission.edit')
 @endsection
 
 @section('deskapp_scripts')
@@ -173,44 +159,14 @@
 <script>
     // Delete
     $('#deleteModal').on('show.bs.modal', function (event) {
-        $(this).find('form').attr('action', $(event.relatedTarget).data('route'))
+        $(this).find('form').attr('action', $(event.relatedTarget).data('route'));
     })
-
-    // Assign permissions
-    $('#assignPermissions').on('show.bs.modal', function (event) {
-        $(this).find('form').attr('action', $(event.relatedTarget).data('route'))
-    })
-
-    // Show role's permissions
-    $('#showPermissions').on('show.bs.modal', function (event) {
+    // Edit permission
+    $('#permissionEdit').on('show.bs.modal', function (event) {
         let button = $(event.relatedTarget);
-        let permissions = button.data('permissions');
-        let route = button.data('route');
-        let list = '<li class="list-group-item text-center text-muted">No permission assigned</li>';
-        if (permissions.length > 0) {
-            list = '';
-            $.each(permissions, function(index, row) {
-                list += `<li class="list-group-item d-flex justify-content-between">
-                        <span>${row.name}</span>
-                        <button type="button" class="close" onclick="removePermission(${route}, ${row.id})">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </li>`;
-            });
-        }
-        $(this).find('.list-group').empty().append(list);
+        let modal = $(this);
+        modal.find('form').attr('action', button.data('route'));
+        modal.find('#name').val(button.data('permission'));
     })
-
-    // function removePermission(route, permission) {
-    //     $.ajaxSetup({headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'}});
-    //     $.ajax({
-    //         url: `${route}`,
-    //         method: "POST",
-    //         data: {permission: permission},
-    //         success: function (result) {
-    //             console.log(result);
-    //         }
-    //     });
-    // }
 </script>
 @endsection

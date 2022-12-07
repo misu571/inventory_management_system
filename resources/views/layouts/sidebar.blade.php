@@ -111,16 +111,6 @@
                         @if (Route::has('setting.role-permission.index'))
                         <li><a href="{{ route('setting.role-permission.index') }}" class="@if(Route::is('setting.role-permission.*')) active @endif">Roles & Permissions</a></li>
                         @endif
-                        <li class="dropdown">
-                            <a href="javascript:;" class="dropdown-toggle">
-                                <span class="micon dw dw-layers"></span><span class="mtext">Assign</span>
-                            </a>
-                            <ul class="submenu child">
-                                <li><a href="javascript:;">Role to User</a></li>
-                                <li><a href="javascript:;">Permissions to Role</a></li>
-                                <li><a href="javascript:;">Permissions to User</a></li>
-                            </ul>
-                        </li>
                     </ul>
                 </li>
                 @endhasanyrole

@@ -89,15 +89,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [App\Http\Controllers\RolesAndPermissionsController::class, 'index'])->name('index');
         Route::post('/role/store', [App\Http\Controllers\RolesAndPermissionsController::class, 'roleStore'])->name('role.store');
         Route::get('/role/{role}/edit', [App\Http\Controllers\RolesAndPermissionsController::class, 'roleEdit'])->name('role.edit');
-        Route::patch('/role/{role}', [App\Http\Controllers\RolesAndPermissionsController::class, 'roleUpdate'])->name('role.update');
-        Route::delete('/role/{role}', [App\Http\Controllers\RolesAndPermissionsController::class, 'roleDestroy'])->name('role.destroy');
+        Route::patch('/role/{role}/update', [App\Http\Controllers\RolesAndPermissionsController::class, 'roleUpdate'])->name('role.update');
+        Route::delete('/role/{role}/delete', [App\Http\Controllers\RolesAndPermissionsController::class, 'roleDestroy'])->name('role.destroy');
         Route::post('/permission/store', [App\Http\Controllers\RolesAndPermissionsController::class, 'permissionStore'])->name('permission.store');
-        Route::get('/permission/{permission}/edit', [App\Http\Controllers\RolesAndPermissionsController::class, 'permissionEdit'])->name('permission.edit');
-        Route::patch('/permission/{permission}', [App\Http\Controllers\RolesAndPermissionsController::class, 'permissionUpdate'])->name('permission.update');
-        Route::delete('/permission/{permission}', [App\Http\Controllers\RolesAndPermissionsController::class, 'permissionDestroy'])->name('permission.destroy');
+        Route::patch('/permission/{permission}/update', [App\Http\Controllers\RolesAndPermissionsController::class, 'permissionUpdate'])->name('permission.update');
+        Route::delete('/permission/{permission}/delete', [App\Http\Controllers\RolesAndPermissionsController::class, 'permissionDestroy'])->name('permission.destroy');
         
-        // Assign
-        Route::post('/permission/assign/role/{role}', [App\Http\Controllers\RolesAndPermissionsController::class, 'permissionAssignRole'])->name('permission.assign.role');
-        Route::post('/permission/assign/role/{role}/delete', [App\Http\Controllers\RolesAndPermissionsController::class, 'permissionAssignRoleDestroy'])->name('permission.assign.role.destroy');
+        // Assign or revoke permission
+        Route::post('/permission/assign/role/{role}/update', [App\Http\Controllers\RolesAndPermissionsController::class, 'permissionAssignRole'])->name('permission.assign.role');
+        Route::delete('/permission/assign/role/{role}/{permission}/delete', [App\Http\Controllers\RolesAndPermissionsController::class, 'permissionAssignRoleDestroy'])->name('permission.assign.role.destroy');
     });
 });

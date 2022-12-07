@@ -28,16 +28,18 @@ class RolesAndPermissionsController extends Controller
     public function roleEdit(Role $role)
     {
         if ($role->id < 3) {
-            return redirect()->route('setting.role-permission.index');
+            return back();
         }
 
-        return view('pages.setting.role_permission.role_edit', compact('role'));
+        $permissions = Permission::all();
+
+        return view('pages.setting.role_permission.role_edit', compact('role', 'permissions'));
     }
 
     public function roleUpdate(Request $request, Role $role)
     {
         if ($role->id < 3) {
-            return redirect()->route('setting.role-permission.index');
+            return back();
         }
 
         request()->validate(['name' => ['required', 'string', 'unique:roles', 'max:50']]);
@@ -45,13 +47,13 @@ class RolesAndPermissionsController extends Controller
         $role->update(['name' => strtolower($request->name)]);
         $alert = (object) ['status' => 'success', 'message' => 'Role has been updated'];
 
-        return redirect()->route('setting.role-permission.index')->with(compact('alert'));
+        return back()->with(compact('alert'));
     }
 
     public function roleDestroy(Role $role)
     {
         if ($role->id < 3) {
-            return redirect()->route('setting.role-permission.index');
+            return back();
         }
 
         try {
@@ -74,19 +76,10 @@ class RolesAndPermissionsController extends Controller
         return redirect()->route('setting.role-permission.index')->with(compact('alert'));
     }
 
-    public function permissionEdit(Permission $permission)
-    {
-        if ($permission->id < 19) {
-            return redirect()->route('setting.role-permission.index');
-        }
-        
-        return view('pages.setting.role_permission.permission_edit', compact('permission'));
-    }
-
     public function permissionUpdate(Request $request, Permission $permission)
     {
         if ($permission->id < 19) {
-            return redirect()->route('setting.role-permission.index');
+            return back();
         }
         
         request()->validate(['name' => ['required', 'string', 'unique:permissions', 'max:50']]);
@@ -100,7 +93,7 @@ class RolesAndPermissionsController extends Controller
     public function permissionDestroy(Permission $permission)
     {
         if ($permission->id < 19) {
-            return redirect()->route('setting.role-permission.index');
+            return back();
         }
         
         try {
@@ -116,7 +109,7 @@ class RolesAndPermissionsController extends Controller
     public function permissionAssignRole(Request $request, Role $role)
     {
         if ($role->id < 3) {
-            return redirect()->route('setting.role-permission.index');
+            return back();
         }
 
         $permissions = [];
@@ -132,12 +125,14 @@ class RolesAndPermissionsController extends Controller
         $role->givePermissionTo($permissions);
         $alert = (object) ['status' => 'success', 'message' => 'Permission(s) has been assigned'];
 
-        return redirect()->route('setting.role-permission.index')->with(compact('alert'));
+        return back()->with(compact('alert'));
     }
 
-    public function permissionAssignRoleDestroy(Request $request, Role $role)
+    public function permissionAssignRoleDestroy(Request $request, Role $role, Permission $permission)
     {
-        // $role->revokePermissionTo($permission);
-        return response()->json(compact('request'));
+        $role->revokePermissionTo(Permission::findById($permission->id)->name);
+        $alert = (object) ['status' => 'success', 'message' => 'Permission has been removed'];
+
+        return back()->with(compact('alert'));
     }
 }
