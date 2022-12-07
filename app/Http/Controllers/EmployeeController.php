@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Permission;
 use App\Http\Requests\StoreEmployeeRequest;
 use App\Http\Requests\UpdateEmployeeRequest;
 
@@ -149,6 +150,79 @@ class EmployeeController extends Controller
             $alert = (object) ['status' => 'danger', 'message' => 'Something went wrong!'];
             DB::rollback();
         }
+
+        return back()->with(compact('alert'));
+    }
+
+    public function rolesPermissionsShow(Employee $employee)
+    {
+        $rolesPermissions = [];
+        $employee = User::join('employees', 'users.id', '=', 'employees.user_id')->where('employees.id', $employee->id)
+            ->select(
+                'users.*',
+                'employees.id as employee_id',
+                'employees.position',
+                'employees.city',
+                'employees.address',
+                'employees.nid',
+                'employees.experience',
+                'employees.salary',
+                'employees.vacation'
+            )->with('roles')->first();
+        $roles = Role::whereNotIn('id', [1])->select('id', 'name')->get();
+        array_push($rolesPermissions, array_map(function ($n) {
+            return $n['id'];
+        }, $employee->getPermissionsViaRoles()->toArray()));
+        $permissions = Permission::whereNotIn('id', $rolesPermissions[0])->get();
+
+        return view('pages.employee.roles_permissions_show', compact('employee', 'roles', 'permissions'));
+    }
+
+    public function rolesPermissionsAssign(Request $request, User $employee)
+    {
+        request()->validate(['role_name' => 'required|exists:roles,id']);
+
+        $role = Role::findById($request->role_name)->name;
+        if ($employee->hasRole($role)) {
+            $alert = (object) ['status' => 'warning', 'message' => 'Role already exists!'];
+        } else {
+            $employee->assignRole($role);
+            $alert = (object) ['status' => 'success', 'message' => 'Role has been assigned'];
+        }
+
+        return back()->with(compact('alert'));
+    }
+
+    public function rolesPermissionsDestroy(User $employee, Role $role)
+    {
+        $employee->removeRole(Role::findById($role->id)->name);
+        $alert = (object) ['status' => 'success', 'message' => 'Role has been revoked'];
+
+        return back()->with(compact('alert'));
+    }
+
+    public function rolesPermissionsDirectAssign(Request $request, User $employee)
+    {
+        $permissionArray = [];
+        $arr = explode(',', $request->permissions);
+        foreach ($arr as $value) {
+            try {
+                array_push($permissionArray, Permission::findById($value)->name);
+            } catch (\Throwable $th) {
+                $alert = (object) ['status' => 'danger', 'message' => 'Wrong permission data!'];
+                return redirect()->route('setting.role-permission.index')->with(compact('alert'));
+            }
+        }
+        $employee->givePermissionTo($permissionArray);
+        $alert = (object) ['status' => 'success', 'message' => 'Permission(s) has been assigned'];
+
+        return back()->with(compact('alert'));
+    }
+
+    public function rolesPermissionsDirectDestroy(User $employee, Permission $permission)
+    {
+        $employee->revokePermissionTo(Permission::findById($permission->id)->name);
+        $alert = (object) ['status' => 'success', 'message' => 'Permission has been revoked'];
 
         return back()->with(compact('alert'));
     }

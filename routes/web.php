@@ -65,6 +65,11 @@ Route::middleware(['auth'])->group(function () {
     // Employee
     Route::patch('/employee/{employee}/password/update', [App\Http\Controllers\EmployeeController::class, 'passwordUpdate'])->name('employee.password.update');
     Route::patch('/employee/{employee}/image/update', [App\Http\Controllers\EmployeeController::class, 'imageUpdate'])->name('employee.image.update');
+    Route::get('/employee/{employee}/roles-permissions/show', [App\Http\Controllers\EmployeeController::class, 'rolesPermissionsShow'])->name('employee.roles_permissions.show');
+    Route::post('/employee/{employee}/roles-permissions/assign', [App\Http\Controllers\EmployeeController::class, 'rolesPermissionsAssign'])->name('employee.roles_permissions.assign');
+    Route::delete('/employee/{employee}/roles-permissions/{role}/delete', [App\Http\Controllers\EmployeeController::class, 'rolesPermissionsDestroy'])->name('employee.roles_permissions.revoke');
+    Route::post('/employee/{employee}/roles-permissions/direct/assign', [App\Http\Controllers\EmployeeController::class, 'rolesPermissionsDirectAssign'])->name('employee.roles_permissions.direct.assign');
+    Route::delete('/employee/{employee}/roles-permissions/{permission}/direct/delete', [App\Http\Controllers\EmployeeController::class, 'rolesPermissionsDirectDestroy'])->name('employee.roles_permissions.direct.revoke');
 
     // Product
     Route::post('/product/sub-categories', [App\Http\Controllers\ProductController::class, 'subCategories'])->name('product.subCategories');
@@ -97,6 +102,6 @@ Route::middleware(['auth'])->group(function () {
         
         // Assign or revoke permission
         Route::post('/permission/assign/role/{role}/update', [App\Http\Controllers\RolesAndPermissionsController::class, 'permissionAssignRole'])->name('permission.assign.role');
-        Route::delete('/permission/assign/role/{role}/{permission}/delete', [App\Http\Controllers\RolesAndPermissionsController::class, 'permissionAssignRoleDestroy'])->name('permission.assign.role.destroy');
+        Route::delete('/permission/assign/role/{role}/{permission}/delete', [App\Http\Controllers\RolesAndPermissionsController::class, 'permissionAssignRoleDestroy'])->name('permission.assign.role.revoke');
     });
 });

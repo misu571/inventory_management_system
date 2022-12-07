@@ -30,20 +30,14 @@
             <form action="{{ route('setting.role-permission.permission.assign.role', [$role->id]) }}" method="POST">
                 @csrf
                 <input type="hidden" id="permissions" name="permissions" value="">
-                <div class="form-group mb-0">
-                    <label>Multiple Select</label>
-                    <select class="custom-select2 form-control @error('permissions') is-invalid @enderror" onchange="$('#permissions').val($(this).val())" multiple="multiple" style="width: 100%">
+                <div class="form-group mb-4">
+                    <select class="selectpicker form-control" onchange="$('#permissions').val($(this).val())" data-size="5" data-style="btn-light text-dark" multiple data-actions-box="true" data-selected-text-format="count">
                         @foreach ($permissions as $permission)
-                        <option value="{{ $permission->id }}">{{ $permission->name }}</option>
+                            <option value="{{ $permission->id }}">{{ $permission->name }}</option>
                         @endforeach
                     </select>
-                    @error('permissions')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                    @enderror
                 </div>
-                <div class="d-flex justify-content-start mt-5">
+                <div class="d-flex justify-content-end">
                     <button type="submit" class="btn btn-lg btn-primary m-0">
                         <i class="icon-copy ion-android-create mr-2"></i> Assign Permission(s)
                     </button>
@@ -73,7 +67,7 @@
                                     <td>{{ $permission->name }}</td>
                                     <td class="text-right">
                                         <div class="table-actions d-flex justify-content-end">
-                                            <a href="#deleteModal" data-toggle="modal" data-route="{{ route('setting.role-permission.permission.assign.role.destroy', ['role' => $role->id, 'permission' => $permission->id]) }}" data-color="#e95959" style="color: rgb(233, 89, 89);">
+                                            <a href="#deleteModal" data-toggle="modal" data-route="{{ route('setting.role-permission.permission.assign.role.revoke', ['role' => $role->id, 'permission' => $permission->id]) }}" data-color="#e95959" style="color: rgb(233, 89, 89);">
                                                 <i class="icon-copy dw dw-delete-3" data-toggle="tooltip" title="Delete"></i>
                                             </a>
                                         </div>

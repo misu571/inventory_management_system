@@ -10,9 +10,14 @@ class RolesAndPermissionsController extends Controller
 {
     public function index()
     {
-        $roles = auth()->user()->hasRole(Role::findById(1)->name) ? Role::all() : Role::whereNotIn('id', [1])->get();
-        $permissions = Permission::all();
-        return view('pages.setting.role_permission.index', compact('roles', 'permissions'));
+        if (auth()->user()->hasAnyRole([Role::findById(1)->name, Role::findById(2)->name]) || auth()->user()->hasDirectPermission('role access')) {
+            $roles = auth()->user()->hasRole(Role::findById(1)->name) ? Role::all() : Role::whereNotIn('id', [1])->get();
+            $permissions = Permission::all();
+            return view('pages.setting.role_permission.index', compact('roles', 'permissions'));
+        }
+        
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     public function roleStore(Request $request)
@@ -112,17 +117,23 @@ class RolesAndPermissionsController extends Controller
             return back();
         }
 
-        $permissions = [];
+        // $permissions = Permission::get()->toArray();
+        // $array1 = array("green", "red", "blue", "yellow");
+        // $array2 = array("green", "yellow", "red");
+        // $result = array_intersect($array1, $array2);
+        // dd($result);
+
+        $permissionArray = [];
         $arr = explode(',', $request->permissions);
         foreach ($arr as $value) {
             try {
-                array_push($permissions, Permission::findById($value)->name);
+                array_push($permissionArray, Permission::findById($value)->name);
             } catch (\Throwable $th) {
                 $alert = (object) ['status' => 'danger', 'message' => 'Wrong permission data!'];
                 return redirect()->route('setting.role-permission.index')->with(compact('alert'));
             }
         }
-        $role->givePermissionTo($permissions);
+        $role->givePermissionTo($permissionArray);
         $alert = (object) ['status' => 'success', 'message' => 'Permission(s) has been assigned'];
 
         return back()->with(compact('alert'));
@@ -131,7 +142,7 @@ class RolesAndPermissionsController extends Controller
     public function permissionAssignRoleDestroy(Request $request, Role $role, Permission $permission)
     {
         $role->revokePermissionTo(Permission::findById($permission->id)->name);
-        $alert = (object) ['status' => 'success', 'message' => 'Permission has been removed'];
+        $alert = (object) ['status' => 'success', 'message' => 'Permission has been revoked'];
 
         return back()->with(compact('alert'));
     }
