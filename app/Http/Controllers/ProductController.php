@@ -19,15 +19,19 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = DB::table('products')
-            ->join('brands', 'products.brand_id', '=', 'brands.id')
-            ->join('categories', 'products.category_id', '=', 'categories.id')
-            ->join('sub_categories', 'products.sub_category_id', '=', 'sub_categories.id')
-            ->join('suppliers', 'products.supplier_id', '=', 'suppliers.id')
-            ->select('products.*', 'brands.name as brand_name', 'categories.name as category_name', 'sub_categories.name as sub_category_name', 'suppliers.name as supplier_name')
-            ->orderByDesc('products.updated_at')->get()->toArray();
+        if (auth()->user()->can('product access')) {
+            $products = DB::table('products')
+                ->join('brands', 'products.brand_id', '=', 'brands.id')
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->join('sub_categories', 'products.sub_category_id', '=', 'sub_categories.id')
+                ->join('suppliers', 'products.supplier_id', '=', 'suppliers.id')
+                ->select('products.*', 'brands.name as brand_name', 'categories.name as category_name', 'sub_categories.name as sub_category_name', 'suppliers.name as supplier_name')
+                ->orderByDesc('products.updated_at')->get()->toArray();
+            return view('pages.product.index', compact('products'));
+        }
 
-        return view('pages.product.index', compact('products'));
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -37,11 +41,15 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $brands = DB::table('brands')->select('id', 'name')->get()->toArray();
-        $categories = DB::table('categories')->select('id', 'name')->get()->toArray();
-        $suppliers = DB::table('suppliers')->select('id', 'name')->get()->toArray();
-        
-        return view('pages.product.create', compact('brands', 'categories', 'suppliers'));
+        if (auth()->user()->can('product create')) {
+            $brands = DB::table('brands')->select('id', 'name')->get()->toArray();
+            $categories = DB::table('categories')->select('id', 'name')->get()->toArray();
+            $suppliers = DB::table('suppliers')->select('id', 'name')->get()->toArray();
+            return view('pages.product.create', compact('brands', 'categories', 'suppliers'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -52,21 +60,24 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $array = $request->validated();
-        $image = $request->hasFile('image') ? $this->storeFile('products', $request->file('image')) : null;
-        data_set($array, 'purchase_at', date_format(date_create($request->purchase_at), 'Y-m-d'));
-        $data = array_replace(Arr::except($array, ['brand', 'category', 'sub_category', 'supplier']), [
-            'brand_id' => $request->brand,
-            'category_id' => $request->category,
-            'sub_category_id' => $request->sub_category,
-            'supplier_id' => $request->supplier,
-            'image' => $image
-        ]);
-        
-        Product::create($data);
-        $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+        if (auth()->user()->can('product store')) {
+            $array = $request->validated();
+            $image = $request->hasFile('image') ? $this->storeFile('products', $request->file('image')) : null;
+            data_set($array, 'purchase_at', date_format(date_create($request->purchase_at), 'Y-m-d'));
+            $data = array_replace(Arr::except($array, ['brand', 'category', 'sub_category', 'supplier']), [
+                'brand_id' => $request->brand,
+                'category_id' => $request->category,
+                'sub_category_id' => $request->sub_category,
+                'supplier_id' => $request->supplier,
+                'image' => $image
+            ]);
+            Product::create($data);
+            $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+            return redirect()->route('product.index')->with(compact('alert'));
+        }
 
-        return redirect()->route('product.index')->with(compact('alert'));
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -88,12 +99,16 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        $brands = DB::table('brands')->select('id', 'name')->get()->toArray();
-        $categories = DB::table('categories')->select('id', 'name')->get()->toArray();
-        $subCategories = DB::table('sub_categories')->select('id', 'category_id', 'name')->get()->toArray();
-        $suppliers = DB::table('suppliers')->select('id', 'name')->get()->toArray();
+        if (auth()->user()->can('product edit')) {
+            $brands = DB::table('brands')->select('id', 'name')->get()->toArray();
+            $categories = DB::table('categories')->select('id', 'name')->get()->toArray();
+            $subCategories = DB::table('sub_categories')->select('id', 'category_id', 'name')->get()->toArray();
+            $suppliers = DB::table('suppliers')->select('id', 'name')->get()->toArray();
+            return view('pages.product.edit', compact('product', 'brands', 'categories', 'subCategories', 'suppliers'));
+        }
 
-        return view('pages.product.edit', compact('product', 'brands', 'categories', 'subCategories', 'suppliers'));
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -105,20 +120,23 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        $array = $request->validated();
-        $image = $request->hasFile('image') ? $this->storeFile('products', $request->file('image'), $product->image) : null;
-        data_set($array, 'purchase_at', date_format(date_create($request->purchase_at), 'Y-m-d'));
-        $data = array_replace(Arr::except($array, ['brand', 'category', 'sub_category', 'supplier']), [
-            'brand_id' => $request->brand,
-            'category_id' => $request->category,
-            'sub_category_id' => $request->sub_category,
-            'supplier_id' => $request->supplier,
-            'image' => $image
-        ]);
-        
-        $product->update($data);
-        $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+        if (auth()->user()->can('product update')) {
+            $array = $request->validated();
+            $image = $request->hasFile('image') ? $this->storeFile('products', $request->file('image'), $product->image) : null;
+            data_set($array, 'purchase_at', date_format(date_create($request->purchase_at), 'Y-m-d'));
+            $data = array_replace(Arr::except($array, ['brand', 'category', 'sub_category', 'supplier']), [
+                'brand_id' => $request->brand,
+                'category_id' => $request->category,
+                'sub_category_id' => $request->sub_category,
+                'supplier_id' => $request->supplier,
+                'image' => $image
+            ]);
+            $product->update($data);
+            $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+            return back()->with(compact('alert'));
+        }
 
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
@@ -130,9 +148,13 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $product->delete();
-        $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
+        if (auth()->user()->can('product destroy')) {
+            $product->delete();
+            $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
+            return back()->with(compact('alert'));
+        }
 
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 

@@ -17,12 +17,16 @@ class SubCategoryController extends Controller
      */
     public function index()
     {
-        $subCategories = DB::table('sub_categories')
-            ->join('categories', 'sub_categories.category_id', '=', 'categories.id')
-            ->select('sub_categories.*', 'categories.name as category_name')
-            ->orderBy('categories.name')->orderBy('sub_categories.name')->get()->toArray();
+        if (auth()->user()->can('sub-category access')) {
+            $subCategories = DB::table('sub_categories')
+                ->join('categories', 'sub_categories.category_id', '=', 'categories.id')
+                ->select('sub_categories.*', 'categories.name as category_name')
+                ->orderBy('categories.name')->orderBy('sub_categories.name')->get()->toArray();
+            return view('pages.sub_category.index', compact('subCategories'));
+        }
 
-        return view('pages.sub_category.index', compact('subCategories'));
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -32,9 +36,13 @@ class SubCategoryController extends Controller
      */
     public function create()
     {
-        $categories = DB::table('categories')->select('id', 'name')->get()->toArray();
+        if (auth()->user()->can('sub-category create')) {
+            $categories = DB::table('categories')->select('id', 'name')->get()->toArray();
+            return view('pages.sub_category.create', compact('categories'));
+        }
 
-        return view('pages.sub_category.create', compact('categories'));
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -45,13 +53,17 @@ class SubCategoryController extends Controller
      */
     public function store(StoreSubCategoryRequest $request)
     {
-        $data = array_replace(Arr::except($request->validated(), ['category']), [
-            'category_id' => $request->category
-        ]);
-        SubCategory::create($data);
-        $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+        if (auth()->user()->can('sub-category store')) {
+            $data = array_replace(Arr::except($request->validated(), ['category']), [
+                'category_id' => $request->category
+            ]);
+            SubCategory::create($data);
+            $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+            return redirect()->route('sub-category.index')->with(compact('alert'));
+        }
 
-        return redirect()->route('sub-category.index')->with(compact('alert'));
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -73,9 +85,13 @@ class SubCategoryController extends Controller
      */
     public function edit(SubCategory $subCategory)
     {
-        $categories = DB::table('categories')->select('id', 'name')->get()->toArray();
-        
-        return view('pages.sub_category.edit', compact('subCategory', 'categories'));
+        if (auth()->user()->can('sub-category edit')) {
+            $categories = DB::table('categories')->select('id', 'name')->get()->toArray();
+            return view('pages.sub_category.edit', compact('subCategory', 'categories'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -87,12 +103,14 @@ class SubCategoryController extends Controller
      */
     public function update(UpdateSubCategoryRequest $request, SubCategory $subCategory)
     {
-        $data = array_replace(Arr::except($request->validated(), ['category']), [
-            'category_id' => $request->category
-        ]);
-        $subCategory->update($data);
-        $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+        if (auth()->user()->can('sub-category update')) {
+            $data = array_replace(Arr::except($request->validated(), ['category']), ['category_id' => $request->category]);
+            $subCategory->update($data);
+            $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+            return back()->with(compact('alert'));
+        }
 
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
@@ -104,13 +122,17 @@ class SubCategoryController extends Controller
      */
     public function destroy(SubCategory $subCategory)
     {
-        try {
-            $subCategory->delete();
-            $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
-        } catch (\Exception $e) {
-            $alert = (object) ['status' => 'danger', 'message' => 'One or more record is being used'];
+        if (auth()->user()->can('sub-category destroy')) {
+            try {
+                $subCategory->delete();
+                $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
+            } catch (\Exception $e) {
+                $alert = (object) ['status' => 'danger', 'message' => 'One or more record is being used'];
+            }
+            return back()->with(compact('alert'));
         }
 
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 }

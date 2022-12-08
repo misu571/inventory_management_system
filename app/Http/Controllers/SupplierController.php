@@ -16,9 +16,13 @@ class SupplierController extends Controller
      */
     public function index()
     {
-        $suppliers = DB::table('suppliers')->orderByDesc('updated_at')->get()->toArray();
+        if (auth()->user()->can('supplier access')) {
+            $suppliers = DB::table('suppliers')->orderByDesc('updated_at')->get()->toArray();
+            return view('pages.supplier.index', compact('suppliers'));
+        }
 
-        return view('pages.supplier.index', compact('suppliers'));
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -28,7 +32,12 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        return view('pages.supplier.create');
+        if (auth()->user()->can('supplier create')) {
+            return view('pages.supplier.create');
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -39,10 +48,14 @@ class SupplierController extends Controller
      */
     public function store(StoreSupplierRequest $request)
     {
-        Supplier::create($request->validated());
-        $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+        if (auth()->user()->can('supplier store')) {
+            Supplier::create($request->validated());
+            $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+            return redirect()->route('supplier.index')->with(compact('alert'));
+        }
 
-        return redirect()->route('supplier.index')->with(compact('alert'));
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -53,7 +66,12 @@ class SupplierController extends Controller
      */
     public function show(Supplier $supplier)
     {
-        return view('pages.supplier.show', compact('supplier'));
+        if (auth()->user()->can('supplier show')) {
+            return view('pages.supplier.show', compact('supplier'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -64,7 +82,12 @@ class SupplierController extends Controller
      */
     public function edit(Supplier $supplier)
     {
-        return view('pages.supplier.edit', compact('supplier'));
+        if (auth()->user()->can('supplier edit')) {
+            return view('pages.supplier.edit', compact('supplier'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -76,9 +99,13 @@ class SupplierController extends Controller
      */
     public function update(UpdateSupplierRequest $request, Supplier $supplier)
     {
-        $supplier->update($request->validated());
-        $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+        if (auth()->user()->can('supplier update')) {
+            $supplier->update($request->validated());
+            $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+            return back()->with(compact('alert'));
+        }
 
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
@@ -90,9 +117,13 @@ class SupplierController extends Controller
      */
     public function destroy(Supplier $supplier)
     {
-        $supplier->delete();
-        $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
+        if (auth()->user()->can('supplier destroy')) {
+            $supplier->delete();
+            $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
+            return back()->with(compact('alert'));
+        }
 
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 }

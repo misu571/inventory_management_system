@@ -30,7 +30,6 @@ class StoreEmployeeRequest extends FormRequest
             'position' => 'required|string',
             'nid' => 'required|string',
             'address' => 'nullable|string|max:200',
-            'role' => 'required|exists:roles,id',
             'image' => 'sometimes|file|image|max:2000',
         ];
     }

@@ -63,6 +63,7 @@ Route::middleware(['auth'])->group(function () {
     // Route::post('/pos/search-product', [App\Http\Controllers\PosController::class, 'searchProduct'])->name('search.product');
 
     // Employee
+    Route::patch('/employee/{employee}/email/update', [App\Http\Controllers\EmployeeController::class, 'emailUpdate'])->name('employee.email.update');
     Route::patch('/employee/{employee}/password/update', [App\Http\Controllers\EmployeeController::class, 'passwordUpdate'])->name('employee.password.update');
     Route::patch('/employee/{employee}/image/update', [App\Http\Controllers\EmployeeController::class, 'imageUpdate'])->name('employee.image.update');
     Route::get('/employee/{employee}/roles-permissions/show', [App\Http\Controllers\EmployeeController::class, 'rolesPermissionsShow'])->name('employee.roles_permissions.show');

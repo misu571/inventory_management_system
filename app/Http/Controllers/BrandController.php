@@ -16,9 +16,13 @@ class BrandController extends Controller
      */
     public function index()
     {
-        $brands = DB::table('brands')->orderByDesc('updated_at')->get()->toArray();
+        if (auth()->user()->can('brand access')) {
+            $brands = DB::table('brands')->orderByDesc('updated_at')->get()->toArray();
+            return view('pages.brand.index', compact('brands'));
+        }
 
-        return view('pages.brand.index', compact('brands'));
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -28,7 +32,12 @@ class BrandController extends Controller
      */
     public function create()
     {
-        return view('pages.brand.create');
+        if (auth()->user()->can('brand create')) {
+            return view('pages.brand.create');
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -39,10 +48,14 @@ class BrandController extends Controller
      */
     public function store(StoreBrandRequest $request)
     {
-        Brand::create($request->validated());
-        $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+        if (auth()->user()->can('brand store')) {
+            Brand::create($request->validated());
+            $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+            return redirect()->route('brand.index')->with(compact('alert'));
+        }
 
-        return redirect()->route('brand.index')->with(compact('alert'));
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -64,7 +77,12 @@ class BrandController extends Controller
      */
     public function edit(Brand $brand)
     {
-        return view('pages.brand.edit', compact('brand'));
+        if (auth()->user()->can('brand edit')) {
+            return view('pages.brand.edit', compact('brand'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -76,9 +94,13 @@ class BrandController extends Controller
      */
     public function update(UpdateBrandRequest $request, Brand $brand)
     {
-        $brand->update($request->validated());
-        $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+        if (auth()->user()->can('brand update')) {
+            $brand->update($request->validated());
+            $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+            return back()->with(compact('alert'));
+        }
 
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
@@ -90,13 +112,17 @@ class BrandController extends Controller
      */
     public function destroy(Brand $brand)
     {
-        try {
-            $brand->delete();
-            $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
-        } catch (\Exception $e) {
-            $alert = (object) ['status' => 'danger', 'message' => 'One or more record is being used'];
+        if (auth()->user()->can('brand destroy')) {
+            try {
+                $brand->delete();
+                $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
+            } catch (\Exception $e) {
+                $alert = (object) ['status' => 'danger', 'message' => 'One or more record is being used'];
+            }
+            return back()->with(compact('alert'));
         }
 
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 }

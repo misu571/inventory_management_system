@@ -71,23 +71,35 @@
                             @method('PATCH')
                         </x-slot>
                         <x-slot:name_value>{{ old('name') ?? $employee->name }}</x-slot>
-                        <x-slot:email_value>{{ old('email') ?? $employee->email }}</x-slot>
                         <x-slot:phone_value>{{ old('phone') ?? $employee->phone }}</x-slot>
                         <x-slot:position_value>{{ old('position') ?? $employee->position }}</x-slot>
                         <x-slot:nid_value>{{ old('nid') ?? $employee->nid }}</x-slot>
                         <x-slot:salary_value>{{ old('salary') ?? $employee->salary }}</x-slot>
                         <x-slot:address_value>{{ old('address') ?? $employee->address }}</x-slot>
-                        <x-slot:roles>
-                            @foreach ($roles as $role)
-                                <option value="{{ $role->id }}" @if($role->name == $employee->getRoleNames()->first()) selected @endif>{{ ucfirst($role->name) }}</option>
-                            @endforeach
-                        </x-slot>
                         <x-slot:button>
                             <i class="icon-copy ion-android-create mr-2"></i> Edit Details
                         </x-slot>
                     </x-forms.employee.edit>
                 </div>
                 <div class="col-md">
+                    <div class="mb-3" style="border-bottom: 2px dashed #ecf0f4;">
+                        <h4 class="text-blue h5 mb-30">Update E-mail</h4>
+                        <form method="POST" action="{{ route('employee.email.update', [$employee->employee_id]) }}">
+                            @method('PATCH')
+                            @csrf
+                            <div class="input-group">
+                                <input type="text" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') ?? $employee->email }}" aria-describedby="email-button">
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-primary" type="submit" id="email-button">Update</button>
+                                </div>
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </form>
+                    </div>
                     <h4 class="text-blue h5 mb-30">Change Password</h4>
                     <form method="POST" action="{{ route('employee.password.update', [$employee->employee_id]) }}">
                         @method('PATCH')

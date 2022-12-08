@@ -25,13 +25,11 @@ class UpdateEmployeeRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            // 'email' => 'required|email|unique:users,email',
             'phone' => 'required|string',
             'position' => 'required|string',
             'nid' => 'required|string',
             'address' => 'nullable|string|max:200',
             'salary' => 'nullable|integer',
-            'role' => 'required|exists:roles,id',
         ];
     }
 }

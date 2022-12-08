@@ -13,11 +13,6 @@
                 <x-slot:nid_value>{{ old('nid') }}</x-slot>
                 <x-slot:address_value>{{ old('address') }}</x-slot>
                 <x-slot:image_thumbnail></x-slot>
-                <x-slot:roles>
-                    @foreach ($roles as $role)
-                        <option value="{{ $role->id }}" @if($role->id == old('role')) selected @endif>{{ ucfirst($role->name) }}</option>
-                    @endforeach
-                </x-slot>
                 <x-slot:button>
                     <i class="icon-copy ion-plus-round mr-2"></i> Create New
                 </x-slot>

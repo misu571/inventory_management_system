@@ -1,8 +1,8 @@
 <?php
 
-use Spatie\Permission\Models\Role;
+// use Spatie\Permission\Models\Role;
 
-function role()
-{
-    return Role::class;
-}
+// function role()
+// {
+//     return Role::class;
+// }

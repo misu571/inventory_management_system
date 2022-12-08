@@ -22,12 +22,24 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = DB::table('employees')
-            ->join('users', 'employees.user_id', '=', 'users.id')
-            ->select('employees.*', 'users.name', 'users.email', 'users.phone', 'users.image')
-            ->orderByDesc('employees.updated_at')->get()->toArray();
-        
-        return view('pages.employee.index', compact('employees'));
+        if (auth()->user()->can('user access')) {
+            $employees = User::join('employees', 'users.id', '=', 'employees.user_id')
+                ->select(
+                    'users.*',
+                    'employees.id as employee_id',
+                    'employees.position',
+                    'employees.city',
+                    'employees.address',
+                    'employees.nid',
+                    'employees.experience',
+                    'employees.salary',
+                    'employees.vacation'
+                )->with('roles')->get();
+            return view('pages.employee.index', compact('employees'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -37,8 +49,13 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        $roles = Role::whereNotIn('id', [1])->select('id', 'name')->get();
-        return view('pages.employee.create', compact('roles'));
+        if (auth()->user()->can('user create')) {
+            $roles = Role::whereNotIn('id', [1])->select('id', 'name')->get();
+            return view('pages.employee.create', compact('roles'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -49,33 +66,37 @@ class EmployeeController extends Controller
      */
     public function store(StoreEmployeeRequest $request)
     {
-        $image = $request->hasFile('image') ? $this->storeFile('employees/avatar', $request->file('image')) : null;
-        $password = Str::random(8);
-        
-        DB::beginTransaction();
-        try {
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => bcrypt('q1w2e3r4t5'),
-                'phone' => $request->phone,
-                'image' => $image
-            ]);
-            Employee::create([
-                'user_id' => $user->id,
-                'position' => $request->position,
-                'nid' => $request->nid,
-                'address' => $request->address
-            ]);
-            $user->assignRole(Role::findById($request->role)->name);
-            DB::commit();
-            $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
-        } catch (\Exception $e) {
-            $alert = (object) ['status' => 'danger', 'message' => 'Something went wrong!'];
-            DB::rollback();
+        if (auth()->user()->can('user store')) {
+            $image = $request->hasFile('image') ? $this->storeFile('employees/avatar', $request->file('image')) : null;
+            $password = Str::random(8);
+            
+            DB::beginTransaction();
+            try {
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => strtolower($request->email),
+                    'password' => bcrypt('q1w2e3r4t5'),
+                    'phone' => $request->phone,
+                    'image' => $image
+                ]);
+                Employee::create([
+                    'user_id' => $user->id,
+                    'position' => $request->position,
+                    'nid' => $request->nid,
+                    'address' => $request->address
+                ]);
+                DB::commit();
+                $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+            } catch (\Exception $e) {
+                $alert = (object) ['status' => 'danger', 'message' => 'Something went wrong!'];
+                DB::rollback();
+            }
+
+            return redirect()->route('employee.index')->with(compact('alert'));
         }
 
-        return redirect()->route('employee.index')->with(compact('alert'));
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -86,21 +107,25 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        $employee = User::join('employees', 'users.id', '=', 'employees.user_id')->where('employees.id', $employee->id)
-            ->select(
-                'users.*',
-                'employees.id as employee_id',
-                'employees.position',
-                'employees.city',
-                'employees.address',
-                'employees.nid',
-                'employees.experience',
-                'employees.salary',
-                'employees.vacation'
-            )->first();
-        $roles = Role::whereNotIn('id', [1])->select('id', 'name')->get();
+        if (auth()->user()->can('user show')) {
+            $employee = User::join('employees', 'users.id', '=', 'employees.user_id')->where('employees.id', $employee->id)
+                ->select(
+                    'users.*',
+                    'employees.id as employee_id',
+                    'employees.position',
+                    'employees.city',
+                    'employees.address',
+                    'employees.nid',
+                    'employees.experience',
+                    'employees.salary',
+                    'employees.vacation'
+                )->first();
 
-        return view('pages.employee.show', compact('employee', 'roles'));
+            return view('pages.employee.show', compact('employee'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -125,105 +150,131 @@ class EmployeeController extends Controller
      */
     public function update(UpdateEmployeeRequest $request, Employee $employee)
     {
-        $user = User::find($employee->user_id);
-        $role = Role::findById($request->role)->name;
-        
-        DB::beginTransaction();
-        try {
-            $employee->update([
-                'position' => $request->position,
-                'nid' => $request->nid,
-                'salary' => $request->salary,
-                'address' => $request->address
-            ]);
-            $user->update([
-                'name' => $request->name,
-                // 'email' => $request->email,
-                'phone' => $request->phone
-            ]);
-            if ($user->getRoleNames()->first() != $role) {
-                $user->assignRole($role);
+        if (auth()->user()->can('user update')) {
+            $user = User::find($employee->user_id);
+            $role = Role::findById($request->role)->name;
+            
+            DB::beginTransaction();
+            try {
+                $employee->update([
+                    'position' => $request->position,
+                    'nid' => $request->nid,
+                    'salary' => $request->salary,
+                    'address' => $request->address
+                ]);
+                $user->update([
+                    'name' => $request->name,
+                    'phone' => $request->phone
+                ]);
+                DB::commit();
+                $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+            } catch (\Exception $e) {
+                $alert = (object) ['status' => 'danger', 'message' => 'Something went wrong!'];
+                DB::rollback();
             }
-            DB::commit();
-            $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
-        } catch (\Exception $e) {
-            $alert = (object) ['status' => 'danger', 'message' => 'Something went wrong!'];
-            DB::rollback();
+
+            return back()->with(compact('alert'));
         }
 
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
     public function rolesPermissionsShow(Employee $employee)
     {
-        $rolesPermissions = [];
-        $employee = User::join('employees', 'users.id', '=', 'employees.user_id')->where('employees.id', $employee->id)
-            ->select(
-                'users.*',
-                'employees.id as employee_id',
-                'employees.position',
-                'employees.city',
-                'employees.address',
-                'employees.nid',
-                'employees.experience',
-                'employees.salary',
-                'employees.vacation'
-            )->with('roles')->first();
-        $roles = Role::whereNotIn('id', [1])->select('id', 'name')->get();
-        array_push($rolesPermissions, array_map(function ($n) {
-            return $n['id'];
-        }, $employee->getPermissionsViaRoles()->toArray()));
-        $permissions = Permission::whereNotIn('id', $rolesPermissions[0])->get();
+        if (auth()->user()->can('role show')) {
+            $rolesPermissions = [];
+            $employee = User::join('employees', 'users.id', '=', 'employees.user_id')->where('employees.id', $employee->id)
+                ->select(
+                    'users.*',
+                    'employees.id as employee_id',
+                    'employees.position',
+                    'employees.city',
+                    'employees.address',
+                    'employees.nid',
+                    'employees.experience',
+                    'employees.salary',
+                    'employees.vacation'
+                )->with('roles')->first();
+            $roles = Role::whereNotIn('id', [1])->select('id', 'name')->get();
+            array_push($rolesPermissions, array_map(function ($n) {
+                return $n['id'];
+            }, $employee->getPermissionsViaRoles()->toArray()));
+            $permissions = Permission::whereNotIn('id', $rolesPermissions[0])->get();
 
-        return view('pages.employee.roles_permissions_show', compact('employee', 'roles', 'permissions'));
+            return view('pages.employee.roles_permissions_show', compact('employee', 'roles', 'permissions'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     public function rolesPermissionsAssign(Request $request, User $employee)
     {
-        request()->validate(['role_name' => 'required|exists:roles,id']);
+        if (auth()->user()->can('role create')) {
+            request()->validate(['role_name' => 'required|exists:roles,id']);
 
-        $role = Role::findById($request->role_name)->name;
-        if ($employee->hasRole($role)) {
-            $alert = (object) ['status' => 'warning', 'message' => 'Role already exists!'];
-        } else {
-            $employee->assignRole($role);
-            $alert = (object) ['status' => 'success', 'message' => 'Role has been assigned'];
+            $role = Role::findById($request->role_name)->name;
+            if ($employee->hasRole($role)) {
+                $alert = (object) ['status' => 'warning', 'message' => 'Role already exists!'];
+            } else {
+                $employee->assignRole($role);
+                $alert = (object) ['status' => 'success', 'message' => 'Role has been assigned'];
+            }
+
+            return back()->with(compact('alert'));
         }
 
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
     public function rolesPermissionsDestroy(User $employee, Role $role)
     {
-        $employee->removeRole(Role::findById($role->id)->name);
-        $alert = (object) ['status' => 'success', 'message' => 'Role has been revoked'];
+        if (auth()->user()->can('role delete')) {
+            $employee->removeRole(Role::findById($role->id)->name);
+            $alert = (object) ['status' => 'success', 'message' => 'Role has been revoked'];
 
+            return back()->with(compact('alert'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
     public function rolesPermissionsDirectAssign(Request $request, User $employee)
     {
-        $permissionArray = [];
-        $arr = explode(',', $request->permissions);
-        foreach ($arr as $value) {
-            try {
-                array_push($permissionArray, Permission::findById($value)->name);
-            } catch (\Throwable $th) {
-                $alert = (object) ['status' => 'danger', 'message' => 'Wrong permission data!'];
-                return redirect()->route('setting.role-permission.index')->with(compact('alert'));
+        if (auth()->user()->can('permission create')) {
+            $permissionArray = [];
+            $arr = explode(',', $request->permissions);
+            foreach ($arr as $value) {
+                try {
+                    array_push($permissionArray, Permission::findById($value)->name);
+                } catch (\Throwable $th) {
+                    $alert = (object) ['status' => 'danger', 'message' => 'Wrong permission data!'];
+                    return redirect()->route('setting.role-permission.index')->with(compact('alert'));
+                }
             }
-        }
-        $employee->givePermissionTo($permissionArray);
-        $alert = (object) ['status' => 'success', 'message' => 'Permission(s) has been assigned'];
+            $employee->givePermissionTo($permissionArray);
+            $alert = (object) ['status' => 'success', 'message' => 'Permission(s) has been assigned'];
 
+            return back()->with(compact('alert'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
     public function rolesPermissionsDirectDestroy(User $employee, Permission $permission)
     {
-        $employee->revokePermissionTo(Permission::findById($permission->id)->name);
-        $alert = (object) ['status' => 'success', 'message' => 'Permission has been revoked'];
+        if (auth()->user()->can('permission delete')) {
+            $employee->revokePermissionTo(Permission::findById($permission->id)->name);
+            $alert = (object) ['status' => 'success', 'message' => 'Permission has been revoked'];
 
+            return back()->with(compact('alert'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
@@ -235,37 +286,67 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
-        DB::beginTransaction();
-        try {
-            $employee->delete();
-            User::where('id', $employee->user_id)->delete();
-            DB::commit();
-            $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
-        } catch (\Exception $e) {
-            $alert = (object) ['status' => 'danger', 'message' => 'One or more record is being used'];
-            DB::rollback();
+        if (auth()->user()->can('user destroy')) {
+            DB::beginTransaction();
+            try {
+                $employee->delete();
+                User::where('id', $employee->user_id)->delete();
+                DB::commit();
+                $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
+            } catch (\Exception $e) {
+                $alert = (object) ['status' => 'danger', 'message' => 'One or more record is being used'];
+                DB::rollback();
+            }
+
+            return back()->with(compact('alert'));
         }
 
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
+    }
+
+    public function emailUpdate(Request $request, Employee $employee)
+    {
+        if (auth()->user()->can('user update')) {
+            request()->validate(['email' => 'required|email|unique:users,email']);
+
+            User::where('id', $employee->user_id)->update(['email' => strtolower($request->email)]);
+            $alert = (object) ['status' => 'success', 'message' => 'E-mail has been updated'];
+
+            return back()->with(compact('alert'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
     public function passwordUpdate(Request $request, Employee $employee)
     {
-        request()->validate(['password' => 'required|string|min:8|confirmed']);
+        if (auth()->user()->can('user update')) {
+            request()->validate(['password' => 'required|string|min:8|confirmed']);
 
-        User::where('id', $employee->user_id)->update(['password' => bcrypt($request->password)]);
-        $alert = (object) ['status' => 'success', 'message' => 'Password has been updated'];
+            User::where('id', $employee->user_id)->update(['password' => bcrypt($request->password)]);
+            $alert = (object) ['status' => 'success', 'message' => 'Password has been updated'];
 
+            return back()->with(compact('alert'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
     public function imageUpdate(Request $request, Employee $employee)
     {
-        request()->validate(['image' => 'sometimes|file|image|max:2000']);
-        $image = $request->hasFile('image') ? $this->storeFile('employees/avatar', $request->file('image'), $employee->image) : null;
-        User::where('id', $employee->user_id)->update(['image' => $image]);
-        $alert = (object) ['status' => 'success', 'message' => 'Profile picture has been updated'];
+        if (auth()->user()->can('user update')) {
+            request()->validate(['image' => 'sometimes|file|image|max:2000']);
+            $image = $request->hasFile('image') ? $this->storeFile('employees/avatar', $request->file('image'), $employee->image) : null;
+            User::where('id', $employee->user_id)->update(['image' => $image]);
+            $alert = (object) ['status' => 'success', 'message' => 'Profile picture has been updated'];
 
+            return back()->with(compact('alert'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 

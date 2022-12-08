@@ -10,7 +10,7 @@
         <x-slot:colunm_name>{{ 'Name,image, position, Email, Phone, Roles - Permissions' }}</x-slot>
         @foreach ($employees as $employee)
             @php $image = $employee->image ? asset('storage/employees/avatar/' . $employee->image) : asset('images/avatar.png') @endphp
-            <tr id="{{ $employee->id }}">
+            <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $employee->name }}</td>
                 <td>
@@ -22,14 +22,31 @@
                 <td>{{ $employee->email }}</td>
                 <td>{{ $employee->phone }}</td>
                 <td>
-                    <a href="{{ route('employee.roles_permissions.show', [$employee->id]) }}" class="btn btn-sm btn-outline-primary m-0">Assign</a>
+                    @if (auth()->user()->hasAnyRole(['super-admin', 'admin']))
+                        <a href="{{ route('employee.roles_permissions.show', [$employee->employee_id]) }}" class="btn btn-sm btn-outline-info m-0">Assign</a>
+                    @else
+                        {{-- @if ($employee->hasAnyRole(['super-admin', 'admin']) && auth()->user()->id != $employee->user_id && $employee->roles)
+                            <a href="{{ route('employee.roles_permissions.show', [$employee->employee_id]) }}" class="btn btn-sm btn-outline-info m-0">Assign</a>
+                        @else --}}
+                            <i class="icon-copy ti-more-alt"></i>
+                        {{-- @endif --}}
+                    @endif
+                    {{-- @hasanyrole('super-admin|admin')
+                        <a href="{{ route('employee.roles_permissions.show', [$employee->employee_id]) }}" class="btn btn-sm btn-outline-info m-0">Assign</a>
+                    @else
+                    @endunlessrole --}}
+                    {{-- @if (auth()->user()->hasAnyRole('super-admin', 'admin') || (auth()->user()->id < $employee->user_id && auth()->user()->id != $employee->user_id))
+                        <a href="{{ route('employee.roles_permissions.show', [$employee->employee_id]) }}" class="btn btn-sm btn-outline-info m-0">Assign</a>
+                    @else
+                        <i class="icon-copy ti-more-alt"></i>
+                    @endif --}}
                 </td>
                 <td>
                     <div class="table-actions d-flex justify-content-end">
-                        <a href="{{ route('employee.show', [$employee->id]) }}" data-color="#6c757d" style="color: rgb(108,117,125);">
+                        <a href="{{ route('employee.show', [$employee->employee_id]) }}" data-color="#6c757d" style="color: rgb(108,117,125);">
                             <i class="icon-copy dw dw-view" data-toggle="tooltip" title="View"></i>
                         </a>
-                        <a href="#deleteModal" data-toggle="modal" data-route="{{ route('employee.destroy', [$employee->id]) }}" data-color="#e95959" style="color: rgb(233, 89, 89);">
+                        <a href="#deleteModal" data-toggle="modal" data-route="{{ route('employee.destroy', [$employee->employee_id]) }}" data-color="#e95959" style="color: rgb(233, 89, 89);">
                             <i class="icon-copy dw dw-delete-3" data-toggle="tooltip" title="Delete"></i>
                         </a>
                     </div>

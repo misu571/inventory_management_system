@@ -16,9 +16,13 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = DB::table('customers')->orderByDesc('updated_at')->get()->toArray();
+        if (auth()->user()->can('customer access')) {
+            $customers = DB::table('customers')->orderByDesc('updated_at')->get()->toArray();
+            return view('pages.customer.index', compact('customers'));
+        }
 
-        return view('pages.customer.index', compact('customers'));
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -28,7 +32,12 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        return view('pages.customer.create');
+        if (auth()->user()->can('customer create')) {
+            return view('pages.customer.create');
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -39,10 +48,14 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
-        Customer::create($request->validated());
-        $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+        if (auth()->user()->can('customer store')) {
+            Customer::create($request->validated());
+            $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+            return redirect()->route('customer.index')->with(compact('alert'));
+        }
 
-        return redirect()->route('customer.index')->with(compact('alert'));
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -53,7 +66,12 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        return view('pages.customer.show', compact('customer'));
+        if (auth()->user()->can('customer show')) {
+            return view('pages.customer.show', compact('customer'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -64,7 +82,12 @@ class CustomerController extends Controller
      */
     public function edit(Customer $customer)
     {
-        return view('pages.customer.edit', compact('customer'));
+        if (auth()->user()->can('customer edit')) {
+            return view('pages.customer.edit', compact('customer'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -76,9 +99,13 @@ class CustomerController extends Controller
      */
     public function update(UpdateCustomerRequest $request, Customer $customer)
     {
-        $customer->update($request->validated());
-        $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+        if (auth()->user()->can('customer update')) {
+            $customer->update($request->validated());
+            $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+            return back()->with(compact('alert'));
+        }
 
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
@@ -90,9 +117,13 @@ class CustomerController extends Controller
      */
     public function destroy(Customer $customer)
     {
-        $customer->delete();
-        $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
+        if (auth()->user()->can('customer destroy')) {
+            $customer->delete();
+            $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
+            return back()->with(compact('alert'));
+        }
 
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 }

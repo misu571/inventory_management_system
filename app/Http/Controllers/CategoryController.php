@@ -16,9 +16,13 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = DB::table('categories')->orderByDesc('updated_at')->get()->toArray();
+        if (auth()->user()->can('category access')) {
+            $categories = DB::table('categories')->orderByDesc('updated_at')->get()->toArray();
+            return view('pages.category.index', compact('categories'));
+        }
 
-        return view('pages.category.index', compact('categories'));
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -28,7 +32,12 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('pages.category.create');
+        if (auth()->user()->can('category create')) {
+            return view('pages.category.create');
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -39,10 +48,14 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        Category::create($request->validated());
-        $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+        if (auth()->user()->can('category store')) {
+            Category::create($request->validated());
+            $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+            return redirect()->route('category.index')->with(compact('alert'));
+        }
 
-        return redirect()->route('category.index')->with(compact('alert'));
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -64,7 +77,12 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('pages.category.edit', compact('category'));
+        if (auth()->user()->can('category edit')) {
+            return view('pages.category.edit', compact('category'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -76,9 +94,13 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $category->update($request->validated());
-        $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+        if (auth()->user()->can('category update')) {
+            $category->update($request->validated());
+            $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+            return back()->with(compact('alert'));
+        }
 
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
@@ -90,13 +112,17 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        try {
-            $category->delete();
-            $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
-        } catch (\Exception $e) {
-            $alert = (object) ['status' => 'danger', 'message' => 'One or more record is being used'];
+        if (auth()->user()->can('category destroy')) {
+            try {
+                $category->delete();
+                $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
+            } catch (\Exception $e) {
+                $alert = (object) ['status' => 'danger', 'message' => 'One or more record is being used'];
+            }
+            return back()->with(compact('alert'));
         }
 
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 }
