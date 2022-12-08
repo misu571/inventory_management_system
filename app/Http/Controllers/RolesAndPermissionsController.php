@@ -37,8 +37,9 @@ class RolesAndPermissionsController extends Controller
 
     public function roleEdit(Role $role)
     {
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         if ($role->id < 3) {
-            return back();
+            return back()->with(compact('alert'));
         }
 
         if (auth()->user()->hasAnyRole([Role::findById(1)->name, Role::findById(2)->name]) || auth()->user()->hasDirectPermission('role edit')) {
@@ -47,14 +48,14 @@ class RolesAndPermissionsController extends Controller
             return view('pages.setting.role_permission.role_edit', compact('role', 'permissions'));
         }
 
-        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
     public function roleUpdate(Request $request, Role $role)
     {
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         if ($role->id < 3) {
-            return back();
+            return back()->with(compact('alert'));
         }
 
         if (auth()->user()->hasAnyRole([Role::findById(1)->name, Role::findById(2)->name]) || auth()->user()->hasDirectPermission('role update')) {
@@ -66,14 +67,14 @@ class RolesAndPermissionsController extends Controller
             return back()->with(compact('alert'));
         }
 
-        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
     public function roleDestroy(Role $role)
     {
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         if ($role->id < 3) {
-            return back();
+            return back()->with(compact('alert'));
         }
 
         if (auth()->user()->hasAnyRole([Role::findById(1)->name, Role::findById(2)->name]) || auth()->user()->hasDirectPermission('role delete')) {
@@ -87,7 +88,6 @@ class RolesAndPermissionsController extends Controller
             return back()->with(compact('alert'));
         }
 
-        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
@@ -108,8 +108,9 @@ class RolesAndPermissionsController extends Controller
 
     public function permissionUpdate(Request $request, Permission $permission)
     {
-        if ($permission->id < 19) {
-            return back();
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        if ($permission->id < 25) {
+            return back()->with(compact('alert'));
         }
         
         if (auth()->user()->hasAnyRole([Role::findById(1)->name, Role::findById(2)->name]) || auth()->user()->hasDirectPermission('permission update')) {
@@ -121,14 +122,14 @@ class RolesAndPermissionsController extends Controller
             return redirect()->route('setting.role-permission.index')->with(compact('alert'));
         }
 
-        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
     public function permissionDestroy(Permission $permission)
     {
-        if ($permission->id < 19) {
-            return back();
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        if ($permission->id < 25) {
+            return back()->with(compact('alert'));
         }
         
         if (auth()->user()->hasAnyRole([Role::findById(1)->name, Role::findById(2)->name]) || auth()->user()->hasDirectPermission('permission delete')) {
@@ -142,14 +143,14 @@ class RolesAndPermissionsController extends Controller
             return back()->with(compact('alert'));
         }
 
-        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
     public function permissionAssignRole(Request $request, Role $role)
     {
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         if ($role->id < 3) {
-            return back();
+            return back()->with(compact('alert'));
         }
 
         if (auth()->user()->hasAnyRole([Role::findById(1)->name, Role::findById(2)->name]) || auth()->user()->hasDirectPermission('assign permission')) {
@@ -174,7 +175,6 @@ class RolesAndPermissionsController extends Controller
             return back()->with(compact('alert'));
         }
 
-        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 

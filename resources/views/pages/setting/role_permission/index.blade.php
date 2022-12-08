@@ -112,7 +112,7 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $permission->name }}</td>
                                     <td class="text-right">
-                                        @if ($permission->id > 18)
+                                        @if ($permission->id > 24)
                                             <div class="table-actions d-flex justify-content-end">
                                                 <a href="#permissionEdit" data-toggle="modal" data-permission="{{ $permission->name }}" data-route="{{ route('setting.role-permission.permission.update', [$permission->id]) }}" data-color="#265ed7" style="color: rgb(38, 94, 215);">
                                                     <i class="icon-copy dw dw-edit2" data-toggle="tooltip" title="Edit"></i>
