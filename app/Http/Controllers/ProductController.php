@@ -27,6 +27,7 @@ class ProductController extends Controller
                 ->join('suppliers', 'products.supplier_id', '=', 'suppliers.id')
                 ->select('products.*', 'brands.name as brand_name', 'categories.name as category_name', 'sub_categories.name as sub_category_name', 'suppliers.name as supplier_name')
                 ->orderByDesc('products.updated_at')->get()->toArray();
+                
             return view('pages.product.index', compact('products'));
         }
 
@@ -45,6 +46,7 @@ class ProductController extends Controller
             $brands = DB::table('brands')->select('id', 'name')->get()->toArray();
             $categories = DB::table('categories')->select('id', 'name')->get()->toArray();
             $suppliers = DB::table('suppliers')->select('id', 'name')->get()->toArray();
+            
             return view('pages.product.create', compact('brands', 'categories', 'suppliers'));
         }
 
@@ -73,6 +75,7 @@ class ProductController extends Controller
             ]);
             Product::create($data);
             $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+            
             return redirect()->route('product.index')->with(compact('alert'));
         }
 
@@ -104,6 +107,7 @@ class ProductController extends Controller
             $categories = DB::table('categories')->select('id', 'name')->get()->toArray();
             $subCategories = DB::table('sub_categories')->select('id', 'category_id', 'name')->get()->toArray();
             $suppliers = DB::table('suppliers')->select('id', 'name')->get()->toArray();
+            
             return view('pages.product.edit', compact('product', 'brands', 'categories', 'subCategories', 'suppliers'));
         }
 
@@ -133,6 +137,7 @@ class ProductController extends Controller
             ]);
             $product->update($data);
             $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+            
             return back()->with(compact('alert'));
         }
 
@@ -151,6 +156,7 @@ class ProductController extends Controller
         if (auth()->user()->can('product destroy')) {
             $product->delete();
             $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
+            
             return back()->with(compact('alert'));
         }
 
