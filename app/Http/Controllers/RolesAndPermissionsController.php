@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -15,7 +16,7 @@ class RolesAndPermissionsController extends Controller
             $permissions = Permission::all();
             return view('pages.setting.role_permission.index', compact('roles', 'permissions'));
         }
-        
+
         $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
@@ -53,12 +54,11 @@ class RolesAndPermissionsController extends Controller
 
     public function roleUpdate(Request $request, Role $role)
     {
-        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         if ($role->id < 3) {
             return back()->with(compact('alert'));
         }
 
-        if (auth()->user()->hasAnyRole([Role::findById(1)->name, Role::findById(2)->name]) || auth()->user()->hasDirectPermission('role update')) {
+        if ((auth()->user()->hasAnyRole([Role::findById(1)->name, Role::findById(2)->name]) || auth()->user()->hasDirectPermission('role update')) && $role->id > 2) {
             request()->validate(['name' => ['required', 'string', 'unique:roles', 'max:50']]);
 
             $role->update(['name' => strtolower($request->name)]);
@@ -67,17 +67,17 @@ class RolesAndPermissionsController extends Controller
             return back()->with(compact('alert'));
         }
 
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
     public function roleDestroy(Role $role)
     {
-        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         if ($role->id < 3) {
             return back()->with(compact('alert'));
         }
 
-        if (auth()->user()->hasAnyRole([Role::findById(1)->name, Role::findById(2)->name]) || auth()->user()->hasDirectPermission('role delete')) {
+        if ((auth()->user()->hasAnyRole([Role::findById(1)->name, Role::findById(2)->name]) || auth()->user()->hasDirectPermission('role delete')) && $role->id > 2) {
             try {
                 $role->delete();
                 $alert = (object) ['status' => 'success', 'message' => 'Role has been deleted'];
@@ -88,6 +88,7 @@ class RolesAndPermissionsController extends Controller
             return back()->with(compact('alert'));
         }
 
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
@@ -96,8 +97,18 @@ class RolesAndPermissionsController extends Controller
         if (auth()->user()->hasAnyRole([Role::findById(1)->name, Role::findById(2)->name]) || auth()->user()->hasDirectPermission('permission create')) {
             request()->validate(['permission_name' => 'required|string|unique:permissions,name|max:50']);
 
-            Permission::create(['name' => strtolower($request->permission_name)]);
-            $alert = (object) ['status' => 'success', 'message' => 'New permission has been created'];
+            $permission = strtolower($request->permission_name);
+            DB::beginTransaction();
+            try {
+                Permission::create(['name' => $permission]);
+                Role::findById(1)->givePermissionTo($permission);
+                Role::findById(2)->givePermissionTo($permission);
+                DB::commit();
+                $alert = (object) ['status' => 'success', 'message' => 'New permission has been created'];
+            } catch (\Exception $e) {
+                $alert = (object) ['status' => 'danger', 'message' => 'Something went wrong!'];
+                DB::rollback();
+            }
 
             return redirect()->route('setting.role-permission.index')->with(compact('alert'));
         }
@@ -112,7 +123,7 @@ class RolesAndPermissionsController extends Controller
         if ($permission->id < 25) {
             return back()->with(compact('alert'));
         }
-        
+
         if (auth()->user()->hasAnyRole([Role::findById(1)->name, Role::findById(2)->name]) || auth()->user()->hasDirectPermission('permission update')) {
             request()->validate(['name' => ['required', 'string', 'unique:permissions', 'max:50']]);
 
@@ -131,13 +142,18 @@ class RolesAndPermissionsController extends Controller
         if ($permission->id < 25) {
             return back()->with(compact('alert'));
         }
-        
+
         if (auth()->user()->hasAnyRole([Role::findById(1)->name, Role::findById(2)->name]) || auth()->user()->hasDirectPermission('permission delete')) {
+            DB::beginTransaction();
             try {
+                Role::findById(1)->revokePermissionTo($permission->name);
+                Role::findById(2)->revokePermissionTo($permission->name);
                 $permission->delete();
+                DB::commit();
                 $alert = (object) ['status' => 'success', 'message' => 'Permission has been deleted'];
             } catch (\Exception $e) {
                 $alert = (object) ['status' => 'danger', 'message' => 'One or more record is being used'];
+                DB::rollback();
             }
 
             return back()->with(compact('alert'));
@@ -153,7 +169,7 @@ class RolesAndPermissionsController extends Controller
             return back()->with(compact('alert'));
         }
 
-        if (auth()->user()->hasAnyRole([Role::findById(1)->name, Role::findById(2)->name]) || auth()->user()->hasDirectPermission('assign permission')) {
+        if ((auth()->user()->hasAnyRole([Role::findById(1)->name, Role::findById(2)->name]) || auth()->user()->hasDirectPermission('assign permission')) && $role->id > 2) {
             // $permissions = Permission::get()->toArray();
             // $array1 = array("green", "red", "blue", "yellow");
             // $array2 = array("green", "yellow", "red");
@@ -175,13 +191,14 @@ class RolesAndPermissionsController extends Controller
             return back()->with(compact('alert'));
         }
 
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
     public function permissionAssignRoleDestroy(Request $request, Role $role, Permission $permission)
     {
-        if (auth()->user()->hasAnyRole([Role::findById(1)->name, Role::findById(2)->name]) || auth()->user()->hasDirectPermission('revoke permission')) {
-            $role->revokePermissionTo(Permission::findById($permission->id)->name);
+        if ((auth()->user()->hasAnyRole([Role::findById(1)->name, Role::findById(2)->name]) || auth()->user()->hasDirectPermission('revoke permission')) && $role->id > 2) {
+            $role->revokePermissionTo($permission->name);
             $alert = (object) ['status' => 'success', 'message' => 'Permission has been revoked'];
 
             return back()->with(compact('alert'));
