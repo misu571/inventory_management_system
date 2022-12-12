@@ -54,6 +54,7 @@ class RolesAndPermissionsController extends Controller
 
     public function roleUpdate(Request $request, Role $role)
     {
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         if ($role->id < 3) {
             return back()->with(compact('alert'));
         }
@@ -67,12 +68,12 @@ class RolesAndPermissionsController extends Controller
             return back()->with(compact('alert'));
         }
 
-        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
     public function roleDestroy(Role $role)
     {
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         if ($role->id < 3) {
             return back()->with(compact('alert'));
         }
@@ -88,7 +89,6 @@ class RolesAndPermissionsController extends Controller
             return back()->with(compact('alert'));
         }
 
-        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
@@ -191,7 +191,6 @@ class RolesAndPermissionsController extends Controller
             return back()->with(compact('alert'));
         }
 
-        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
