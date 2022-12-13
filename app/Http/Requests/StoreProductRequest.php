@@ -28,15 +28,18 @@ class StoreProductRequest extends FormRequest
             'category' => 'required|exists:categories,id',
             'sub_category' => 'required|exists:sub_categories,id',
             'supplier' => 'required|exists:suppliers,id',
+            'country' => 'required|exists:countries,id',
+            'name' => 'required|string',
             'department' => 'required|string',
-            'serial_number' => 'required|string',
+            'batch_number' => 'required|string',
+            'parts_number' => 'required|unique:products',
+            'quantity' => 'required|integer',
             'location' => 'required|string',
             'rack_number' => 'required|string',
             'image' => 'sometimes|file|image|max:2000',
+            'purchase_order_number' => 'required|string|unique:products',
             'purchase_price' => 'required|integer',
             'purchase_at' => 'required|date',
-            'purchase_order_number' => 'required|string|unique:products',
-            'parts_number' => 'required|string',
         ];
     }
 }

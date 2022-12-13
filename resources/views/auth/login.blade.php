@@ -42,7 +42,7 @@
                         <div class="row pb-30">
                             <div class="col-6">
                                 <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
+                                    <input type="checkbox" class="custom-control-input" id="remember" name="remember" @checked(old('remember'))>
                                     <label class="custom-control-label" for="remember">Remember</label>
                                 </div>
                             </div>

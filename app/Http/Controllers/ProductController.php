@@ -25,8 +25,15 @@ class ProductController extends Controller
                 ->join('categories', 'products.category_id', '=', 'categories.id')
                 ->join('sub_categories', 'products.sub_category_id', '=', 'sub_categories.id')
                 ->join('suppliers', 'products.supplier_id', '=', 'suppliers.id')
-                ->select('products.*', 'brands.name as brand_name', 'categories.name as category_name', 'sub_categories.name as sub_category_name', 'suppliers.name as supplier_name')
-                ->orderByDesc('products.updated_at')->get()->toArray();
+                ->join('countries', 'products.country_id', '=', 'countries.id')
+                ->select(
+                    'products.*',
+                    'brands.name as brand_name',
+                    'categories.name as category_name',
+                    'sub_categories.name as sub_category_name',
+                    'suppliers.name as supplier_name',
+                    'countries.name as country_name'
+                )->orderByDesc('products.updated_at')->get()->toArray();
                 
             return view('pages.product.index', compact('products'));
         }
@@ -46,8 +53,9 @@ class ProductController extends Controller
             $brands = DB::table('brands')->select('id', 'name')->get()->toArray();
             $categories = DB::table('categories')->select('id', 'name')->get()->toArray();
             $suppliers = DB::table('suppliers')->select('id', 'name')->get()->toArray();
+            $countries = DB::table('countries')->select('id', 'name', 'code_alpha_2')->get()->toArray();
             
-            return view('pages.product.create', compact('brands', 'categories', 'suppliers'));
+            return view('pages.product.create', compact('brands', 'categories', 'suppliers', 'countries'));
         }
 
         $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
@@ -71,6 +79,7 @@ class ProductController extends Controller
                 'category_id' => $request->category,
                 'sub_category_id' => $request->sub_category,
                 'supplier_id' => $request->supplier,
+                'country_id' => $request->country,
                 'image' => $image
             ]);
             Product::create($data);
@@ -133,6 +142,7 @@ class ProductController extends Controller
                 'category_id' => $request->category,
                 'sub_category_id' => $request->sub_category,
                 'supplier_id' => $request->supplier,
+                'country_id' => $request->country,
                 'image' => $image
             ]);
             $product->update($data);

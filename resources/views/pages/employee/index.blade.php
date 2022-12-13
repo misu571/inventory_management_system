@@ -7,7 +7,7 @@
         @include('pages.elements.modals.preview_image')
     </x-slot>
     <x-pages.elements.table>
-        <x-slot:colunm_name>{{ 'Name,image, position, Email, Phone, Roles - Permissions' }}</x-slot>
+        <x-slot:colunm_name>{!! 'Name,image, position, Email, Phone, Roles & Permissions' !!}</x-slot>
         @foreach ($employees as $employee)
             @php $image = $employee->image ? asset('storage/employees/avatar/' . $employee->image) : asset('images/avatar.png') @endphp
             <tr>

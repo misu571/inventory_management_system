@@ -2,40 +2,72 @@
 
 @section('content')
 <x-pages.elements.title title="Form" route="{{ route('product.index') }}" parentPage="product" currentPage="create" />
-<div class="row">
-    <div class="col-md-10">
-        <div class="card-box p-3 mb-30">
-            <x-forms.product.create action="{{ route('product.store') }}" enctype="multipart/form-data">
-                <x-slot:department_value>{{ old('department') }}</x-slot>
-                <x-slot:serial_number_value>{{ old('serial_number') }}</x-slot>
-                <x-slot:location_value>{{ old('location') }}</x-slot>
-                <x-slot:rack_number_value>{{ old('rack_number') }}</x-slot>
-                <x-slot:purchase_price_value>{{ old('purchase_price') }}</x-slot>
-                <x-slot:purchase_at_value>{{ old('purchase_at') }}</x-slot>
-                <x-slot:purchase_order_number_value>{{ old('purchase_order_number') }}</x-slot>
-                <x-slot:image_thumbnail></x-slot>
-                <x-slot:brands>
-                    @foreach ($brands as $brand)
-                        <option value="{{ $brand->id }}" @if($brand->id == old('brand')) selected @endif>{{ $brand->name }}</option>
-                    @endforeach
-                </x-slot>
-                <x-slot:categories>
-                    @foreach ($categories as $category)
-                        <option value="{{ $category->id }}" @if($category->id == old('category')) selected @endif>{{ $category->name }}</option>
-                    @endforeach
-                </x-slot>
-                <x-slot:suppliers>
-                    @foreach ($suppliers as $supplier)
-                        <option value="{{ $supplier->id }}" @if($supplier->id == old('supplier')) selected @endif>{{ $supplier->name }}</option>
-                    @endforeach
-                </x-slot>
-                <x-slot:button>
-                    <i class="icon-copy ion-plus-round mr-2"></i> Create New
-                </x-slot>
-            </x-forms.product.create>
+<form action="{{ route('product.store') }}" method="post" enctype="multipart/form-data">
+    @csrf
+    <div class="card-box p-3">
+        <h4 class="text-blue h5 mb-4">Product Details</h4>
+        <div class="row">
+            <div class="col-md">
+                <div class="row">
+                    <div class="col-md">
+                        <x-forms.type.text-input type="text" id="name" label="name" name="name" classes="" value="{{ old('name') }}" validations="required" />
+                        <x-forms.type.text-input type="text" id="department" label="department" name="department" classes="" value="{{ old('department') }}" validations="required" />
+                        <x-forms.type.text-input type="text" id="batch_number" label="batch_number" name="batch_number" classes="" value="{{ old('batch_number') }}" validations="required" />
+                        <x-forms.type.text-input type="text" id="parts_number" label="parts_number" name="parts_number" classes="" value="{{ old('parts_number') }}" validations="required" />
+                    </div>
+                    <div class="col-md">
+                        <x-forms.type.select-single-input id="brand" label="brand" name="brand" validations="required">
+                            <x-slot:select>@selected(!old('brand'))</x-slot>
+                            @foreach ($brands as $brand)
+                                <option value="{{ $brand->id }}" @selected(old('brand') == $brand->id)>{{ $brand->name }}</option>
+                            @endforeach
+                        </x-forms.type.select-single-input>
+                        <x-forms.type.select-single-input id="supplier" label="Supplier" name="supplier" validations="required">
+                            <x-slot:select>@selected(!old('supplier'))</x-slot>
+                            @foreach ($suppliers as $supplier)
+                                <option value="{{ $supplier->id }}" @selected(old('supplier') == $supplier->id)>{{ $supplier->name }}</option>
+                            @endforeach
+                        </x-forms.type.select-single-input>
+                        <x-forms.type.select-single-input id="category" label="Category" name="category" validations="required">
+                            <x-slot:select>@selected(!old('category'))</x-slot>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}" @selected(old('category') == $category->id)>{{ $category->name }}</option>
+                            @endforeach
+                        </x-forms.type.select-single-input>
+                        <x-forms.type.select-single-input id="sub_category" label="Sub Category" name="sub_category" validations="required">
+                            <x-slot:select>@selected(!old('sub_category'))</x-slot>
+                        </x-forms.type.select-single-input>
+                    </div>
+                    <div class="col-md">
+                        <x-forms.type.select-single-input id="country" label="country of origin" name="country" validations="required">
+                            <x-slot:select>@selected(!old('country'))</x-slot>
+                            @foreach ($countries as $country)
+                                <option value="{{ $country->id }}" @selected(old('country') == $country->id)>{{ $country->name }} [{{ $country->code_alpha_2 }}]</option>
+                            @endforeach
+                        </x-forms.type.select-single-input>
+                        <x-forms.type.text-input type="text" id="location" label="Location" name="location" classes="" value="{{ old('location') }}" validations="required" />
+                        <x-forms.type.text-input type="text" id="rack_number" label="rack number" name="rack_number" classes="" value="{{ old('rack_number') }}" validations="required" />
+                        <x-forms.type.text-input type="number" id="quantity" label="quantity" name="quantity" classes="" value="{{ old('quantity') }}" validations="required" />
+                    </div>
+                    <div class="col-md">
+                        <x-forms.type.text-input type="text" id="purchase_order_number" label="purchase order number" name="purchase_order_number" classes="" value="{{ old('purchase_order_number') }}" validations="required" />
+                        <x-forms.type.text-input type="number" id="purchase_price" label="Purchase Price" name="purchase_price" classes="" value="{{ old('purchase_price') }}" validations="required" />
+                        <x-forms.type.text-input type="text" id="purchase_at" label="Purchase Date" name="purchase_at" classes="date-picker" value="{{ old('purchase_at') }}" validations="required" />
+                        <x-forms.type.file-input id="image" label="Product Image" name="image" validations="" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <img id="thumbnail" class="img-thumbnail w-100" src="{{ $image_thumbnail ?? asset('images/product_icon.png') }}" alt="Product image">
+            </div>
+        </div>
+        <div class="d-flex justify-content-start mt-5">
+            <button type="submit" class="btn btn-lg btn-primary m-0">
+                <i class="icon-copy ion-plus-round mr-2"></i> Create New
+            </button>
         </div>
     </div>
-</div>
+</form>
 @endsection
 
 @section('deskapp_scripts')
