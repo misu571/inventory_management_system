@@ -25,7 +25,7 @@ class UpdateSubCategoryRequest extends FormRequest
     {
         return [
             'category' => 'required|integer|exists:categories,id',
-            'name' => 'required|string',
+            'name' => 'required|string|unique:sub_categories',
         ];
     }
 }

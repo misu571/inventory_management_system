@@ -18,6 +18,7 @@ class DepartmentController extends Controller
     {
         if (auth()->user()->can('department access')) {
             $departments = DB::table('departments')->orderByDesc('updated_at')->get()->toArray();
+
             return view('pages.department.index', compact('departments'));
         }
 
@@ -32,7 +33,12 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        //
+        if (auth()->user()->can('department create')) {
+            return view('pages.department.create');
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -43,7 +49,15 @@ class DepartmentController extends Controller
      */
     public function store(StoreDepartmentRequest $request)
     {
-        //
+        if (auth()->user()->can('department store')) {
+            Department::create($request->validated());
+            $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+
+            return redirect()->route('department.index')->with(compact('alert'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -65,7 +79,12 @@ class DepartmentController extends Controller
      */
     public function edit(Department $department)
     {
-        //
+        if (auth()->user()->can('department edit')) {
+            return view('pages.department.edit', compact('department'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -77,7 +96,15 @@ class DepartmentController extends Controller
      */
     public function update(UpdateDepartmentRequest $request, Department $department)
     {
-        //
+        if (auth()->user()->can('department update')) {
+            $department->update($request->validated());
+            $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+
+            return back()->with(compact('alert'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**
@@ -88,6 +115,18 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
-        //
+        if (auth()->user()->can('department destroy')) {
+            try {
+                $department->delete();
+                $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
+            } catch (\Exception $e) {
+                $alert = (object) ['status' => 'danger', 'message' => 'One or more record is being used'];
+            }
+
+            return back()->with(compact('alert'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 }

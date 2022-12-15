@@ -18,6 +18,7 @@ class BrandController extends Controller
     {
         if (auth()->user()->can('brand access')) {
             $brands = DB::table('brands')->orderByDesc('updated_at')->get()->toArray();
+
             return view('pages.brand.index', compact('brands'));
         }
 
@@ -51,6 +52,7 @@ class BrandController extends Controller
         if (auth()->user()->can('brand store')) {
             Brand::create($request->validated());
             $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+
             return redirect()->route('brand.index')->with(compact('alert'));
         }
 
@@ -97,6 +99,7 @@ class BrandController extends Controller
         if (auth()->user()->can('brand update')) {
             $brand->update($request->validated());
             $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+
             return back()->with(compact('alert'));
         }
 
@@ -119,6 +122,7 @@ class BrandController extends Controller
             } catch (\Exception $e) {
                 $alert = (object) ['status' => 'danger', 'message' => 'One or more record is being used'];
             }
+            
             return back()->with(compact('alert'));
         }
 

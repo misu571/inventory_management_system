@@ -18,6 +18,7 @@ class CategoryController extends Controller
     {
         if (auth()->user()->can('category access')) {
             $categories = DB::table('categories')->orderByDesc('updated_at')->get()->toArray();
+
             return view('pages.category.index', compact('categories'));
         }
 
@@ -51,6 +52,7 @@ class CategoryController extends Controller
         if (auth()->user()->can('category store')) {
             Category::create($request->validated());
             $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+
             return redirect()->route('category.index')->with(compact('alert'));
         }
 
@@ -97,6 +99,7 @@ class CategoryController extends Controller
         if (auth()->user()->can('category update')) {
             $category->update($request->validated());
             $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+
             return back()->with(compact('alert'));
         }
 
@@ -119,6 +122,7 @@ class CategoryController extends Controller
             } catch (\Exception $e) {
                 $alert = (object) ['status' => 'danger', 'message' => 'One or more record is being used'];
             }
+            
             return back()->with(compact('alert'));
         }
 
