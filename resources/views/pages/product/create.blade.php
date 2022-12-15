@@ -12,8 +12,8 @@
                     <div class="col-md">
                         <x-forms.type.text-input type="text" id="name" label="name" name="name" classes="" value="{{ old('name') }}" validations="required" />
                         <x-forms.type.text-input type="text" id="department" label="department" name="department" classes="" value="{{ old('department') }}" validations="required" />
-                        <x-forms.type.text-input type="text" id="batch_number" label="batch_number" name="batch_number" classes="" value="{{ old('batch_number') }}" validations="required" />
-                        <x-forms.type.text-input type="text" id="parts_number" label="parts_number" name="parts_number" classes="" value="{{ old('parts_number') }}" validations="required" />
+                        <x-forms.type.text-input type="text" id="batch_number" label="batch number" name="batch_number" classes="" value="{{ old('batch_number') }}" validations="required" />
+                        <x-forms.type.text-input type="text" id="parts_number" label="parts number" name="parts_number" classes="" value="{{ old('parts_number') }}" validations="required" />
                     </div>
                     <div class="col-md">
                         <x-forms.type.select-single-input id="brand" label="brand" name="brand" validations="required">
