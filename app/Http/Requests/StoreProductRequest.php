@@ -34,12 +34,14 @@ class StoreProductRequest extends FormRequest
             'batch_number' => 'required|string',
             'parts_number' => 'required|unique:products',
             'quantity' => 'required|integer',
+            'condition' => 'required|string|in:new,used,damaged',
             'location' => 'required|string',
             'rack_number' => 'required|string',
             'image' => 'sometimes|file|image|max:2000',
             'purchase_order_number' => 'required|string|unique:products',
             'purchase_price' => 'required|integer',
             'purchase_at' => 'required|date',
+            'note' => 'nullable|string',
         ];
     }
 }

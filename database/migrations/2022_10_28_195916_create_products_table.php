@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('batch_number');
             $table->string('parts_number')->unique();
             $table->integer('quantity')->unsigned()->default(0);
+            $table->enum('condition', ['new', 'used', 'damaged']);
             $table->string('location');
             $table->string('rack_number');
             $table->string('image')->nullable();
@@ -33,6 +34,7 @@ return new class extends Migration
             $table->integer('selling_price')->unsigned()->nullable()->default(0);
             $table->date('purchase_at')->default(now());
             $table->date('expire_at')->nullable();
+            $table->text('note')->nullable();
             $table->timestamps();
         });
     }

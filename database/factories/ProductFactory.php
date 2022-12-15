@@ -65,6 +65,7 @@ class ProductFactory extends Factory
             'batch_number' => Str::random(10),
             'parts_number' => Str::random(10),
             'quantity' => fake()->numberBetween(0, 33),
+            'condition' => fake()->randomElement(['new', 'used', 'damaged']),
             'location' => fake()->city(),
             'rack_number' => fake()->randomElement(['A', 'B', 'C', 'D', 'E', 'F', 'G']),
             'image' => null,
@@ -73,6 +74,7 @@ class ProductFactory extends Factory
             'selling_price' => fake()->randomElement([null, fake()->numberBetween($price + 250, $price + 1680)]),
             'purchase_at' => fake()->dateTimeBetween('-3 month', '-2 month'),
             'expire_at' => fake()->dateTimeBetween('-2 month', '+1 month'),
+            'note' => fake()->sentence(),
         ];
     }
 }
