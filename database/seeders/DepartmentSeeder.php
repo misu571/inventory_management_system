@@ -16,7 +16,7 @@ class DepartmentSeeder extends Seeder
     public function run()
     {
         $data = [
-            ['name' => 'Admin'],
+            ['name' => 'Administration'],
             ['name' => 'Human Resource'],
             ['name' => 'Information Technology'],
             ['name' => 'Accounting'],
