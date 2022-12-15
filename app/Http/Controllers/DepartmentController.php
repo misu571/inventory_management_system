@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreDepartmentRequest;
 use App\Http\Requests\UpdateDepartmentRequest;
-use App\Models\Department;
 
 class DepartmentController extends Controller
 {
@@ -15,7 +16,13 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        //
+        if (auth()->user()->can('department access')) {
+            $departments = DB::table('departments')->orderByDesc('updated_at')->get()->toArray();
+            return view('pages.department.index', compact('departments'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
     }
 
     /**

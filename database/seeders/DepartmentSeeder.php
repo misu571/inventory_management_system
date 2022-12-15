@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Department;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DepartmentSeeder extends Seeder
 {
@@ -14,6 +15,16 @@ class DepartmentSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $data = [
+            ['name' => 'Admin'],
+            ['name' => 'Human Resource'],
+            ['name' => 'Information Technology'],
+            ['name' => 'Accounting'],
+            ['name' => 'Marketing'],
+        ];
+
+        foreach ($data as $row) {
+            Department::factory()->create($row);
+        }
     }
 }

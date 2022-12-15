@@ -51,6 +51,15 @@
                         </li>
                     @endcan
                 @endif
+                @if (Route::has('department.index'))
+                    @can('department access')
+                        <li>
+                            <a href="{{ route('department.index') }}" class="dropdown-toggle no-arrow @if(Route::is('department.*')) active @endif">
+                                <span class="micon dw dw-cursor-12"></span><span class="mtext">Department</span>
+                            </a>
+                        </li>
+                    @endcan
+                @endif
                 @if (Route::has('product.index'))
                     @can('product access')
                         <li>

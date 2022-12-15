@@ -76,6 +76,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/product/sub-categories', [App\Http\Controllers\ProductController::class, 'subCategories'])->name('product.subCategories');
 
     Route::resources([
+        'department' => App\Http\Controllers\DepartmentController::class,
         'brand' => App\Http\Controllers\BrandController::class,
         'category' => App\Http\Controllers\CategoryController::class,
         'sub-category' => App\Http\Controllers\SubCategoryController::class,
