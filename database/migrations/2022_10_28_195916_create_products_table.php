@@ -20,8 +20,8 @@ return new class extends Migration
             $table->foreignId('sub_category_id')->constrained('sub_categories');
             $table->foreignId('supplier_id')->constrained('suppliers');
             $table->foreignId('country_id')->constrained('countries');
+            $table->foreignId('department_id')->constrained('departments');
             $table->string('name');
-            $table->string('department');
             $table->string('batch_number');
             $table->string('parts_number')->unique();
             $table->integer('quantity')->unsigned()->default(0);

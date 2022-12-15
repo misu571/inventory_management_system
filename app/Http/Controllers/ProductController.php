@@ -21,6 +21,7 @@ class ProductController extends Controller
     {
         if (auth()->user()->can('product access')) {
             $products = DB::table('products')
+                ->join('departments', 'products.department_id', '=', 'departments.id')
                 ->join('brands', 'products.brand_id', '=', 'brands.id')
                 ->join('categories', 'products.category_id', '=', 'categories.id')
                 ->join('sub_categories', 'products.sub_category_id', '=', 'sub_categories.id')
@@ -28,6 +29,7 @@ class ProductController extends Controller
                 ->join('countries', 'products.country_id', '=', 'countries.id')
                 ->select(
                     'products.*',
+                    'departments.name as department_name',
                     'brands.name as brand_name',
                     'categories.name as category_name',
                     'sub_categories.name as sub_category_name',
@@ -50,12 +52,13 @@ class ProductController extends Controller
     public function create()
     {
         if (auth()->user()->can('product create')) {
+            $departments = DB::table('departments')->select('id', 'name')->get()->toArray();
             $brands = DB::table('brands')->select('id', 'name')->get()->toArray();
             $categories = DB::table('categories')->select('id', 'name')->get()->toArray();
             $suppliers = DB::table('suppliers')->select('id', 'name')->get()->toArray();
             $countries = DB::table('countries')->select('id', 'name', 'code_alpha_2')->get()->toArray();
             
-            return view('pages.product.create', compact('brands', 'categories', 'suppliers', 'countries'));
+            return view('pages.product.create', compact('departments', 'brands', 'categories', 'suppliers', 'countries'));
         }
 
         $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
@@ -74,7 +77,8 @@ class ProductController extends Controller
             $array = $request->validated();
             $image = $request->hasFile('image') ? $this->storeFile('products', $request->file('image')) : null;
             data_set($array, 'purchase_at', date_format(date_create($request->purchase_at), 'Y-m-d'));
-            $data = array_replace(Arr::except($array, ['brand', 'category', 'sub_category', 'supplier']), [
+            $data = array_replace(Arr::except($array, ['department', 'brand', 'category', 'sub_category', 'supplier', 'country']), [
+                'department_id' => $request->department,
                 'brand_id' => $request->brand,
                 'category_id' => $request->category,
                 'sub_category_id' => $request->sub_category,

@@ -11,7 +11,12 @@
                 <div class="row">
                     <div class="col-md">
                         <x-forms.type.text-input type="text" id="name" label="name" name="name" classes="" value="{{ old('name') }}" validations="required" />
-                        <x-forms.type.text-input type="text" id="department" label="department" name="department" classes="" value="{{ old('department') }}" validations="required" />
+                        <x-forms.type.select-single-input id="department" label="department" name="department" validations="required">
+                            <x-slot:select>@selected(!old('department'))</x-slot>
+                            @foreach ($departments as $department)
+                                <option value="{{ $department->id }}" @selected(old('department')==$department->id)>{{ $department->name }}</option>
+                            @endforeach
+                        </x-forms.type.select-single-input>
                         <x-forms.type.text-input type="text" id="batch_number" label="batch number" name="batch_number" classes="" value="{{ old('batch_number') }}" validations="required" />
                         <x-forms.type.text-input type="text" id="parts_number" label="parts number" name="parts_number" classes="" value="{{ old('parts_number') }}" validations="required" />
                     </div>

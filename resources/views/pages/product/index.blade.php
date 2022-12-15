@@ -18,7 +18,7 @@
                         <img class="img-thumbnail" src="{{ $image }}" alt="" width="50">
                     </a>
                 </td>
-                <td>{{ $product->department }}</td>
+                <td>{{ $product->department_name }}</td>
                 <td>{{ $product->brand_name }}</td>
                 <td>{{ $product->category_name }}</td>
                 <td>{{ $product->batch_number }}</td>
