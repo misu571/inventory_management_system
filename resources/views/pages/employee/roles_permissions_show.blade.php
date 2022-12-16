@@ -8,7 +8,7 @@
 @section('content')
 <x-pages.elements.title title="Show" route="{{ route('employee.index') }}" parentPage="employee" currentPage="details" />
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-3 mb-30 mb-md-0">
         <div class="pd-20 card-box height-100-p">
             <div class="profile-photo">
                 <img src="{{ $employee->image ? asset('storage/employees/avatar/' . $employee->image) : asset('images/avatar.png') }}" alt="" class="avatar-photo border border-secondary rounded-circle">
@@ -36,7 +36,7 @@
     </div>
     <div class="col-md">
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-5 mb-30 mb-md-0">
                 <div class="card-box p-3 mb-3">
                     <h4 class="text-blue h5 mb-30">Assign Role(s)</h4>
                     <form method="POST" action="{{ route('employee.roles_permissions.assign', [$employee->id]) }}">

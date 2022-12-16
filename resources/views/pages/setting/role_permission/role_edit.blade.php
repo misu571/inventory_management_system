@@ -8,7 +8,7 @@
 @section('content')
 <x-pages.elements.title title="Form" route="{{ route('setting.role-permission.index') }}" parentPage="roles & Permissions" currentPage="edit" />
 <div class="row">
-    <div class="col-md-5">
+    <div class="col-md-5 mb-30 mb-md-0">
         <div class="card-box p-3 mb-4">
             <form action="{{ route('setting.role-permission.role.update', [$role->id]) }}" method="post">
                 @method('PATCH')

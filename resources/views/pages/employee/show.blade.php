@@ -3,7 +3,7 @@
 @section('content')
 <x-pages.elements.title title="Show" route="{{ route('employee.index') }}" parentPage="employee" currentPage="details" />
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-3 mb-30 mb-md-0">
         <div class="pd-20 card-box height-100-p">
             <div class="profile-photo">
                 <a href="#uploadImage" data-toggle="modal" class="edit-avatar"><i class="fa fa-pencil"></i></a>

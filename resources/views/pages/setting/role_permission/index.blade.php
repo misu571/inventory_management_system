@@ -7,7 +7,7 @@
 
 @section('content')
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-6 mb-30 mb-md-0">
         <div class="card-box mb-3">
             <div class="p-3 d-flex justify-content-start align-items-center">
                 <h4 class="text-primary h4 my-0 mr-3">Create New Role</h4>

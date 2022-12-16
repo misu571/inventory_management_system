@@ -24,7 +24,7 @@
                 <td>{{ $customer->account_name }}</td>
                 <td>{{ $customer->account_number }}</td>
                 <td>
-                    <x-pages.elements.action btn="a" name="customer" :nameId="$customer->id" />
+                    <x-pages.elements.action btn="ed" name="customer" :nameId="$customer->id" />
                 </td>
             </tr>
         @endforeach

@@ -23,7 +23,7 @@
                 <td>{{ $supplier->type }}</td>
                 <td>{{ $supplier->shop_name }}</td>
                 <td>
-                    <x-pages.elements.action btn="a" name="supplier" :nameId="$supplier->id" />
+                    <x-pages.elements.action btn="ed" name="supplier" :nameId="$supplier->id" />
                 </td>
             </tr>
         @endforeach

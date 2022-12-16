@@ -66,12 +66,13 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer)
     {
-        if (auth()->user()->can('customer show')) {
-            return view('pages.customer.show', compact('customer'));
-        }
+        return redirect()->route('customer.index');
+        // if (auth()->user()->can('customer show')) {
+        //     return view('pages.customer.show', compact('customer'));
+        // }
 
-        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
-        return back()->with(compact('alert'));
+        // $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        // return back()->with(compact('alert'));
     }
 
     /**

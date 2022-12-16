@@ -66,12 +66,13 @@ class SupplierController extends Controller
      */
     public function show(Supplier $supplier)
     {
-        if (auth()->user()->can('supplier show')) {
-            return view('pages.supplier.show', compact('supplier'));
-        }
+        return redirect()->route('supplier.index');
+        // if (auth()->user()->can('supplier show')) {
+        //     return view('pages.supplier.show', compact('supplier'));
+        // }
 
-        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
-        return back()->with(compact('alert'));
+        // $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        // return back()->with(compact('alert'));
     }
 
     /**

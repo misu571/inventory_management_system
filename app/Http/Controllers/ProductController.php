@@ -116,12 +116,14 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         if (auth()->user()->can('product edit')) {
+            $departments = DB::table('departments')->select('id', 'name')->get()->toArray();
             $brands = DB::table('brands')->select('id', 'name')->get()->toArray();
             $categories = DB::table('categories')->select('id', 'name')->get()->toArray();
             $subCategories = DB::table('sub_categories')->select('id', 'category_id', 'name')->get()->toArray();
             $suppliers = DB::table('suppliers')->select('id', 'name')->get()->toArray();
+            $countries = DB::table('countries')->select('id', 'name', 'code_alpha_2')->get()->toArray();
             
-            return view('pages.product.edit', compact('product', 'brands', 'categories', 'subCategories', 'suppliers'));
+            return view('pages.product.edit', compact('product', 'departments', 'brands', 'categories', 'subCategories', 'suppliers', 'countries'));
         }
 
         $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
