@@ -10,11 +10,21 @@ class PosController extends Controller
     public function index()
     {
         $products = DB::table('products')
-            ->join('categories', 'products.category_id', '=', 'categories.id')
-            ->join('sub_categories', 'products.sub_category_id', '=', 'sub_categories.id')
-            ->join('suppliers', 'products.supplier_id', '=', 'suppliers.id')
-            ->select('products.*', 'categories.name as category_name', 'sub_categories.name as sub_category_name', 'suppliers.name as supplier_name')
-            ->orderByDesc('products.updated_at')->get()->toArray();
+                ->join('departments', 'products.department_id', '=', 'departments.id')
+                ->join('brands', 'products.brand_id', '=', 'brands.id')
+                ->join('categories', 'products.category_id', '=', 'categories.id')
+                ->join('sub_categories', 'products.sub_category_id', '=', 'sub_categories.id')
+                ->join('suppliers', 'products.supplier_id', '=', 'suppliers.id')
+                ->join('countries', 'products.country_id', '=', 'countries.id')
+                ->select(
+                    'products.*',
+                    'departments.name as department_name',
+                    'brands.name as brand_name',
+                    'categories.name as category_name',
+                    'sub_categories.name as sub_category_name',
+                    'suppliers.name as supplier_name',
+                    'countries.name as country_name'
+                )->orderByDesc('products.updated_at')->get()->toArray();
 
         return view('pages.pos.index', compact('products'));
     }
