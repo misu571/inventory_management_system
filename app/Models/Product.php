@@ -22,6 +22,7 @@ class Product extends Model
         'batch_number',
         'parts_number',
         'quantity',
+        'condition',
         'location',
         'rack_number',
         'image',
@@ -30,5 +31,6 @@ class Product extends Model
         'selling_price',
         'purchase_at',
         'expire_at',
+        'note',
     ];
 }

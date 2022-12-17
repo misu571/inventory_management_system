@@ -1,4 +1,4 @@
-<div class="form-group">
+<div class="form-group mb-0">
     <label for="{{ $id }}">{!! $label !!}</label>
     <input type="file" id="{{ $id }}" name="{{ $name }}" class="form-control-file form-control height-auto @error($name) is-invalid @enderror" {{ $validations }}>
     @error($name)

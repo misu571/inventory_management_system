@@ -136,6 +136,7 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
+        return redirect()->route('employee.index');
         // $user = User::where('id', $employee->user_id)->first();
         
         // return view('pages.employee.edit', compact('employee', 'user'));
