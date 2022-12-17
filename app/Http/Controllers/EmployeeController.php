@@ -153,7 +153,6 @@ class EmployeeController extends Controller
     {
         if (auth()->user()->can('user update')) {
             $user = User::find($employee->user_id);
-            $role = Role::findById($request->role)->name;
             
             DB::beginTransaction();
             try {

@@ -141,15 +141,14 @@ class ProductController extends Controller
     {
         if (auth()->user()->can('product update')) {
             $array = $request->validated();
-            $image = $request->hasFile('image') ? $this->storeFile('products', $request->file('image'), $product->image) : null;
             data_set($array, 'purchase_at', date_format(date_create($request->purchase_at), 'Y-m-d'));
-            $data = array_replace(Arr::except($array, ['brand', 'category', 'sub_category', 'supplier']), [
+            $data = array_replace(Arr::except($array, ['department', 'brand', 'category', 'sub_category', 'supplier', 'country']), [
+                'department_id' => $request->department,
                 'brand_id' => $request->brand,
                 'category_id' => $request->category,
                 'sub_category_id' => $request->sub_category,
                 'supplier_id' => $request->supplier,
-                'country_id' => $request->country,
-                'image' => $image
+                'country_id' => $request->country
             ]);
             $product->update($data);
             $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
@@ -173,6 +172,47 @@ class ProductController extends Controller
             $product->delete();
             $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
             
+            return back()->with(compact('alert'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
+    }
+
+    public function imageUpdate(Request $request, Product $product)
+    {
+        if (auth()->user()->can('product update')) {
+            request()->validate(['image' => 'sometimes|file|image|max:2000']);
+            $image = $request->hasFile('image') ? $this->storeFile('products', $request->file('image'), $product->image) : null;
+            $product->update(['image' => $image]);
+            $alert = (object) ['status' => 'success', 'message' => 'Product image has been updated'];
+
+            return back()->with(compact('alert'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
+    }
+
+    public function partsNumber(Request $request, Product $product)
+    {
+        if (auth()->user()->can('product update')) {
+            $product->update(request()->validate(['parts_number' => 'required|string|unique:products']));
+            $alert = (object) ['status' => 'success', 'message' => 'Parts number has been updated'];
+
+            return back()->with(compact('alert'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
+        return back()->with(compact('alert'));
+    }
+
+    public function purchaseOrderNumber(Request $request, Product $product)
+    {
+        if (auth()->user()->can('product update')) {
+            $product->update(request()->validate(['purchase_order_number' => 'required|string|unique:products']));
+            $alert = (object) ['status' => 'success', 'message' => 'Purchase order number has been updated'];
+
             return back()->with(compact('alert'));
         }
 

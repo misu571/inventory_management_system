@@ -28,14 +28,17 @@ class UpdateProductRequest extends FormRequest
             'category' => 'required|exists:categories,id',
             'sub_category' => 'required|exists:sub_categories,id',
             'supplier' => 'required|exists:suppliers,id',
-            'department' => 'required|string',
-            'serial_number' => 'required|string',
+            'country' => 'required|exists:countries,id',
+            'department' => 'required|exists:departments,id',
+            'name' => 'required|string',
+            'batch_number' => 'required|string',
+            'quantity' => 'required|integer',
+            'condition' => 'required|string|in:new,used,damaged',
             'location' => 'required|string',
             'rack_number' => 'required|string',
-            'image' => 'sometimes|file|image|max:2000',
             'purchase_price' => 'required|integer',
             'purchase_at' => 'required|date',
-            'parts_number' => 'required|string',
+            'note' => 'nullable|string',
         ];
     }
 }

@@ -32,7 +32,7 @@ class StoreProductRequest extends FormRequest
             'department' => 'required|exists:departments,id',
             'name' => 'required|string',
             'batch_number' => 'required|string',
-            'parts_number' => 'required|unique:products',
+            'parts_number' => 'required|string|unique:products',
             'quantity' => 'required|integer',
             'condition' => 'required|string|in:new,used,damaged',
             'location' => 'required|string',

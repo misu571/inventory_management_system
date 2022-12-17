@@ -7,7 +7,7 @@
         @include('pages.elements.modals.preview_image')
     </x-slot>
     <x-pages.elements.table>
-        <x-slot:colunm_name>part no.,image,department,brand,category,sub-category,origin,location,rack no.,quantity,purchase rate</x-slot>
+        <x-slot:colunm_name>part no.,image,department,brand,category,sub-category,country origin,location,rack no.,quantity,purchase rate</x-slot>
         @foreach ($products as $product)
             @php($image = $product->image ? asset('storage/products/' . $product->image) : asset('images/product_icon.png'))
             <tr>
