@@ -29,6 +29,11 @@ use Illuminate\Support\Facades\Artisan;
 //     $alert = (object) ['status' => 'success', 'message' => 'App optimized'];
 //     return redirect('/')->with(compact('alert'));
 // });
+// Route::get('/optimize-env', function () {
+//     Artisan::call('config:cache');
+//     $alert = (object) ['status' => 'success', 'message' => 'Env optimized'];
+//     return redirect('/')->with(compact('alert'));
+// });
 // Route::get('/storage-link', function () {
 //     Artisan::call('storage:link');
 //     $alert = (object) ['status' => 'success', 'message' => 'Storage linked'];
@@ -38,9 +43,6 @@ use Illuminate\Support\Facades\Artisan;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
-// if (!Auth::check()) {
-//     return redirect('/');
-// }
 
 Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm']);
 

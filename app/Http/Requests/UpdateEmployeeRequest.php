@@ -27,9 +27,9 @@ class UpdateEmployeeRequest extends FormRequest
             'name' => 'required|string',
             'phone' => 'required|string',
             'position' => 'required|string',
-            'nid' => 'required|string',
+            'nid' => 'nullable|string',
             'address' => 'nullable|string|max:200',
-            'salary' => 'nullable|integer',
+            'salary' => 'nullable|integer|min:0',
         ];
     }
 }

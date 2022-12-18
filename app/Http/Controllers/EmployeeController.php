@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Employee;
 use Illuminate\Support\Str;
+use App\Mail\PasswordChange;
 use Illuminate\Http\Request;
+use App\Mail\NewUserRegistration;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Permission;
 use App\Http\Requests\StoreEmployeeRequest;
@@ -68,25 +71,28 @@ class EmployeeController extends Controller
     {
         if (auth()->user()->can('user store')) {
             $image = $request->hasFile('image') ? $this->storeFile('employees/avatar', $request->file('image')) : null;
-            $password = Str::random(8);
+            $email = strtolower($request->email);
+            $password = Str::random(11);
             
             DB::beginTransaction();
             try {
                 $user = User::create([
                     'name' => $request->name,
-                    'email' => strtolower($request->email),
-                    'password' => bcrypt('q1w2e3r4t5'),
+                    'email' => $email,
+                    'password' => bcrypt($password),
                     'phone' => $request->phone,
                     'image' => $image
-                ]);
+                ])->assignRole(Role::findById($request->role)->name);
                 Employee::create([
                     'user_id' => $user->id,
                     'position' => $request->position,
                     'nid' => $request->nid,
-                    'address' => $request->address
+                    'address' => $request->address,
+                    'salary' => $request->salary
                 ]);
                 DB::commit();
                 $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
+                Mail::to($email)->send(new NewUserRegistration($request->name, $email, $password));
             } catch (\Exception $e) {
                 $alert = (object) ['status' => 'danger', 'message' => 'Something went wrong!'];
                 DB::rollback();
@@ -325,8 +331,10 @@ class EmployeeController extends Controller
         if (auth()->user()->can('user update')) {
             request()->validate(['password' => 'required|string|min:8|confirmed']);
 
-            User::where('id', $employee->user_id)->update(['password' => bcrypt($request->password)]);
+            $user = User::where('id', $employee->user_id)->first();
+            $user->update(['password' => bcrypt($request->password)]);
             $alert = (object) ['status' => 'success', 'message' => 'Password has been updated'];
+            Mail::to($user->email)->send(new PasswordChange($user->name, $user->email, $request->password));
 
             return back()->with(compact('alert'));
         }

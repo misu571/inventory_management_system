@@ -27,8 +27,10 @@ class StoreEmployeeRequest extends FormRequest
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'phone' => 'required|string',
+            'nid' => 'nullable|string',
+            'salary' => 'nullable|integer|min:0',
             'position' => 'required|string',
-            'nid' => 'required|string',
+            'role' => 'required|exists:roles,id|not_in:1',
             'address' => 'nullable|string|max:200',
             'image' => 'sometimes|file|image|max:2000',
         ];

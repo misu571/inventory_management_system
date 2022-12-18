@@ -22,33 +22,32 @@
                 <td>{{ $employee->email }}</td>
                 <td>{{ $employee->phone }}</td>
                 <td>
-                    @if (auth()->user()->hasAnyRole(['super-admin', 'admin']))
-                        <a href="{{ route('employee.roles_permissions.show', [$employee->employee_id]) }}" class="btn btn-sm btn-outline-info m-0">Assign</a>
-                    @else
-                        {{-- @if ($employee->hasAnyRole(['super-admin', 'admin']) && auth()->user()->id != $employee->user_id && $employee->roles)
-                            <a href="{{ route('employee.roles_permissions.show', [$employee->employee_id]) }}" class="btn btn-sm btn-outline-info m-0">Assign</a>
-                        @else --}}
-                            <i class="icon-copy ti-more-alt"></i>
-                        {{-- @endif --}}
-                    @endif
-                    {{-- @hasanyrole('super-admin|admin')
-                        <a href="{{ route('employee.roles_permissions.show', [$employee->employee_id]) }}" class="btn btn-sm btn-outline-info m-0">Assign</a>
-                    @else
-                    @endunlessrole --}}
-                    {{-- @if (auth()->user()->hasAnyRole('super-admin', 'admin') || (auth()->user()->id < $employee->user_id && auth()->user()->id != $employee->user_id))
-                        <a href="{{ route('employee.roles_permissions.show', [$employee->employee_id]) }}" class="btn btn-sm btn-outline-info m-0">Assign</a>
-                    @else
+                    @if (auth()->user()->id == $employee->id)
                         <i class="icon-copy ti-more-alt"></i>
-                    @endif --}}
+                    @else
+                        @hasanyrole('super-admin|admin')
+                            <a href="{{ route('employee.roles_permissions.show', [$employee->employee_id]) }}" class="btn btn-sm btn-outline-info m-0">Assign</a>
+                        @else
+                            <i class="icon-copy ti-more-alt"></i>
+                        @endhasanyrole
+                    @endif
                 </td>
                 <td>
                     <div class="table-actions d-flex justify-content-end">
-                        <a href="{{ route('employee.show', [$employee->employee_id]) }}" data-color="#6c757d" style="color: rgb(108,117,125);">
-                            <i class="icon-copy dw dw-view" data-toggle="tooltip" title="View"></i>
-                        </a>
-                        <a href="#deleteModal" data-toggle="modal" data-route="{{ route('employee.destroy', [$employee->employee_id]) }}" data-color="#e95959" style="color: rgb(233, 89, 89);">
-                            <i class="icon-copy dw dw-delete-3" data-toggle="tooltip" title="Delete"></i>
-                        </a>
+                        @if (auth()->user()->id == $employee->id)
+                            <i class="icon-copy ti-more-alt"></i>
+                        @else
+                            {{-- @hasanyrole('super-admin|admin') --}}
+                                <a href="{{ route('employee.show', [$employee->employee_id]) }}" data-color="#6c757d" style="color: rgb(108,117,125);">
+                                    <i class="icon-copy dw dw-view" data-toggle="tooltip" title="View"></i>
+                                </a>
+                                <a href="#deleteModal" data-toggle="modal" data-route="{{ route('employee.destroy', [$employee->employee_id]) }}" data-color="#e95959" style="color: rgb(233, 89, 89);">
+                                    <i class="icon-copy dw dw-delete-3" data-toggle="tooltip" title="Delete"></i>
+                                </a>
+                            {{-- @else
+                                <i class="icon-copy ti-more-alt"></i>
+                            @endhasanyrole --}}
+                        @endif
                     </div>
                 </td>
             </tr>
