@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-md-4">
         <div class="card-box p-3 mb-30">
-            <form method="POST" action="{{ route('department.update', [$department->id]) }}">
+            <form id="department-updateForm" method="POST" action="{{ route('department.update', [$department->id]) }}">
                 @method('PATCH')
                 @csrf
                 <div class="row">
@@ -14,7 +14,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-start mt-5">
-                    <button type="submit" class="btn btn-lg btn-primary m-0">
+                    <button type="submit" class="btn btn-lg btn-primary m-0" onclick="this.disabled=true;document.getElementById('department-updateForm').submit();">
                         <i class="icon-copy ion-android-create mr-2"></i> Edit Entry
                     </button>
                 </div>

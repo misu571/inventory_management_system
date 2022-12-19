@@ -5,7 +5,7 @@
 <div class="row">
     <div class="col-md-4">
         <div class="card-box p-3 mb-30">
-            <form method="POST" action="{{ route('department.store') }}">
+            <form id="department-storeForm" method="POST" action="{{ route('department.store') }}">
                 @csrf
                 <div class="row">
                     <div class="col">
@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-start mt-5">
-                    <button type="submit" class="btn btn-lg btn-primary m-0">
+                    <button type="submit" class="btn btn-lg btn-primary m-0" onclick="this.disabled=true;document.getElementById('department-storeForm').submit();">
                         <i class="icon-copy ion-plus-round mr-2"></i> Create New
                     </button>
                 </div>

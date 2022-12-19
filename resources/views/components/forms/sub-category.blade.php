@@ -1,4 +1,4 @@
-<form method="POST" {{ $attributes }}>
+<form id="sub_category-form" method="POST" {{ $attributes }}>
     {{ $method_type ?? null }}
     @csrf
     <div class="row">
@@ -11,6 +11,8 @@
         </div>
     </div>
     <div class="d-flex justify-content-start mt-5">
-        <button type="submit" class="btn btn-lg btn-primary m-0">{{ $button }}</button>
+        <button type="submit" class="btn btn-lg btn-primary m-0" onclick="this.disabled=true;document.getElementById('sub_category-form').submit();">
+            {{ $button }}
+        </button>
     </div>
 </form>

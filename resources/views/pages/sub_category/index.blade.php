@@ -11,7 +11,12 @@
                 <td>{{ $subCategory->name }}</td>
                 <td>{{ $subCategory->category_name }}</td>
                 <td>
-                    <x-pages.elements.action btn="ed" name="sub-category" :nameId="$subCategory->id" />
+                    <a href="{{ route('sub-category.edit', [$subCategory->id]) }}" data-color="#265ed7" style="color: rgb(38, 94, 215);">
+                        <i class="icon-copy dw dw-edit2" data-toggle="tooltip" title="Edit"></i>
+                    </a>
+                    <a href="#deleteModal" data-toggle="modal" data-route="{{ route('sub-category.destroy', [$subCategory->id]) }}" data-color="#e95959" style="color: rgb(233, 89, 89);">
+                        <i class="icon-copy dw dw-delete-3" data-toggle="tooltip" title="Delete"></i>
+                    </a>
                 </td>
             </tr>
         @endforeach

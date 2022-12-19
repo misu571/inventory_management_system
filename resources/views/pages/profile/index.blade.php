@@ -10,7 +10,7 @@
                 <div class="modal fade" id="uploadImage" tabindex="-1" role="dialog" aria-labelledby="modalLabel" style="display: none;" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
-                            <form action="{{ route('profile.image.update', [$user->id]) }}" method="post" enctype="multipart/form-data">
+                            <form action="{{ route('profile.image.update', [$user->id]) }}" id="avatar-uploadForm" method="post" enctype="multipart/form-data">
                                 @method('PATCH')
                                 @csrf
                                 <div class="modal-header">
@@ -31,7 +31,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <input type="submit" value="Update" class="btn btn-primary">
+                                    <input type="submit" value="Update" class="btn btn-primary" onclick="this.disabled=true;document.getElementById('avatar-uploadForm').submit();">
                                     <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
                                 </div>
                             </form>
@@ -67,7 +67,7 @@
             <div class="row p-4">
                 <div class="col-md-6" style="border-right: 2px dashed #ecf0f4;">
                     <h4 class="text-blue h5 mb-30">Personal Details</h4>
-                    <form method="POST" action="{{ route('profile.update', [$user->id]) }}">
+                    <form method="POST" id="profile-updateForm" action="{{ route('profile.update', [$user->id]) }}">
                         @method('PATCH')
                         @csrf
                         <x-forms.type.text-input type="text" id="name" label="Name" name="name" classes="" value="{{ old('name') ?? $user->name }}" validations="required" />
@@ -76,7 +76,7 @@
                         <x-forms.type.text-input type="text" id="address" label="Address" name="address" classes="" value="{{ old('address') ?? $user->address }}" validations="" />
                         @endif
                         <div class="d-flex justify-content-start mt-5">
-                            <button type="submit" class="btn btn-lg btn-primary m-0">
+                            <button type="submit" class="btn btn-lg btn-primary m-0" onclick="this.disabled=true;document.getElementById('profile-updateForm').submit();">
                                 <i class="icon-copy ion-android-create mr-2"></i> Edit Details
                             </button>
                         </div>
@@ -84,7 +84,7 @@
                 </div>
                 <div class="col-md">
                     <h4 class="text-blue h5 mb-30">Change Password</h4>
-                    <form method="POST" action="{{ route('profile.password.update', [$user->id]) }}">
+                    <form method="POST" id="profile-password-updateForm" action="{{ route('profile.password.update', [$user->id]) }}">
                         @method('PATCH')
                         @csrf
                         <div class="input-group custom">
@@ -118,7 +118,7 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-start mt-5">
-                            <button type="submit" class="btn btn-lg btn-primary m-0">
+                            <button type="submit" class="btn btn-lg btn-primary m-0" onclick="this.disabled=true;document.getElementById('profile-password-updateForm').submit();">
                                 <i class="icon-copy ion-android-create mr-2"></i> Update Password
                             </button>
                         </div>

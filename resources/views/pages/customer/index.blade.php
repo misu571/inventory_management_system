@@ -24,7 +24,12 @@
                 <td>{{ $customer->account_name }}</td>
                 <td>{{ $customer->account_number }}</td>
                 <td>
-                    <x-pages.elements.action btn="ed" name="customer" :nameId="$customer->id" />
+                    <a href="{{ route('customer.edit', [$customer->id]) }}" data-color="#265ed7" style="color: rgb(38, 94, 215);">
+                        <i class="icon-copy dw dw-edit2" data-toggle="tooltip" title="Edit"></i>
+                    </a>
+                    <a href="#deleteModal" data-toggle="modal" data-route="{{ route('customer.destroy', [$customer->id]) }}" data-color="#e95959" style="color: rgb(233, 89, 89);">
+                        <i class="icon-copy dw dw-delete-3" data-toggle="tooltip" title="Delete"></i>
+                    </a>
                 </td>
             </tr>
         @endforeach

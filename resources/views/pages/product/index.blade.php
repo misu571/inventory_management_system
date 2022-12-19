@@ -28,7 +28,12 @@
                 <td>{{ $product->quantity }}</td>
                 <td>{{ $product->purchase_price }}</td>
                 <td>
-                    <x-pages.elements.action btn="vd" name="product" :nameId="$product->id" />
+                    <a href="{{ route('product.show', [$product->id]) }}" data-color="#6c757d" style="color: rgb(108,117,125);">
+                        <i class="icon-copy dw dw-view" data-toggle="tooltip" title="View"></i>
+                    </a>
+                    <a href="#deleteModal" data-toggle="modal" data-route="{{ route('product.destroy', [$product->id]) }}" data-color="#e95959" style="color: rgb(233, 89, 89);">
+                        <i class="icon-copy dw dw-delete-3" data-toggle="tooltip" title="Delete"></i>
+                    </a>
                 </td>
             </tr>
         @endforeach

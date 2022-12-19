@@ -1,4 +1,4 @@
-<form method="POST" {{ $attributes }}>
+<form id="employee-storeForm" method="POST" {{ $attributes }}>
     {{ $method_type ?? null }}
     @csrf
     <div class="row">
@@ -12,7 +12,7 @@
                 </div>
                 <div class="col-md">
                     <x-forms.type.text-input type="text" id="nid" label="nid" name="nid" classes="" :value="$nid_value" validations="" />
-                    <x-forms.type.text-input type="text" id="position" label="designation" name="position" classes="" :value="$position_value" validations="required" />
+                    <x-forms.type.text-input type="text" id="designation" label="designation" name="designation" classes="" :value="$designation_value" validations="required" />
                     <div class="form-group">
                         <label for="role">Role <span class="text-danger">*</span></label>
                         <select id="role" name="role" class="selectpicker form-control @error('role') is-invalid @enderror" required>
@@ -35,6 +35,8 @@
         </div>
     </div>
     <div class="d-flex justify-content-start mt-5">
-        <button type="submit" class="btn btn-lg btn-primary m-0">{{ $button }}</button>
+        <button type="submit" class="btn btn-lg btn-primary m-0" onclick="this.disabled=true;document.getElementById('employee-storeForm').submit();">
+            {{ $button }}
+        </button>
     </div>
 </form>

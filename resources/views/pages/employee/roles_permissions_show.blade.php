@@ -14,7 +14,7 @@
                 <img src="{{ $employee->image ? asset('storage/employees/avatar/' . $employee->image) : asset('images/avatar.png') }}" alt="" class="avatar-photo border border-secondary rounded-circle">
             </div>
             <h5 class="text-center h5 mb-0">{{ $employee->name }}</h5>
-            <p class="text-center text-muted font-14">{{ $employee->position }}</p>
+            <p class="text-center text-muted font-14">{{ $employee->designation }}</p>
             <div class="profile-info">
                 <h5 class="mb-20 h5 text-blue">Contact Information</h5>
                 <ul>
@@ -39,7 +39,7 @@
             <div class="col-md-5 mb-30 mb-md-0">
                 <div class="card-box p-3 mb-3">
                     <h4 class="text-blue h5 mb-30">Assign Role(s)</h4>
-                    <form method="POST" action="{{ route('employee.roles_permissions.assign', [$employee->id]) }}">
+                    <form method="POST" id="employee-roles_permissions-assignForm" action="{{ route('employee.roles_permissions.assign', [$employee->id]) }}">
                         @csrf
                         <div class="input-group m-0">
                             <select class="custom-select @error('role_name') is-invalid @enderror" id="role_name" name="role_name" required>
@@ -49,7 +49,7 @@
                                 @endforeach
                             </select>
                             <div class="input-group-append">
-                                <button class="btn btn-outline-primary" type="submit">Assign</button>
+                                <button class="btn btn-outline-primary" type="submit" onclick="this.disabled=true;document.getElementById('employee-roles_permissions-assignForm').submit();">Assign</button>
                             </div>
                         </div>
                         @error('role_name')
@@ -81,7 +81,7 @@
             <div class="col-md">
                 <div class="card-box p-3 mb-3">
                     <h4 class="text-blue h5 mb-30">Assign Direct Permission(s)</h4>
-                    <form action="{{ route('employee.roles_permissions.direct.assign', [$employee->id]) }}" method="POST">
+                    <form action="{{ route('employee.roles_permissions.direct.assign', [$employee->id]) }}" id="employee-roles_permissions-direct-assignForm" method="POST">
                         @csrf
                         <input type="hidden" id="permissions" name="permissions" value="" required>
                         <div class="form-group row">
@@ -93,7 +93,7 @@
                                 </select>
                             </div>
                             <div class="col-3 pl-0">
-                                <button type="submit" class="btn btn-block btn-outline-primary m-0">Assign</button>
+                                <button type="submit" class="btn btn-block btn-outline-primary m-0" onclick="this.disabled=true;document.getElementById('employee-roles_permissions-direct-assignForm').submit();">Assign</button>
                             </div>
                         </div>
                     </form>

@@ -2,7 +2,7 @@
 
 @section('content')
 <x-pages.elements.title title="Form" route="{{ route('product.index') }}" parentPage="product" currentPage="create" />
-<form action="{{ route('product.store') }}" method="post" enctype="multipart/form-data">
+<form action="{{ route('product.store') }}" id="product-storeForm" method="post" enctype="multipart/form-data">
     @csrf
     <div class="card-box p-3">
         <div class="row">
@@ -87,7 +87,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-start mt-5">
-            <button type="submit" class="btn btn-lg btn-primary m-0">
+            <button type="submit" class="btn btn-lg btn-primary m-0" onclick="this.disabled=true;document.getElementById('product-storeForm').submit();">
                 <i class="icon-copy ion-plus-round mr-2"></i> Create New
             </button>
         </div>

@@ -23,7 +23,12 @@
                 <td>{{ $supplier->type }}</td>
                 <td>{{ $supplier->shop_name }}</td>
                 <td>
-                    <x-pages.elements.action btn="ed" name="supplier" :nameId="$supplier->id" />
+                    <a href="{{ route('supplier.edit', [$supplier->id]) }}" data-color="#265ed7" style="color: rgb(38, 94, 215);">
+                        <i class="icon-copy dw dw-edit2" data-toggle="tooltip" title="Edit"></i>
+                    </a>
+                    <a href="#deleteModal" data-toggle="modal" data-route="{{ route('supplier.destroy', [$supplier->id]) }}" data-color="#e95959" style="color: rgb(233, 89, 89);">
+                        <i class="icon-copy dw dw-delete-3" data-toggle="tooltip" title="Delete"></i>
+                    </a>
                 </td>
             </tr>
         @endforeach

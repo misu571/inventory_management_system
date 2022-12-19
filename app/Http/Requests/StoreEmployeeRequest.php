@@ -29,7 +29,7 @@ class StoreEmployeeRequest extends FormRequest
             'phone' => 'required|string',
             'nid' => 'nullable|string',
             'salary' => 'nullable|integer|min:0',
-            'position' => 'required|string',
+            'designation' => 'required|string',
             'role' => 'required|exists:roles,id|not_in:1',
             'address' => 'nullable|string|max:200',
             'image' => 'sometimes|file|image|max:2000',

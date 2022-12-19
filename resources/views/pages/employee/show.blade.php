@@ -11,7 +11,7 @@
                 <div class="modal fade" id="uploadImage" tabindex="-1" role="dialog" aria-labelledby="modalLabel" style="display: none;" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
-                            <form action="{{ route('employee.image.update', [$employee->employee_id]) }}" method="post" enctype="multipart/form-data">
+                            <form action="{{ route('employee.image.update', [$employee->employee_id]) }}" id="employee-image-updateForm" method="post" enctype="multipart/form-data">
                                 @method('PATCH')
                                 @csrf
                                 <div class="modal-header">
@@ -32,7 +32,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <input type="submit" value="Update" class="btn btn-primary">
+                                    <input type="submit" value="Update" class="btn btn-primary" onclick="this.disabled=true;document.getElementById('employee-image-updateForm').submit();">
                                     <button type="button" class="btn btn-light" data-dismiss="modal">Close</button>
                                 </div>
                             </form>
@@ -41,7 +41,7 @@
                 </div>
             </div>
             <h5 class="text-center h5 mb-0">{{ $employee->name }}</h5>
-            <p class="text-center text-muted font-14">{{ $employee->position }}</p>
+            <p class="text-center text-muted font-14">{{ $employee->designation }}</p>
             <div class="profile-info">
                 <h5 class="mb-20 h5 text-blue">Contact Information</h5>
                 <ul>
@@ -72,7 +72,7 @@
                         </x-slot>
                         <x-slot:name_value>{{ old('name') ?? $employee->name }}</x-slot>
                         <x-slot:phone_value>{{ old('phone') ?? $employee->phone }}</x-slot>
-                        <x-slot:position_value>{{ old('position') ?? $employee->position }}</x-slot>
+                        <x-slot:designation_value>{{ old('designation') ?? $employee->designation }}</x-slot>
                         <x-slot:nid_value>{{ old('nid') ?? $employee->nid }}</x-slot>
                         <x-slot:salary_value>{{ old('salary') ?? $employee->salary }}</x-slot>
                         <x-slot:address_value>{{ old('address') ?? $employee->address }}</x-slot>

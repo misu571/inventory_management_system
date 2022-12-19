@@ -12,7 +12,7 @@
                 <form action="#" id="deleteEntryForm" method="POST">
                     @method('DELETE')
                     @csrf
-                    <button type="submit" class="btn btn-primary px-4 m-0">Yes</button>
+                    <button type="submit" class="btn btn-primary px-4 m-0" onclick="this.disabled=true;document.getElementById('deleteEntryForm').submit();">Yes</button>
                 </form>
             </div>
         </div>

@@ -14,7 +14,12 @@
                 <td>{{ $salary->status }}</td>
                 <td>{{ $salary->advance_salary ?? '--' }}</td>
                 <td>
-                    <x-pages.elements.action btn="ed" name="salary" :nameId="$salary->id" />
+                    <a href="{{ route('salary.edit', [$salary->id]) }}" data-color="#265ed7" style="color: rgb(38, 94, 215);">
+                        <i class="icon-copy dw dw-edit2" data-toggle="tooltip" title="Edit"></i>
+                    </a>
+                    <a href="#deleteModal" data-toggle="modal" data-route="{{ route('salary.destroy', [$salary->id]) }}" data-color="#e95959" style="color: rgb(233, 89, 89);">
+                        <i class="icon-copy dw dw-delete-3" data-toggle="tooltip" title="Delete"></i>
+                    </a>
                 </td>
             </tr>
         @endforeach

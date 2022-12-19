@@ -9,7 +9,7 @@
                 <x-slot:name_value>{{ old('name') }}</x-slot>
                 <x-slot:email_value>{{ old('email') }}</x-slot>
                 <x-slot:phone_value>{{ old('phone') }}</x-slot>
-                <x-slot:position_value>{{ old('position') }}</x-slot>
+                <x-slot:designation_value>{{ old('designation') }}</x-slot>
                 <x-slot:nid_value>{{ old('nid') }}</x-slot>
                 <x-slot:address_value>{{ old('address') }}</x-slot>
                 <x-slot:salary_value>{{ old('salary') }}</x-slot>

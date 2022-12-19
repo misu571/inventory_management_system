@@ -6,7 +6,7 @@
     <div class="row">
         <div class="col-md">
             <h4 class="text-blue h5 mb-4">Details</h4>
-            <form action="{{ route('product.update', [$product->id]) }}" method="post">
+            <form action="{{ route('product.update', [$product->id]) }}" id="product-updateForm" method="post">
                 @method('PATCH')
                 @csrf
                 <div class="row">
@@ -76,7 +76,7 @@
                     </div>
                 </div>
                 <div class="d-flex justify-content-start mt-5">
-                    <button type="submit" class="btn btn-lg btn-primary m-0">
+                    <button type="submit" class="btn btn-lg btn-primary m-0" onclick="this.disabled=true;document.getElementById('product-updateForm').submit();">
                         <i class="icon-copy ion-android-create mr-2"></i> Update Details
                     </button>
                 </div>
@@ -123,7 +123,7 @@
             <div>
                 <h4 class="text-blue h5 mb-4">Image</h4>
                 <img id="thumbnail" class="img-thumbnail w-100" src="{{ $product->image ? asset('storage/products/' . $product->image) : asset('images/product_icon.png') }}" alt="Product image">
-                <form action="{{ route('product.image.update', [$product->id]) }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('product.image.update', [$product->id]) }}" id="product-image-updateForm" method="post" enctype="multipart/form-data">
                     @method('PATCH')
                     @csrf
                     <div class="input-group mt-4 mb-0">
@@ -132,7 +132,7 @@
                             <label class="custom-file-label" for="image">Choose file</label>
                         </div>
                         <div class="input-group-append">
-                            <button class="btn btn-primary" type="submit" id="image-button">Upload</button>
+                            <button class="btn btn-primary" type="submit" id="image-button" onclick="this.disabled=true;document.getElementById('product-image-updateForm').submit();">Upload</button>
                         </div>
                     </div>
                 </form>

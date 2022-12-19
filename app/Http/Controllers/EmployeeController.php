@@ -30,7 +30,7 @@ class EmployeeController extends Controller
                 ->select(
                     'users.*',
                     'employees.id as employee_id',
-                    'employees.position',
+                    'employees.designation',
                     'employees.city',
                     'employees.address',
                     'employees.nid',
@@ -85,7 +85,7 @@ class EmployeeController extends Controller
                 ])->assignRole(Role::findById($request->role)->name);
                 Employee::create([
                     'user_id' => $user->id,
-                    'position' => $request->position,
+                    'designation' => $request->designation,
                     'nid' => $request->nid,
                     'address' => $request->address,
                     'salary' => $request->salary
@@ -118,7 +118,7 @@ class EmployeeController extends Controller
                 ->select(
                     'users.*',
                     'employees.id as employee_id',
-                    'employees.position',
+                    'employees.designation',
                     'employees.city',
                     'employees.address',
                     'employees.nid',
@@ -163,7 +163,7 @@ class EmployeeController extends Controller
             DB::beginTransaction();
             try {
                 $employee->update([
-                    'position' => $request->position,
+                    'designation' => $request->designation,
                     'nid' => $request->nid,
                     'salary' => $request->salary,
                     'address' => $request->address
@@ -194,7 +194,7 @@ class EmployeeController extends Controller
                 ->select(
                     'users.*',
                     'employees.id as employee_id',
-                    'employees.position',
+                    'employees.designation',
                     'employees.city',
                     'employees.address',
                     'employees.nid',
