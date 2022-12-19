@@ -82,7 +82,7 @@ class EmployeeController extends Controller
                     'password' => bcrypt($password),
                     'phone' => $request->phone,
                     'image' => $image
-                ])->assignRole(Role::findById($request->role)->name);
+                ]);
                 Employee::create([
                     'user_id' => $user->id,
                     'designation' => $request->designation,
@@ -218,7 +218,7 @@ class EmployeeController extends Controller
     public function rolesPermissionsAssign(Request $request, User $employee)
     {
         if (auth()->user()->can('role create')) {
-            request()->validate(['role_name' => 'required|exists:roles,id']);
+            request()->validate(['role_name' => 'required|exists:roles,id|not_in:1']);
 
             $role = Role::findById($request->role_name)->name;
             if ($employee->hasRole($role)) {
@@ -237,7 +237,7 @@ class EmployeeController extends Controller
 
     public function rolesPermissionsDestroy(User $employee, Role $role)
     {
-        if (auth()->user()->can('role delete')) {
+        if (auth()->user()->can('role delete') && $employee->id > 2) {
             $employee->removeRole(Role::findById($role->id)->name);
             $alert = (object) ['status' => 'success', 'message' => 'Role has been revoked'];
 
