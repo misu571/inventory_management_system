@@ -51,12 +51,12 @@
                             <div class="input-group-append">
                                 <button class="btn btn-outline-primary" type="submit" onclick="this.disabled=true;document.getElementById('employee-roles_permissions-assignForm').submit();">Assign</button>
                             </div>
+                            @error('role_name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
-                        @error('role_name')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
                     </form>
                 </div>
                 <div class="card-box p-3">
@@ -86,11 +86,16 @@
                         <input type="hidden" id="permissions" name="permissions" value="" required>
                         <div class="form-group row">
                             <div class="col pr-0">
-                                <select class="selectpicker form-control" onchange="$('#permissions').val($(this).val())" data-size="5" data-style="btn-light text-dark" multiple data-actions-box="true" data-selected-text-format="count">
+                                <select class="selectpicker form-control @error('permissions') is-invalid @enderror" onchange="$('#permissions').val($(this).val())" data-size="5" data-style="btn-light text-dark" multiple data-actions-box="true" data-selected-text-format="count">
                                     @foreach ($permissions as $permission)
-                                    <option value="{{ $permission->id }}">{{ $permission->name }}</option>
+                                        <option value="{{ $permission->id }}">{{ $permission->name }}</option>
                                     @endforeach
                                 </select>
+                                @error('permissions')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>sdfdhfh</strong>
+                                    </span>
+                                @enderror
                             </div>
                             <div class="col-3 pl-0">
                                 <button type="submit" class="btn btn-block btn-outline-primary m-0" onclick="this.disabled=true;document.getElementById('employee-roles_permissions-direct-assignForm').submit();">Assign</button>
