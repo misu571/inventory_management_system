@@ -12,11 +12,7 @@
                         @auth
                             <a href="{{ route('home') }}">Dashboard</a>
                         @else
-                            @if (Route::is('login'))
-                                <a href="{{ route('register') }}">Register</a>
-                            @else
-                                <a href="{{ route('login') }}">Login</a>
-                            @endif
+                            <a href="{{ route('login') }}">Login</a>
                         @endauth
                     @endif
                 </li>

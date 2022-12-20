@@ -46,7 +46,7 @@ use Illuminate\Support\Facades\Artisan;
 
 Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm']);
 
-Auth::routes();
+Auth::routes(['register' => false]);
 
 Route::middleware(['auth'])->group(function () {
     // Loged-in user's profile
