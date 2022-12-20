@@ -92,11 +92,11 @@ class EmployeeController extends Controller
                 ]);
                 DB::commit();
                 $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
-                Mail::to($email)->send(new NewUserRegistration($request->name, $email, $password));
             } catch (\Exception $e) {
                 $alert = (object) ['status' => 'danger', 'message' => 'Something went wrong!'];
                 DB::rollback();
             }
+            Mail::to($email)->send(new NewUserRegistration($request->name, $email, $password));
 
             return redirect()->route('employee.index')->with(compact('alert'));
         }
