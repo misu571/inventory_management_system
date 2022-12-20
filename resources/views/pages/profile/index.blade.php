@@ -40,7 +40,6 @@
                 </div>
             </div>
             <h5 class="text-center h5 mb-0">{{ $user->name }}</h5>
-            <p class="text-center text-muted font-14">{{ $user->position }}</p>
             <div class="profile-info">
                 <h5 class="mb-20 h5 text-blue">Contact Information</h5>
                 <ul>
@@ -88,7 +87,7 @@
                         @method('PATCH')
                         @csrf
                         <div class="input-group custom">
-                            <input type="password" id="old_password" name="old_password" class="form-control form-control-lg @error('old_password') is-invalid @enderror" placeholder="Old Password" required>
+                            <input type="text" id="old_password" name="old_password" class="form-control form-control-lg @error('old_password') is-invalid @enderror" placeholder="Old Password" required>
                             @error('old_password')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -100,7 +99,7 @@
                             @enderror
                         </div>
                         <div class="input-group custom">
-                            <input type="password" id="password" name="password" class="form-control form-control-lg @error('password') is-invalid @enderror" placeholder="New Password" required autocomplete="new-password">
+                            <input type="text" id="password" name="password" class="form-control form-control-lg @error('password') is-invalid @enderror" placeholder="New Password" required autocomplete="new-password">
                             @error('password')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
