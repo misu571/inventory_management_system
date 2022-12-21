@@ -32,53 +32,68 @@ class ProfileController extends Controller
 
     public function update(Request $request, User $user)
     {
-        request()->validate([
-            'name' => 'required|string',
-            'phone' => 'required|string'
-        ]);
-        if (!auth()->user()->hasRole('super-admin')) {
-            request()->validate(['address' => 'nullable|string|max:200']);
-        }
-        
-        DB::beginTransaction();
-        try {
-            $user->update([
-                'name' => $request->name,
-                'phone' => $request->phone
+        if (auth()->user()->id == $user->id) {
+            request()->validate([
+                'name' => 'required|string',
+                'phone' => 'required|string'
             ]);
             if (!auth()->user()->hasRole('super-admin')) {
-                Employee::where('user_id', $user->id)->update(['address' => $request->address]);
+                request()->validate(['address' => 'nullable|string|max:200']);
             }
-            DB::commit();
-            $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
-        } catch (\Exception $e) {
-            $alert = (object) ['status' => 'danger', 'message' => 'Something went wrong!'];
-            DB::rollback();
+
+            DB::beginTransaction();
+            try {
+                $user->update([
+                    'name' => $request->name,
+                    'phone' => $request->phone
+                ]);
+                if (!auth()->user()->hasRole('super-admin')) {
+                    Employee::where('user_id', $user->id)->update(['address' => $request->address]);
+                }
+                DB::commit();
+                $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
+            } catch (\Exception $e) {
+                $alert = (object) ['status' => 'danger', 'message' => 'Something went wrong!'];
+                DB::rollback();
+            }
+
+            return back()->with(compact('alert'));
         }
 
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
     public function passwordUpdate(Request $request, User $user)
     {
-        request()->validate([
-            'old_password' => 'required|string|current_password',
-            'password' => 'required|string|min:8|confirmed'
-        ]);
+        if (auth()->user()->id == $user->id) {
+            request()->validate([
+                'old_password' => 'required|string|current_password',
+                'password' => 'required|string|min:8|confirmed'
+            ]);
 
-        $user->update(['password' => bcrypt($request->password)]);
-        $alert = (object) ['status' => 'success', 'message' => 'Password has been updated'];
-        
+            $user->update(['password' => bcrypt($request->password)]);
+            $alert = (object) ['status' => 'success', 'message' => 'Password has been updated'];
+
+            return back()->with(compact('alert'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
     public function imageUpdate(Request $request, User $user)
     {
-        request()->validate(['image' => 'sometimes|file|image|max:2000']);
-        $image = $request->hasFile('image') ? $this->storeFile('employees/avatar', $request->file('image'), $user->image) : null;
-        $user->update(['image' => $image]);
-        $alert = (object) ['status' => 'success', 'message' => 'Profile picture has been updated'];
+        if (auth()->user()->id == $user->id) {
+            request()->validate(['image' => 'sometimes|file|image|max:2000']);
+            $image = $request->hasFile('image') ? $this->storeFile('employees/avatar', $request->file('image'), $user->image) : null;
+            $user->update(['image' => $image]);
+            $alert = (object) ['status' => 'success', 'message' => 'Profile picture has been updated'];
 
+            return back()->with(compact('alert'));
+        }
+
+        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
     }
 
