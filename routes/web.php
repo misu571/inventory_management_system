@@ -20,8 +20,7 @@ use Illuminate\Support\Facades\Artisan;
 //         '--force' => true,
 //         '--seed' => true
 //     ]);
-//     Artisan::call('optimize:clear');
-//     $alert = (object) ['status' => 'success', 'message' => 'Database migrated & optimized'];
+//     $alert = (object) ['status' => 'success', 'message' => 'Database migrated'];
 //     return redirect('/')->with(compact('alert'));
 // });
 // Route::get('/optimize-clear', function () {
