@@ -119,7 +119,7 @@
                     </div>`
                 )
             }
-            $.ajaxSetup({headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'}})
+            $.ajaxSetup({headers: {'X-CSRF-TOKEN': $("meta[name='csrf-token']").attr('content')}})
             $.ajax({
                 url: "{{ route('search.product') }}",
                 method: "POST",

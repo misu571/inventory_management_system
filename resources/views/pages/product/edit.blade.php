@@ -66,7 +66,7 @@
         $('#category').removeClass('is-invalid')
         $($('#category').parent()).find('.invalid-feedback').remove()
         $('#sub_category option:not(:first)').remove()
-        $.ajaxSetup({headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'}})
+        $.ajaxSetup({headers: {'X-CSRF-TOKEN': $("meta[name='csrf-token']").attr('content')}})
         $.ajax({
             url: "{{ route('product.subCategories') }}",
             method: "POST",

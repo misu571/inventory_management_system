@@ -26,7 +26,7 @@ class UpdateProductRequest extends FormRequest
         return [
             'brand' => 'required|exists:brands,id',
             'category' => 'required|exists:categories,id',
-            'sub_category' => 'required|exists:sub_categories,id',
+            'sub_category' => 'required_with:category|exists:sub_categories,id',
             'supplier' => 'required|exists:suppliers,id',
             'country' => 'required|exists:countries,id',
             'department' => 'required|exists:departments,id',
