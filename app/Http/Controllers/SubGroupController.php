@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SubCategory;
+use App\Models\SubGroup;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\StoreSubCategoryRequest;
-use App\Http\Requests\UpdateSubCategoryRequest;
+use App\Http\Requests\StoreSubGroupRequest;
+use App\Http\Requests\UpdateSubGroupRequest;
 
-class SubCategoryController extends Controller
+class SubGroupController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,13 +17,14 @@ class SubCategoryController extends Controller
      */
     public function index()
     {
-        if (auth()->user()->can('sub-category access')) {
-            $subCategories = DB::table('sub_categories')
-                ->join('categories', 'sub_categories.category_id', '=', 'categories.id')
-                ->select('sub_categories.*', 'categories.name as category_name')
-                ->orderBy('categories.name')->orderBy('sub_categories.name')->get()->toArray();
+        if (auth()->user()->can('sub-group access')) {
+            $subGroups = DB::table('sub_groups')
+                ->join('categories', 'sub_groups.category_id', '=', 'categories.id')
+                ->join('sub_categories', 'sub_groups.sub_category_id', '=', 'sub_categories.id')
+                ->select('sub_groups.*', 'categories.name as category_name', 'sub_categories.name as sub_category_name')
+                ->orderBy('categories.name')->orderBy('sub_categories.name')->orderBy('sub_groups.name')->get()->toArray();
 
-            return view('pages.sub_category.index', compact('subCategories'));
+            return view('pages.sub_group.index', compact('subGroups'));
         }
 
         $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
@@ -37,10 +38,11 @@ class SubCategoryController extends Controller
      */
     public function create()
     {
-        if (auth()->user()->can('sub-category create')) {
+        if (auth()->user()->can('sub-group create')) {
             $categories = DB::table('categories')->select('id', 'name')->get()->toArray();
+            $subCategories = DB::table('sub_categories')->select('id', 'name')->get()->toArray();
 
-            return view('pages.sub_category.create', compact('categories'));
+            return view('pages.sub_group.create', compact('categories', 'subCategories'));
         }
 
         $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
@@ -50,17 +52,20 @@ class SubCategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreSubCategoryRequest  $request
+     * @param  \App\Http\Requests\StoreSubGroupRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSubCategoryRequest $request)
+    public function store(StoreSubGroupRequest $request)
     {
-        if (auth()->user()->can('sub-category store')) {
-            $data = array_replace(Arr::except($request->validated(), ['category']), ['category_id' => $request->category]);
-            SubCategory::create($data);
+        if (auth()->user()->can('sub-group store')) {
+            $data = array_replace(Arr::except($request->validated(), ['category', 'sub_category']), [
+                'category_id' => $request->category,
+                'sub_category_id' => $request->sub_category
+            ]);
+            SubGroup::create($data);
             $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
 
-            return redirect()->route('sub-category.index')->with(compact('alert'));
+            return redirect()->route('sub-group.index')->with(compact('alert'));
         }
 
         $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
@@ -70,10 +75,10 @@ class SubCategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\SubCategory  $subCategory
+     * @param  \App\Models\SubGroup  $subGroup
      * @return \Illuminate\Http\Response
      */
-    public function show(SubCategory $subCategory)
+    public function show(SubGroup $subGroup)
     {
         //
     }
@@ -81,15 +86,16 @@ class SubCategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\SubCategory  $subCategory
+     * @param  \App\Models\SubGroup  $subGroup
      * @return \Illuminate\Http\Response
      */
-    public function edit(SubCategory $subCategory)
+    public function edit(SubGroup $subGroup)
     {
-        if (auth()->user()->can('sub-category edit')) {
+        if (auth()->user()->can('sub-group edit')) {
             $categories = DB::table('categories')->select('id', 'name')->get()->toArray();
+            $subCategories = DB::table('sub_categories')->select('id', 'name')->get()->toArray();
 
-            return view('pages.sub_category.edit', compact('subCategory', 'categories'));
+            return view('pages.sub_group.edit', compact('subGroup', 'categories', 'subCategories'));
         }
 
         $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
@@ -99,15 +105,18 @@ class SubCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateSubCategoryRequest  $request
-     * @param  \App\Models\SubCategory  $subCategory
+     * @param  \App\Http\Requests\UpdateSubGroupRequest  $request
+     * @param  \App\Models\SubGroup  $subGroup
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSubCategoryRequest $request, SubCategory $subCategory)
+    public function update(UpdateSubGroupRequest $request, SubGroup $subGroup)
     {
-        if (auth()->user()->can('sub-category update')) {
-            $data = array_replace(Arr::except($request->validated(), ['category']), ['category_id' => $request->category]);
-            $subCategory->update($data);
+        if (auth()->user()->can('sub-group update')) {
+            $data = array_replace(Arr::except($request->validated(), ['category', 'sub_category']), [
+                'category_id' => $request->category,
+                'sub_category_id' => $request->sub_category
+            ]);
+            $subGroup->update($data);
             $alert = (object) ['status' => 'success', 'message' => 'Record has been updated'];
 
             return back()->with(compact('alert'));
@@ -120,19 +129,19 @@ class SubCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\SubCategory  $subCategory
+     * @param  \App\Models\SubGroup  $subGroup
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SubCategory $subCategory)
+    public function destroy(SubGroup $subGroup)
     {
-        if (auth()->user()->can('sub-category destroy')) {
+        if (auth()->user()->can('sub-group destroy')) {
             try {
-                $subCategory->delete();
+                $subGroup->delete();
                 $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
             } catch (\Exception $e) {
                 $alert = (object) ['status' => 'danger', 'message' => 'One or more record is being used'];
             }
-            
+
             return back()->with(compact('alert'));
         }
 

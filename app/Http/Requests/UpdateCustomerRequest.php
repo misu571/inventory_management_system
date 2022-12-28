@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCustomerRequest extends FormRequest
@@ -23,9 +25,13 @@ class UpdateCustomerRequest extends FormRequest
      */
     public function rules()
     {
+        $exclude = DB::table('customers')->where([
+            ['id', Route::current()->parameter('customer')->id],
+            ['email', $this->email]
+        ])->first() ? 'exclude' : '';
         return [
             'name' => 'required|string',
-            'email' => 'required|email',
+            'email' => $exclude . '|required|email|unique:customers',
             'phone' => 'required|string',
             'address' => 'required|string',
         ];

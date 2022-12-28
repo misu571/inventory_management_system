@@ -15,6 +15,7 @@ class Product extends Model
         'brand_id',
         'category_id',
         'sub_category_id',
+        'sub_group_id',
         'supplier_id',
         'country_id',
         'department_id',

@@ -22,4 +22,20 @@ class HomeController extends Controller
         
         return view('home', compact('products', 'totalPurchase', 'totalSell', 'customers'));
     }
+
+    public function subCategoriesOfCategory(Request $request)
+    {
+        $request->validate(['category' => 'required|exists:categories,id']);
+        $subCategories = DB::table('sub_categories')->where('category_id', $request->category)->get()->toArray();
+
+        return response()->json(compact('subCategories'));
+    }
+
+    public function subGroupsOfSubCategory(Request $request)
+    {
+        $request->validate(['sub_category' => 'required|exists:sub_categories,id']);
+        $subGroups = DB::table('sub_groups')->where('sub_category_id', $request->sub_category)->get()->toArray();
+
+        return response()->json(compact('subGroups'));
+    }
 }

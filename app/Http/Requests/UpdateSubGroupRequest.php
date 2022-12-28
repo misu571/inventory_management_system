@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateSupplierRequest extends FormRequest
+class UpdateSubGroupRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,15 +25,14 @@ class UpdateSupplierRequest extends FormRequest
      */
     public function rules()
     {
-        $exclude = DB::table('suppliers')->where([
-            ['id', Route::current()->parameter('supplier')->id],
-            ['email', $this->email]
+        $exclude = DB::table('sub_groups')->where([
+            ['id', Route::current()->parameter('sub_group')->id],
+            ['name', $this->name]
         ])->first() ? 'exclude' : '';
         return [
-            'name' => 'required|string',
-            'email' => $exclude . '|required|email|unique:suppliers',
-            'phone' => 'required|string',
-            'address' => 'required|string',
+            'category' => 'required|exists:categories,id',
+            'sub_category' => 'required_with:category|exists:sub_categories,id',
+            'name' => $exclude . '|required|string|unique:sub_groups',
         ];
     }
 }

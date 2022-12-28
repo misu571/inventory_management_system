@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             BrandSeeder::class,
             CategorySeeder::class,
             SubCategorySeeder::class,
+            SubGroupSeeder::class,
             ProductSeeder::class,
             ExpenseSeeder::class,
             // ReportSeeder::class,

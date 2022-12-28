@@ -13,48 +13,54 @@
                     <div class="col-md">
                         <x-forms.type.text-input type="text" id="name" label="name" name="name" classes="" value="{{ old('name') ?? $product->name }}" validations="required" />
                         <x-forms.type.select-single-input id="department" label="department" name="department" validations="required">
-                            <x-slot:select>@selected(!old('department'))</x-slot>
-                                @foreach ($departments as $department)
+                            <x-slot:select></x-slot>
+                            @foreach ($departments as $department)
                                 <option value="{{ $department->id }}" @selected((old('department') ?? $product->department_id)==$department->id)>{{ $department->name }}</option>
-                                @endforeach
+                            @endforeach
                         </x-forms.type.select-single-input>
                         <x-forms.type.text-input type="text" id="batch_number" label="batch number" name="batch_number" classes="" value="{{ old('batch_number') ?? $product->batch_number }}" validations="required" />
                         <x-forms.type.select-single-input id="brand" label="brand" name="brand" validations="required">
-                            <x-slot:select>@selected(!old('brand'))</x-slot>
-                                @foreach ($brands as $brand)
+                            <x-slot:select></x-slot>
+                            @foreach ($brands as $brand)
                                 <option value="{{ $brand->id }}" @selected((old('brand') ?? $product->brand_id)==$brand->id)>{{ $brand->name }}</option>
-                                @endforeach
+                            @endforeach
                         </x-forms.type.select-single-input>
                         <x-forms.type.select-single-input id="supplier" label="Supplier" name="supplier" validations="required">
-                            <x-slot:select>@selected(!old('supplier'))</x-slot>
-                                @foreach ($suppliers as $supplier)
+                            <x-slot:select></x-slot>
+                            @foreach ($suppliers as $supplier)
                                 <option value="{{ $supplier->id }}" @selected((old('supplier') ?? $product->supplier_id)==$supplier->id)>{{ $supplier->name }}</option>
-                                @endforeach
+                            @endforeach
                         </x-forms.type.select-single-input>
                     </div>
                     <div class="col-md">
                         <x-forms.type.select-single-input id="category" label="Category" name="category" validations="required">
-                            <x-slot:select>@selected(!old('category'))</x-slot>
-                                @foreach ($categories as $category)
+                            <x-slot:select></x-slot>
+                            @foreach ($categories as $category)
                                 <option value="{{ $category->id }}" @selected((old('category') ?? $product->category_id)==$category->id)>{{ $category->name }}</option>
-                                @endforeach
+                            @endforeach
                         </x-forms.type.select-single-input>
                         <x-forms.type.select-single-input id="sub_category" label="Sub Category" name="sub_category" validations="required">
-                            <x-slot:select>@selected(!old('sub_category'))</x-slot>
-                                @foreach ($subCategories as $subCategory)
+                            <x-slot:select></x-slot>
+                            @foreach ($subCategories as $subCategory)
                                 <option value="{{ $subCategory->id }}" @selected((old('sub_category') ?? $product->sub_category_id)==$subCategory->id)>{{ $subCategory->name }}</option>
-                                @endforeach
+                            @endforeach
+                        </x-forms.type.select-single-input>
+                        <x-forms.type.select-single-input id="sub_group" label="Sub Group" name="sub_group" validations="required">
+                            <x-slot:select></x-slot>
+                            @foreach ($subGroups as $subGroup)
+                                <option value="{{ $subGroup->id }}" @selected((old('sub_group') ?? $product->sub_group_id)==$subGroup->id)>{{ $subGroup->name }}</option>
+                            @endforeach
                         </x-forms.type.select-single-input>
                         <x-forms.type.select-single-input id="country" label="country of origin" name="country" validations="required">
-                            <x-slot:select>@selected(!old('country'))</x-slot>
-                                @foreach ($countries as $country)
+                            <x-slot:select></x-slot>
+                            @foreach ($countries as $country)
                                 <option value="{{ $country->id }}" @selected((old('country') ?? $product->country_id)==$country->id)>{{ $country->name }} [{{ $country->code_alpha_2 }}]</option>
-                                @endforeach
+                            @endforeach
                         </x-forms.type.select-single-input>
                         <div class="form-group">
                             <label for="condition">Condition <span class="text-danger">*</span></label>
                             <select id="condition" name="condition" class="selectpicker form-control @error('condition') is-invalid @enderror" required>
-                                <option @selected(!old('condition')) disabled>Select</option>
+                                <option disabled>Select</option>
                                 <option value="new" @selected((old('condition') ?? $product->condition)=='new' )>New</option>
                                 <option value="used" @selected((old('condition') ?? $product->condition)=='used' )>Used</option>
                                 <option value="damaged" @selected((old('condition') ?? $product->condition)=='damaged' )>Damaged</option>
@@ -65,13 +71,17 @@
                             </span>
                             @enderror
                         </div>
-                        <x-forms.type.text-input type="text" id="location" label="Location" name="location" classes="" value="{{ old('location') ?? $product->location }}" validations="required" />
                     </div>
                     <div class="col-md">
+                        <x-forms.type.text-input type="text" id="location" label="Location" name="location" classes="" value="{{ old('location') ?? $product->location }}" validations="required" />
                         <x-forms.type.text-input type="text" id="rack_number" label="rack number" name="rack_number" classes="" value="{{ old('rack_number') ?? $product->rack_number }}" validations="required" />
                         <x-forms.type.text-input type="number" id="quantity" label="quantity" name="quantity" classes="" value="{{ old('quantity') ?? $product->quantity }}" validations="required" />
                         <x-forms.type.text-input type="number" id="purchase_price" label="Purchase Price" name="purchase_price" classes="" value="{{ old('purchase_price') ?? $product->purchase_price }}" validations="required" />
                         <x-forms.type.text-input type="text" id="purchase_at" label="Purchase Date" name="purchase_at" classes="date-picker" value="{{ date_format(date_create(old('purchase_at') ?? $product->purchase_at), 'd F Y') }}" validations="required" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md">
                         <x-forms.type.text-input type="text" id="note" label="note" name="note" classes="" value="{{ old('note') ?? $product->note }}" validations="" />
                     </div>
                 </div>
@@ -155,9 +165,15 @@
         if ("{{ old('category') }}") {
             getSubCategories("{{ old('category') }}", "{{ old('sub_category') }}")
         }
+        if ("{{ old('sub_category') }}") {
+            getSubGroups("{{ old('sub_category') }}", "{{ old('sub_group') }}")
+        }
     })
     $('#category').on('change', function () {
         getSubCategories(this.value)
+    })
+    $('#sub_category').on('change', function () {
+        getSubGroups(this.value)
     })
 
     // Get data from server
@@ -167,11 +183,12 @@
         $('#sub_category option:not(:first)').remove()
         $.ajaxSetup({headers: {'X-CSRF-TOKEN': $("meta[name='csrf-token']").attr('content')}})
         $.ajax({
-            url: "{{ route('product.subCategories') }}",
+            url: "{{ route('query.subCategoriesOfCategory') }}",
             method: "POST",
             data: {category: category},
             success: function (result) {
                 const array = result.subCategories
+                console.log(array);
                 array.filter(function (row) {
                     if (row['category_id'] == $('#category').val()) {
                         $('#sub_category').append(`<option value="${row['id']}" ${row['id'] == sub_category ? 'selected' : ''}>${row['name']}</option>`)
@@ -186,7 +203,34 @@
                     </span>`
                 )
             }
-        })
+        });
+    }
+    function getSubGroups(sub_category, sub_group = '') {
+        $('#sub_category').removeClass('is-invalid')
+        $($('#sub_category').parent()).find('.invalid-feedback').remove()
+        $('#sub_group option:not(:first)').remove()
+        $.ajaxSetup({headers: {'X-CSRF-TOKEN': $("meta[name='csrf-token']").attr('content')}})
+        $.ajax({
+            url: "{{ route('query.subGroupsOfSubCategory') }}",
+            method: "POST",
+            data: {sub_category: sub_category},
+            success: function (result) {
+                const array = result.subGroups
+                array.filter(function (row) {
+                    if (row['sub_category_id'] == $('#sub_category').val()) {
+                        $('#sub_group').append(`<option value="${row['id']}" ${row['id'] == sub_group ? 'selected' : ''}>${row['name']}</option>`)
+                    }
+                })
+            },
+            error: function (request) {
+                $('#sub_category').addClass('is-invalid')
+                $($('#sub_category').parent()).append(
+                    `<span class="invalid-feedback" role="alert">
+                        <strong>${request.responseJSON.message}</strong>
+                    </span>`
+                )
+            }
+        });
     }
 </script>
 @endsection

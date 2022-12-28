@@ -56,6 +56,12 @@ Route::middleware(['auth'])->group(function () {
         Route::patch('/{user}/image/update', [App\Http\Controllers\ProfileController::class, 'imageUpdate'])->name('image.update');
     });
 
+    // Database queries
+    Route::group(['prefix' => '/query', 'as' => 'query.'], function () {
+        Route::post('/sub-categories/of_category', [App\Http\Controllers\HomeController::class, 'subCategoriesOfCategory'])->name('subCategoriesOfCategory');
+        Route::post('/sub-groups/of_sub_category', [App\Http\Controllers\HomeController::class, 'subGroupsOfSubCategory'])->name('subGroupsOfSubCategory');
+    });
+
     // Dashboard
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -74,7 +80,6 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/employee/{employee}/roles-permissions/{permission}/direct/delete', [App\Http\Controllers\EmployeeController::class, 'rolesPermissionsDirectDestroy'])->name('employee.roles_permissions.direct.revoke');
 
     // Product
-    Route::post('/product/sub-categories', [App\Http\Controllers\ProductController::class, 'subCategories'])->name('product.subCategories');
     Route::patch('/product/{product}/image/update', [App\Http\Controllers\ProductController::class, 'imageUpdate'])->name('product.image.update');
     Route::patch('/product/{product}/parts-number/update', [App\Http\Controllers\ProductController::class, 'partsNumber'])->name('product.partsNumber.update');
     Route::patch('/product/{product}/purchase-order-number/update', [App\Http\Controllers\ProductController::class, 'purchaseOrderNumber'])->name('product.purchaseOrderNumber.update');
@@ -84,6 +89,7 @@ Route::middleware(['auth'])->group(function () {
         'brand' => App\Http\Controllers\BrandController::class,
         'category' => App\Http\Controllers\CategoryController::class,
         'sub-category' => App\Http\Controllers\SubCategoryController::class,
+        'sub-group' => App\Http\Controllers\SubGroupController::class,
         'product' => App\Http\Controllers\ProductController::class,
         // 'report' => App\Http\Controllers\ReportController::class,
         // 'expense' => App\Http\Controllers\ExpenseController::class,

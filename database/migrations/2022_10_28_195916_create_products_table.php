@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('brand_id')->constrained('brands');
             $table->foreignId('category_id')->constrained('categories');
             $table->foreignId('sub_category_id')->constrained('sub_categories');
+            $table->foreignId('sub_group_id')->constrained('sub_groups');
             $table->foreignId('supplier_id')->constrained('suppliers');
             $table->foreignId('country_id')->constrained('countries');
             $table->foreignId('department_id')->constrained('departments');

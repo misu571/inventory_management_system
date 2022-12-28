@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,49 +19,19 @@ class ProductFactory extends Factory
     public function definition()
     {
         $price = fake()->numberBetween(100, 5000);
-        $brandId = fake()->numberBetween(1, 13);
-        $categoryId = fake()->numberBetween(1, 8);
-        switch ($categoryId) {
-            case 1:
-                $subCategoryId = fake()->numberBetween(1, 8);
-                break;
-            
-            case 2:
-                $subCategoryId = fake()->numberBetween(9, 25);
-                break;
-            
-            case 3:
-                $subCategoryId = fake()->numberBetween(26, 31);
-                break;
-            
-            case 4:
-                $subCategoryId = fake()->numberBetween(32, 36);
-                break;
-            
-            case 5:
-                $subCategoryId = fake()->numberBetween(37, 38);
-                break;
-            
-            case 6:
-                $subCategoryId = fake()->numberBetween(39, 40);
-                break;
-            
-            case 7:
-                $subCategoryId = fake()->numberBetween(41, 45);
-                break;
-            
-            default:
-                $subCategoryId = fake()->numberBetween(46, 48);
-                break;
-        }
+        $subGroupId = fake()->numberBetween(1, DB::table('sub_groups')->count());
+        $subGroup = DB::table('sub_groups')->where('id', $subGroupId)->first(['category_id', 'sub_category_id']);
+        $categoryId = $subGroup->category_id;
+        $subCategoryId = $subGroup->sub_category_id;
         
         return [
-            'brand_id' => $brandId,
+            'brand_id' => fake()->numberBetween(1, DB::table('brands')->count()),
             'category_id' => $categoryId,
             'sub_category_id' => $subCategoryId,
-            'supplier_id' => fake()->numberBetween(1, 16),
-            'country_id' => fake()->numberBetween(1, 241),
-            'department_id' => fake()->numberBetween(1, 5),
+            'sub_group_id' => $subGroupId,
+            'supplier_id' => fake()->numberBetween(1, DB::table('suppliers')->count()),
+            'country_id' => fake()->numberBetween(1, DB::table('countries')->count()),
+            'department_id' => fake()->numberBetween(1, DB::table('departments')->count()),
             'name' => fake()->name(),
             'batch_number' => Str::random(10),
             'parts_number' => Str::random(10),

@@ -19,8 +19,6 @@
                         </x-forms.type.select-single-input>
                         <x-forms.type.text-input type="text" id="batch_number" label="batch number" name="batch_number" classes="" value="{{ old('batch_number') }}" validations="required" />
                         <x-forms.type.text-input type="text" id="parts_number" label="parts number" name="parts_number" classes="" value="{{ old('parts_number') }}" validations="required" />
-                    </div>
-                    <div class="col-md">
                         <x-forms.type.select-single-input id="brand" label="brand" name="brand" validations="required">
                             <x-slot:select>@selected(!old('brand'))</x-slot>
                             @foreach ($brands as $brand)
@@ -33,6 +31,8 @@
                                 <option value="{{ $supplier->id }}" @selected(old('supplier')==$supplier->id)>{{ $supplier->name }}</option>
                             @endforeach
                         </x-forms.type.select-single-input>
+                    </div>
+                    <div class="col-md">
                         <x-forms.type.select-single-input id="category" label="Category" name="category" validations="required">
                             <x-slot:select>@selected(!old('category'))</x-slot>
                             @foreach ($categories as $category)
@@ -42,8 +42,9 @@
                         <x-forms.type.select-single-input id="sub_category" label="Sub Category" name="sub_category" validations="required">
                             <x-slot:select>@selected(!old('sub_category'))</x-slot>
                         </x-forms.type.select-single-input>
-                    </div>
-                    <div class="col-md">
+                        <x-forms.type.select-single-input id="sub_group" label="Sub Group" name="sub_group" validations="required">
+                            <x-slot:select>@selected(!old('sub_group'))</x-slot>
+                        </x-forms.type.select-single-input>
                         <x-forms.type.select-single-input id="country" label="country of origin" name="country" validations="required">
                             <x-slot:select>@selected(!old('country'))</x-slot>
                             @foreach ($countries as $country)
@@ -65,17 +66,13 @@
                             @enderror
                         </div>
                         <x-forms.type.text-input type="text" id="location" label="Location" name="location" classes="" value="{{ old('location') }}" validations="required" />
-                        <x-forms.type.text-input type="text" id="rack_number" label="rack number" name="rack_number" classes="" value="{{ old('rack_number') }}" validations="required" />
                     </div>
                     <div class="col-md">
+                        <x-forms.type.text-input type="text" id="rack_number" label="rack number" name="rack_number" classes="" value="{{ old('rack_number') }}" validations="required" />
                         <x-forms.type.text-input type="number" id="quantity" label="quantity" name="quantity" classes="" value="{{ old('quantity') }}" validations="required" />
                         <x-forms.type.text-input type="text" id="purchase_order_number" label="purchase order number" name="purchase_order_number" classes="" value="{{ old('purchase_order_number') }}" validations="required" />
                         <x-forms.type.text-input type="number" id="purchase_price" label="Purchase Price" name="purchase_price" classes="" value="{{ old('purchase_price') }}" validations="required" />
                         <x-forms.type.text-input type="text" id="purchase_at" label="Purchase Date" name="purchase_at" classes="date-picker" value="{{ date_format(date_create(old('purchase_at')), 'd F Y') }}" validations="required" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md">
                         <x-forms.type.text-input type="text" id="note" label="note" name="note" classes="" value="{{ old('note') }}" validations="" />
                     </div>
                 </div>
@@ -87,7 +84,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-start mt-5">
-            <button type="submit" class="btn btn-lg btn-primary m-0" onclick="this.disabled=true;document.getElementById('product-storeForm').submit();">
+            <button type="button" class="btn btn-lg btn-primary m-0" onclick="this.disabled=true;event.preventDefault();document.getElementById('product-storeForm').submit();">
                 <i class="icon-copy ion-plus-round mr-2"></i> Create New
             </button>
         </div>
@@ -108,9 +105,15 @@
         if ("{{ old('category') }}") {
             getSubCategories("{{ old('category') }}", "{{ old('sub_category') }}")
         }
+        if ("{{ old('sub_category') }}") {
+            getSubGroups("{{ old('sub_category') }}", "{{ old('sub_group') }}")
+        }
     })
     $('#category').on('change', function () {
         getSubCategories(this.value)
+    })
+    $('#sub_category').on('change', function () {
+        getSubGroups(this.value)
     })
 
     // Get data from server
@@ -120,11 +123,12 @@
         $('#sub_category option:not(:first)').remove()
         $.ajaxSetup({headers: {'X-CSRF-TOKEN': $("meta[name='csrf-token']").attr('content')}})
         $.ajax({
-            url: "{{ route('product.subCategories') }}",
+            url: "{{ route('query.subCategoriesOfCategory') }}",
             method: "POST",
             data: {category: category},
             success: function (result) {
                 const array = result.subCategories
+                console.log(array);
                 array.filter(function (row) {
                     if (row['category_id'] == $('#category').val()) {
                         $('#sub_category').append(`<option value="${row['id']}" ${row['id'] == sub_category ? 'selected' : ''}>${row['name']}</option>`)
@@ -139,7 +143,34 @@
                     </span>`
                 )
             }
-        })
+        });
+    }
+    function getSubGroups(sub_category, sub_group = '') {
+        $('#sub_category').removeClass('is-invalid')
+        $($('#sub_category').parent()).find('.invalid-feedback').remove()
+        $('#sub_group option:not(:first)').remove()
+        $.ajaxSetup({headers: {'X-CSRF-TOKEN': $("meta[name='csrf-token']").attr('content')}})
+        $.ajax({
+            url: "{{ route('query.subGroupsOfSubCategory') }}",
+            method: "POST",
+            data: {sub_category: sub_category},
+            success: function (result) {
+                const array = result.subGroups
+                array.filter(function (row) {
+                    if (row['sub_category_id'] == $('#sub_category').val()) {
+                        $('#sub_group').append(`<option value="${row['id']}" ${row['id'] == sub_group ? 'selected' : ''}>${row['name']}</option>`)
+                    }
+                })
+            },
+            error: function (request) {
+                $('#sub_category').addClass('is-invalid')
+                $($('#sub_category').parent()).append(
+                    `<span class="invalid-feedback" role="alert">
+                        <strong>${request.responseJSON.message}</strong>
+                    </span>`
+                )
+            }
+        });
     }
 </script>
 @endsection

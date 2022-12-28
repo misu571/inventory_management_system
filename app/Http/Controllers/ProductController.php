@@ -25,6 +25,7 @@ class ProductController extends Controller
                 ->join('brands', 'products.brand_id', '=', 'brands.id')
                 ->join('categories', 'products.category_id', '=', 'categories.id')
                 ->join('sub_categories', 'products.sub_category_id', '=', 'sub_categories.id')
+                ->join('sub_groups', 'products.sub_group_id', '=', 'sub_groups.id')
                 ->join('suppliers', 'products.supplier_id', '=', 'suppliers.id')
                 ->join('countries', 'products.country_id', '=', 'countries.id')
                 ->select(
@@ -33,6 +34,7 @@ class ProductController extends Controller
                     'brands.name as brand_name',
                     'categories.name as category_name',
                     'sub_categories.name as sub_category_name',
+                    'sub_groups.name as sub_group_name',
                     'suppliers.name as supplier_name',
                     'countries.name as country_name'
                 )->orderByDesc('products.updated_at')->get()->toArray();
@@ -77,11 +79,20 @@ class ProductController extends Controller
             $array = $request->validated();
             $image = $request->hasFile('image') ? $this->storeFile('products', $request->file('image')) : null;
             data_set($array, 'purchase_at', date_format(date_create($request->purchase_at), 'Y-m-d'));
-            $data = array_replace(Arr::except($array, ['department', 'brand', 'category', 'sub_category', 'supplier', 'country']), [
+            $data = array_replace(Arr::except($array, [
+                'department',
+                'brand',
+                'category',
+                'sub_category',
+                'sub_group',
+                'supplier',
+                'country'
+            ]), [
                 'department_id' => $request->department,
                 'brand_id' => $request->brand,
                 'category_id' => $request->category,
                 'sub_category_id' => $request->sub_category,
+                'sub_group_id' => $request->sub_group,
                 'supplier_id' => $request->supplier,
                 'country_id' => $request->country,
                 'image' => $image
@@ -109,10 +120,20 @@ class ProductController extends Controller
             $brands = DB::table('brands')->select('id', 'name')->get()->toArray();
             $categories = DB::table('categories')->select('id', 'name')->get()->toArray();
             $subCategories = DB::table('sub_categories')->where('category_id', $product->category_id)->select('id', 'name')->get()->toArray();
+            $subGroups = DB::table('sub_groups')->where('sub_category_id', $product->sub_category_id)->select('id', 'name')->get()->toArray();
             $suppliers = DB::table('suppliers')->select('id', 'name')->get()->toArray();
             $countries = DB::table('countries')->select('id', 'name', 'code_alpha_2')->get()->toArray();
 
-            return view('pages.product.show', compact('product', 'departments', 'brands', 'categories', 'subCategories', 'suppliers', 'countries'));
+            return view('pages.product.show', compact(
+                'product',
+                'departments',
+                'brands',
+                'categories',
+                'subCategories',
+                'subGroups',
+                'suppliers',
+                'countries'
+            ));
         }
 
         $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
@@ -142,11 +163,20 @@ class ProductController extends Controller
         if (auth()->user()->can('product update')) {
             $array = $request->validated();
             data_set($array, 'purchase_at', date_format(date_create($request->purchase_at), 'Y-m-d'));
-            $data = array_replace(Arr::except($array, ['department', 'brand', 'category', 'sub_category', 'supplier', 'country']), [
+            $data = array_replace(Arr::except($array, [
+                'department',
+                'brand',
+                'category',
+                'sub_category',
+                'sub_group',
+                'supplier',
+                'country'
+            ]), [
                 'department_id' => $request->department,
                 'brand_id' => $request->brand,
                 'category_id' => $request->category,
                 'sub_category_id' => $request->sub_category,
+                'sub_group_id' => $request->sub_group,
                 'supplier_id' => $request->supplier,
                 'country_id' => $request->country
             ]);
@@ -218,14 +248,6 @@ class ProductController extends Controller
 
         $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
         return back()->with(compact('alert'));
-    }
-
-    public function subCategories(Request $request)
-    {
-        $request->validate(['category' => 'required|exists:categories,id']);
-        $subCategories = DB::table('sub_categories')->where('category_id', $request->category)->select('id', 'category_id', 'name')->get()->toArray();
-        
-        return response()->json(compact('subCategories'));
     }
 
     private function storeFile(string $location, $file, $replace = null)

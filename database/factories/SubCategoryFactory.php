@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,7 @@ class SubCategoryFactory extends Factory
     public function definition()
     {
         return [
-            'category_id' => fake()->numberBetween(1, 13),
+            'category_id' => fake()->numberBetween(1, DB::table('categories')->count()),
             'name' => fake()->word(),
         ];
     }
