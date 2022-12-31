@@ -45,7 +45,7 @@
                                 <option value="{{ $subCategory->id }}" @selected((old('sub_category') ?? $product->sub_category_id)==$subCategory->id)>{{ $subCategory->name }}</option>
                             @endforeach
                         </x-forms.type.select-single-input>
-                        <x-forms.type.select-single-input id="sub_group" label="Sub Group" name="sub_group" validations="required">
+                        <x-forms.type.select-single-input id="sub_group" label="Sub sub-category" name="sub_group" validations="required">
                             <x-slot:select></x-slot>
                             @foreach ($subGroups as $subGroup)
                                 <option value="{{ $subGroup->id }}" @selected((old('sub_group') ?? $product->sub_group_id)==$subGroup->id)>{{ $subGroup->name }}</option>

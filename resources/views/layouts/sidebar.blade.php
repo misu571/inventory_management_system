@@ -55,7 +55,7 @@
                     @can('sub-group access')
                         <li>
                             <a href="{{ route('sub-group.index') }}" class="dropdown-toggle no-arrow @if(Route::is('sub-group.*')) active @endif">
-                                <span class="micon dw dw-analytics-14"></span><span class="mtext">Sub-Group</span>
+                                <span class="micon dw dw-analytics-14"></span><span class="mtext">Sub sub-category</span>
                             </a>
                         </li>
                     @endcan

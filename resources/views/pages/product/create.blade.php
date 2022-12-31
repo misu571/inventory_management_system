@@ -42,7 +42,7 @@
                         <x-forms.type.select-single-input id="sub_category" label="Sub Category" name="sub_category" validations="required">
                             <x-slot:select>@selected(!old('sub_category'))</x-slot>
                         </x-forms.type.select-single-input>
-                        <x-forms.type.select-single-input id="sub_group" label="Sub Group" name="sub_group" validations="required">
+                        <x-forms.type.select-single-input id="sub_group" label="Sub sub-category" name="sub_group" validations="required">
                             <x-slot:select>@selected(!old('sub_group'))</x-slot>
                         </x-forms.type.select-single-input>
                         <x-forms.type.select-single-input id="country" label="country of origin" name="country" validations="required">
