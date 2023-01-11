@@ -81,8 +81,6 @@ Route::middleware(['auth'])->group(function () {
 
     // Product
     Route::patch('/product/{product}/image/update', [App\Http\Controllers\ProductController::class, 'imageUpdate'])->name('product.image.update');
-    Route::patch('/product/{product}/parts-number/update', [App\Http\Controllers\ProductController::class, 'partsNumber'])->name('product.partsNumber.update');
-    Route::patch('/product/{product}/purchase-order-number/update', [App\Http\Controllers\ProductController::class, 'purchaseOrderNumber'])->name('product.purchaseOrderNumber.update');
 
     Route::resources([
         'department' => App\Http\Controllers\DepartmentController::class,
