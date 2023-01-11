@@ -5,7 +5,7 @@
 <div class="card-box p-3">
     <div class="row">
         <div class="col-md">
-            <h4 class="text-blue h5 mb-4">Details</h4>
+            <h4 class="text-blue h5 mb-4">Edit Product Details</h4>
             <form action="{{ route('product.update', [$product->id]) }}" id="product-updateForm" method="post">
                 @method('PATCH')
                 @csrf
@@ -19,6 +19,7 @@
                             @endforeach
                         </x-forms.type.select-single-input>
                         <x-forms.type.text-input type="text" id="batch_number" label="batch number" name="batch_number" classes="" value="{{ old('batch_number') ?? $product->batch_number }}" validations="required" />
+                        <x-forms.type.text-input type="text" id="parts_number" label="parts number" name="parts_number" classes="" value="{{ old('parts_number') ?? $product->parts_number }}" validations="required" />
                         <x-forms.type.select-single-input id="brand" label="brand" name="brand" validations="required">
                             <x-slot:select></x-slot>
                             @foreach ($brands as $brand)
@@ -61,27 +62,24 @@
                             <label for="condition">Condition <span class="text-danger">*</span></label>
                             <select id="condition" name="condition" class="selectpicker form-control @error('condition') is-invalid @enderror" required>
                                 <option disabled>Select</option>
-                                <option value="new" @selected((old('condition') ?? $product->condition)=='new' )>New</option>
-                                <option value="used" @selected((old('condition') ?? $product->condition)=='used' )>Used</option>
-                                <option value="damaged" @selected((old('condition') ?? $product->condition)=='damaged' )>Damaged</option>
+                                <option value="new" @selected((old('condition') ?? $product->condition)=='new')>New</option>
+                                <option value="used" @selected((old('condition') ?? $product->condition)=='used')>Used</option>
+                                <option value="damaged" @selected((old('condition') ?? $product->condition)=='damaged')>Damaged</option>
                             </select>
                             @error('condition')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
                             @enderror
                         </div>
+                        <x-forms.type.text-input type="text" id="location" label="Location" name="location" classes="" value="{{ old('location') ?? $product->location }}" validations="required" />
                     </div>
                     <div class="col-md">
-                        <x-forms.type.text-input type="text" id="location" label="Location" name="location" classes="" value="{{ old('location') ?? $product->location }}" validations="required" />
                         <x-forms.type.text-input type="text" id="rack_number" label="rack number" name="rack_number" classes="" value="{{ old('rack_number') ?? $product->rack_number }}" validations="required" />
                         <x-forms.type.text-input type="number" id="quantity" label="quantity" name="quantity" classes="" value="{{ old('quantity') ?? $product->quantity }}" validations="required" />
+                        <x-forms.type.text-input type="text" id="purchase_order_number" label="purchase order number" name="purchase_order_number" classes="" value="{{ old('purchase_order_number') ?? $product->purchase_order_number }}" validations="required" />
                         <x-forms.type.text-input type="number" id="purchase_price" label="Purchase Price" name="purchase_price" classes="" value="{{ old('purchase_price') ?? $product->purchase_price }}" validations="required" />
                         <x-forms.type.text-input type="text" id="purchase_at" label="Purchase Date" name="purchase_at" classes="date-picker" value="{{ date_format(date_create(old('purchase_at') ?? $product->purchase_at), 'd F Y') }}" validations="required" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md">
                         <x-forms.type.text-input type="text" id="note" label="note" name="note" classes="" value="{{ old('note') ?? $product->note }}" validations="" />
                     </div>
                 </div>
@@ -92,61 +90,22 @@
                 </div>
             </form>
         </div>
-        <div class="col-md-4">
-            <h4 class="text-blue h5 mb-4">Unique Values</h4>
-            <div class="mb-30">
-                <form method="POST" action="{{ route('product.partsNumber.update', [$product->id]) }}">
-                    @method('PATCH')
-                    @csrf
-                    <label for="parts_number">Parts number</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control @error('parts_number') is-invalid @enderror" id="parts_number" name="parts_number" value="{{ old('parts_number') ?? $product->parts_number }}" aria-describedby="parts_number-button">
-                        <div class="input-group-append">
-                            <button class="btn btn-secondary" type="submit" id="parts_number-button">Change</button>
-                        </div>
-                        @error('parts_number')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
+        <div class="col-md-3">
+            <h4 class="text-blue h5 mb-4">Image</h4>
+            <img id="thumbnail" class="img-thumbnail w-100" src="{{ $product->image ? asset('storage/products/' . $product->image) : asset('images/product_icon.png') }}" alt="Product image">
+            <form action="{{ route('product.image.update', [$product->id]) }}" id="product-image-updateForm" method="post" enctype="multipart/form-data">
+                @method('PATCH')
+                @csrf
+                <div class="input-group mt-4 mb-0">
+                    <div class="custom-file">
+                        <input type="file" id="image" name="image" class="custom-file-input" aria-describedby="image-button">
+                        <label class="custom-file-label" for="image">Choose file</label>
                     </div>
-                </form>
-            </div>
-            <div class="mb-30">
-                <form method="POST" action="{{ route('product.purchaseOrderNumber.update', [$product->id]) }}">
-                    @method('PATCH')
-                    @csrf
-                    <label for="purchase_order_number">Purchase order number</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control @error('purchase_order_number') is-invalid @enderror" id="purchase_order_number" name="purchase_order_number" value="{{ old('purchase_order_number') ?? $product->purchase_order_number }}" aria-describedby="purchase_order_number-button">
-                        <div class="input-group-append">
-                            <button class="btn btn-secondary" type="submit" id="purchase_order_number-button">Change</button>
-                        </div>
-                        @error('purchase_order_number')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit" id="image-button" onclick="this.disabled=true;document.getElementById('product-image-updateForm').submit();">Upload</button>
                     </div>
-                </form>
-            </div>
-            <div>
-                <h4 class="text-blue h5 mb-4">Image</h4>
-                <img id="thumbnail" class="img-thumbnail w-100" src="{{ $product->image ? asset('storage/products/' . $product->image) : asset('images/product_icon.png') }}" alt="Product image">
-                <form action="{{ route('product.image.update', [$product->id]) }}" id="product-image-updateForm" method="post" enctype="multipart/form-data">
-                    @method('PATCH')
-                    @csrf
-                    <div class="input-group mt-4 mb-0">
-                        <div class="custom-file">
-                            <input type="file" id="image" name="image" class="custom-file-input" aria-describedby="image-button">
-                            <label class="custom-file-label" for="image">Choose file</label>
-                        </div>
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="submit" id="image-button" onclick="this.disabled=true;document.getElementById('product-image-updateForm').submit();">Upload</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
