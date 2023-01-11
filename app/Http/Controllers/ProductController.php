@@ -200,6 +200,7 @@ class ProductController extends Controller
     {
         if (auth()->user()->can('product destroy')) {
             $product->delete();
+            Storage::disk('public')->delete('products/' . $product->image);
             $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
             
             return back()->with(compact('alert'));
@@ -216,32 +217,6 @@ class ProductController extends Controller
             $image = $request->hasFile('image') ? $this->storeFile('products', $request->file('image'), $product->image) : null;
             $product->update(['image' => $image]);
             $alert = (object) ['status' => 'success', 'message' => 'Product image has been updated'];
-
-            return back()->with(compact('alert'));
-        }
-
-        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
-        return back()->with(compact('alert'));
-    }
-
-    public function partsNumber(Request $request, Product $product)
-    {
-        if (auth()->user()->can('product update')) {
-            $product->update(request()->validate(['parts_number' => 'required|string|unique:products']));
-            $alert = (object) ['status' => 'success', 'message' => 'Parts number has been updated'];
-
-            return back()->with(compact('alert'));
-        }
-
-        $alert = (object) ['status' => 'warning', 'message' => 'Unauthorized access!'];
-        return back()->with(compact('alert'));
-    }
-
-    public function purchaseOrderNumber(Request $request, Product $product)
-    {
-        if (auth()->user()->can('product update')) {
-            $product->update(request()->validate(['purchase_order_number' => 'required|string|unique:products']));
-            $alert = (object) ['status' => 'success', 'message' => 'Purchase order number has been updated'];
 
             return back()->with(compact('alert'));
         }

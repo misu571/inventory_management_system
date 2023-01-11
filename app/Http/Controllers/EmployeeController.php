@@ -298,6 +298,7 @@ class EmployeeController extends Controller
                 $employee->delete();
                 User::where('id', $employee->user_id)->delete();
                 DB::commit();
+                Storage::disk('public')->delete('employees/avatar/' . $employee->image);
                 $alert = (object) ['status' => 'success', 'message' => 'Record has been deleted'];
             } catch (\Exception $e) {
                 $alert = (object) ['status' => 'danger', 'message' => 'One or more record is being used'];
