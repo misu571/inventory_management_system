@@ -11,44 +11,44 @@
                 <div class="row">
                     <div class="col-md">
                         <x-forms.type.text-input type="text" id="name" label="name" name="name" classes="" value="{{ old('name') }}" validations="required" />
-                        <x-forms.type.select-single-input id="department" label="department" name="department" validations="required">
-                            <x-slot:select>@selected(!old('department'))</x-slot>
+                        <x-forms.type.select-single-input id="department_id" label="department" name="department_id" validations="required">
+                            <x-slot:select>@selected(!old('department_id'))</x-slot>
                             @foreach ($departments as $department)
-                                <option value="{{ $department->id }}" @selected(old('department')==$department->id)>{{ $department->name }}</option>
+                                <option value="{{ $department->id }}" @selected(old('department_id')==$department->id)>{{ $department->name }}</option>
                             @endforeach
                         </x-forms.type.select-single-input>
                         <x-forms.type.text-input type="text" id="batch_number" label="batch number" name="batch_number" classes="" value="{{ old('batch_number') }}" validations="required" />
                         <x-forms.type.text-input type="text" id="parts_number" label="parts number" name="parts_number" classes="" value="{{ old('parts_number') }}" validations="required" />
-                        <x-forms.type.select-single-input id="brand" label="brand" name="brand" validations="required">
-                            <x-slot:select>@selected(!old('brand'))</x-slot>
+                        <x-forms.type.select-single-input id="brand_id" label="brand" name="brand_id" validations="required">
+                            <x-slot:select>@selected(!old('brand_id'))</x-slot>
                             @foreach ($brands as $brand)
-                                <option value="{{ $brand->id }}" @selected(old('brand')==$brand->id)>{{ $brand->name }}</option>
+                                <option value="{{ $brand->id }}" @selected(old('brand_id')==$brand->id)>{{ $brand->name }}</option>
                             @endforeach
                         </x-forms.type.select-single-input>
-                        <x-forms.type.select-single-input id="supplier" label="Supplier" name="supplier" validations="required">
-                            <x-slot:select>@selected(!old('supplier'))</x-slot>
+                        <x-forms.type.select-single-input id="supplier_id" label="Supplier" name="supplier_id" validations="required">
+                            <x-slot:select>@selected(!old('supplier_id'))</x-slot>
                             @foreach ($suppliers as $supplier)
-                                <option value="{{ $supplier->id }}" @selected(old('supplier')==$supplier->id)>{{ $supplier->name }}</option>
+                                <option value="{{ $supplier->id }}" @selected(old('supplier_id')==$supplier->id)>{{ $supplier->name }}</option>
                             @endforeach
                         </x-forms.type.select-single-input>
                     </div>
                     <div class="col-md">
-                        <x-forms.type.select-single-input id="category" label="Category" name="category" validations="required">
-                            <x-slot:select>@selected(!old('category'))</x-slot>
+                        <x-forms.type.select-single-input id="category_id" label="Category" name="category_id" validations="required">
+                            <x-slot:select>@selected(!old('category_id'))</x-slot>
                             @foreach ($categories as $category)
-                                <option value="{{ $category->id }}" @selected(old('category')==$category->id)>{{ $category->name }}</option>
+                                <option value="{{ $category->id }}" @selected(old('category_id')==$category->id)>{{ $category->name }}</option>
                             @endforeach
                         </x-forms.type.select-single-input>
-                        <x-forms.type.select-single-input id="sub_category" label="Sub Category" name="sub_category" validations="required">
-                            <x-slot:select>@selected(!old('sub_category'))</x-slot>
+                        <x-forms.type.select-single-input id="sub_category_id" label="Sub Category" name="sub_category_id" validations="required">
+                            <x-slot:select>@selected(!old('sub_category_id'))</x-slot>
                         </x-forms.type.select-single-input>
-                        <x-forms.type.select-single-input id="sub_group" label="Sub sub-category" name="sub_group" validations="required">
-                            <x-slot:select>@selected(!old('sub_group'))</x-slot>
+                        <x-forms.type.select-single-input id="sub_group_id" label="Sub sub-category" name="sub_group_id" validations="required">
+                            <x-slot:select>@selected(!old('sub_group_id'))</x-slot>
                         </x-forms.type.select-single-input>
-                        <x-forms.type.select-single-input id="country" label="country of origin" name="country" validations="required">
-                            <x-slot:select>@selected(!old('country'))</x-slot>
+                        <x-forms.type.select-single-input id="country_id" label="country of origin" name="country_id" validations="required">
+                            <x-slot:select>@selected(!old('country_id'))</x-slot>
                             @foreach ($countries as $country)
-                                <option value="{{ $country->id }}" @selected(old('country')==$country->id)>{{ $country->name }} [{{ $country->code_alpha_2 }}]</option>
+                                <option value="{{ $country->id }}" @selected(old('country_id')==$country->id)>{{ $country->name }} [{{ $country->code_alpha_2 }}]</option>
                             @endforeach
                         </x-forms.type.select-single-input>
                         <div class="form-group">
@@ -72,7 +72,8 @@
                         <x-forms.type.text-input type="number" id="quantity" label="quantity" name="quantity" classes="" value="{{ old('quantity') }}" validations="required" />
                         <x-forms.type.text-input type="text" id="purchase_order_number" label="purchase order number" name="purchase_order_number" classes="" value="{{ old('purchase_order_number') }}" validations="required" />
                         <x-forms.type.text-input type="number" id="purchase_price" label="Purchase Price" name="purchase_price" classes="" value="{{ old('purchase_price') }}" validations="required" />
-                        <x-forms.type.text-input type="text" id="purchase_at" label="Purchase Date" name="purchase_at" classes="date-picker" value="{{ date_format(date_create(old('purchase_at')), 'd F Y') }}" validations="required" />
+                        <x-forms.type.text-input type="text" id="purchase_at" label="Purchase Date" name="purchase_at" classes="date-picker" value="{{ old('purchase_at') }}" validations="required" />
+                        {{-- <x-forms.type.text-input type="text" id="purchase_at" label="Purchase Date" name="purchase_at" classes="date-picker" value="{{ date_format(date_create(old('purchase_at')), 'd F Y') }}" validations="required" /> --}}
                         <x-forms.type.text-input type="text" id="note" label="note" name="note" classes="" value="{{ old('note') }}" validations="" />
                     </div>
                 </div>
@@ -102,25 +103,25 @@
 
     // Select sub-category on page load or change based on category
     $(document).ready(function () {
-        if ("{{ old('category') }}") {
-            getSubCategories("{{ old('category') }}", "{{ old('sub_category') }}")
+        if ("{{ old('category_id') }}") {
+            getSubCategories("{{ old('category_id') }}", "{{ old('sub_category_id') }}")
         }
-        if ("{{ old('sub_category') }}") {
-            getSubGroups("{{ old('sub_category') }}", "{{ old('sub_group') }}")
+        if ("{{ old('sub_category_id') }}") {
+            getSubGroups("{{ old('sub_category_id') }}", "{{ old('sub_group_id') }}")
         }
     })
-    $('#category').on('change', function () {
+    $('#category_id').on('change', function () {
         getSubCategories(this.value)
     })
-    $('#sub_category').on('change', function () {
+    $('#sub_category_id').on('change', function () {
         getSubGroups(this.value)
     })
 
     // Get data from server
     function getSubCategories(category, sub_category = '') {
-        $('#category').removeClass('is-invalid')
-        $($('#category').parent()).find('.invalid-feedback').remove()
-        $('#sub_category option:not(:first)').remove()
+        $('#category_id').removeClass('is-invalid')
+        $($('#category_id').parent()).find('.invalid-feedback').remove()
+        $('#sub_category_id option:not(:first)').remove()
         $.ajaxSetup({headers: {'X-CSRF-TOKEN': $("meta[name='csrf-token']").attr('content')}})
         $.ajax({
             url: "{{ route('query.subCategoriesOfCategory') }}",
@@ -130,14 +131,14 @@
                 const array = result.subCategories
                 console.log(array);
                 array.filter(function (row) {
-                    if (row['category_id'] == $('#category').val()) {
-                        $('#sub_category').append(`<option value="${row['id']}" ${row['id'] == sub_category ? 'selected' : ''}>${row['name']}</option>`)
+                    if (row['category_id'] == $('#category_id').val()) {
+                        $('#sub_category_id').append(`<option value="${row['id']}" ${row['id'] == sub_category ? 'selected' : ''}>${row['name']}</option>`)
                     }
                 })
             },
             error: function (request) {
-                $('#category').addClass('is-invalid')
-                $($('#category').parent()).append(
+                $('#category_id').addClass('is-invalid')
+                $($('#category_id').parent()).append(
                     `<span class="invalid-feedback" role="alert">
                         <strong>${request.responseJSON.message}</strong>
                     </span>`
@@ -146,9 +147,9 @@
         });
     }
     function getSubGroups(sub_category, sub_group = '') {
-        $('#sub_category').removeClass('is-invalid')
-        $($('#sub_category').parent()).find('.invalid-feedback').remove()
-        $('#sub_group option:not(:first)').remove()
+        $('#sub_category_id').removeClass('is-invalid')
+        $($('#sub_category_id').parent()).find('.invalid-feedback').remove()
+        $('#sub_group_id option:not(:first)').remove()
         $.ajaxSetup({headers: {'X-CSRF-TOKEN': $("meta[name='csrf-token']").attr('content')}})
         $.ajax({
             url: "{{ route('query.subGroupsOfSubCategory') }}",
@@ -157,14 +158,14 @@
             success: function (result) {
                 const array = result.subGroups
                 array.filter(function (row) {
-                    if (row['sub_category_id'] == $('#sub_category').val()) {
-                        $('#sub_group').append(`<option value="${row['id']}" ${row['id'] == sub_group ? 'selected' : ''}>${row['name']}</option>`)
+                    if (row['sub_category_id'] == $('#sub_category_id').val()) {
+                        $('#sub_group_id').append(`<option value="${row['id']}" ${row['id'] == sub_group ? 'selected' : ''}>${row['name']}</option>`)
                     }
                 })
             },
             error: function (request) {
-                $('#sub_category').addClass('is-invalid')
-                $($('#sub_category').parent()).append(
+                $('#sub_category_id').addClass('is-invalid')
+                $($('#sub_category_id').parent()).append(
                     `<span class="invalid-feedback" role="alert">
                         <strong>${request.responseJSON.message}</strong>
                     </span>`

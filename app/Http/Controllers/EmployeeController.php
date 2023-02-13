@@ -71,14 +71,13 @@ class EmployeeController extends Controller
     {
         if (auth()->user()->can('user store')) {
             $image = $request->hasFile('image') ? $this->storeFile('employees/avatar', $request->file('image')) : null;
-            $email = strtolower($request->email);
             $password = Str::random(11);
             
             DB::beginTransaction();
             try {
                 $user = User::create([
                     'name' => $request->name,
-                    'email' => $email,
+                    'email' => $request->email,
                     'password' => bcrypt($password),
                     'phone' => $request->phone,
                     'image' => $image
@@ -96,7 +95,7 @@ class EmployeeController extends Controller
                 $alert = (object) ['status' => 'danger', 'message' => 'Something went wrong!'];
                 DB::rollback();
             }
-            Mail::to($email)->send(new NewUserRegistration($request->name, $email, $password));
+            Mail::to($request->email)->send(new NewUserRegistration($request->name, $request->email, $password));
 
             return redirect()->route('employee.index')->with(compact('alert'));
         }

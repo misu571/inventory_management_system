@@ -17,6 +17,18 @@ class StoreEmployeeRequest extends FormRequest
     }
 
     /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'email' => strtolower($this->email),
+        ]);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, mixed>
@@ -25,7 +37,7 @@ class StoreEmployeeRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email|unique:users',
             'phone' => 'required|string',
             'nid' => 'nullable|string',
             'salary' => 'nullable|integer|min:0',

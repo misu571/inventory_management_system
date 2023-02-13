@@ -75,29 +75,11 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
+        $array = $request->validated();
+        data_set($array, 'purchase_at', date_format(date_create($request->purchase_at), 'Y-m-d'));
         if (auth()->user()->can('product store')) {
-            $array = $request->validated();
             $image = $request->hasFile('image') ? $this->storeFile('products', $request->file('image')) : null;
-            data_set($array, 'purchase_at', date_format(date_create($request->purchase_at), 'Y-m-d'));
-            $data = array_replace(Arr::except($array, [
-                'department',
-                'brand',
-                'category',
-                'sub_category',
-                'sub_group',
-                'supplier',
-                'country'
-            ]), [
-                'department_id' => $request->department,
-                'brand_id' => $request->brand,
-                'category_id' => $request->category,
-                'sub_category_id' => $request->sub_category,
-                'sub_group_id' => $request->sub_group,
-                'supplier_id' => $request->supplier,
-                'country_id' => $request->country,
-                'image' => $image
-            ]);
-            Product::create($data);
+            Product::create($array + ['image' => $image]);
             $alert = (object) ['status' => 'success', 'message' => 'New record has been created'];
             
             return redirect()->route('product.index')->with(compact('alert'));
